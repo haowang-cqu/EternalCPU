@@ -6,6 +6,12 @@ module EXE(
     input logic          clk,
 	input logic          rst,
     
+    
+	input wire          id_is_mult,
+	input wire          id_stall,
+	input wire          ex_flush,
+	input wire [31:0]   mem_excepttype,
+
     // // input
     input logic [31 : 0] ex_rdata1_i,
     input logic [31 : 0] ex_rdata2_i,
@@ -57,7 +63,9 @@ module EXE(
     output logic [4 : 0]  ex_waddr_o,
     output logic          ex_ready_o,
     output logic [31 : 0] ex_hi_data_o,
-    output logic [31 : 0] ex_lo_data_o
+    output logic [31 : 0] ex_lo_data_o,
+
+    output logic          ex_mult_stall//qf
     );
 
     // not used 
@@ -103,7 +111,12 @@ module EXE(
 
     assign cp0data2E = ((ex_rd_i!=0)&(ex_rd_i == mem_rd_i)&(mem_wcp0_i)) ? mem_wdata_i : ex_cp0_data_i;
 
-	alu alu(srca2E,srcb3E,ex_sa_i,ex_alucontrol_i,hi2E,lo2E,cp0data2E,aluoutE,ov_o,hi_alu_outE,lo_alu_outE);
+	alu alu(clk,rst,id_is_mult,
+	id_stall,
+	ex_flush,
+	mem_excepttype,srca2E,srcb3E,ex_sa_i,ex_alucontrol_i,hi2E,lo2E,cp0data2E,aluoutE,ov_o,hi_alu_outE,lo_alu_outE,ex_mult_stall);
+	
+
 
     assign exe_aluout_o = (ex_jal_i | ex_jalr_i | ex_bal_i) ?  ex_pc_i+8 : aluoutE;
     assign writereg1E = ex_regdst_i==1'b1 ? ex_rd_i : ex_rt_i;

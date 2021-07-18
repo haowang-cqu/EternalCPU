@@ -4,6 +4,14 @@
 `include "defines.h"
 
 module alu(
+	input wire          clk_i,
+	input wire          rst_i,
+
+	input wire          id_is_mult,
+	input wire          id_stall,
+	input wire          ex_flush,
+	input wire [31:0]   mem_excepttype,
+
 	input wire [31:0]   reg1_i,
 	input wire [31:0]   reg2_i,
 
@@ -17,7 +25,9 @@ module alu(
 	output wire [31:0]  wdata_o,
 	output wire         ov,
 	output wire [31:0]  hi_alu_out,
-	output wire [31:0]  lo_alu_out
+	output wire [31:0]  lo_alu_out,
+
+	output wire         mult_stallE  //qf
     );
 
 	assign wdata_o =alucontrol== `AND_CONTROL   ? (reg1_i & reg2_i)   : 
@@ -53,12 +63,63 @@ module alu(
 	assign signed_mul   = $signed(reg1_i)*$signed(reg2_i);
 	assign unsigned_mul = reg1_i * reg2_i;
 
-	assign hi_alu_out = 	alucontrol== `MULT_CONTROL  ? signed_mul[63:32]          :
-				alucontrol== `MULTU_CONTROL ? unsigned_mul[63:32]        :
+	////////////////////////multiply////////////////////////////////////
+	reg [3:0] cnt;
+
+	wire mult_sign;
+	wire mult_valid;
+
+	wire [63:0] alu_out_signed_mult;
+	wire [63:0] alu_out_unsigned_mult;
+
+	assign mult_sign = (alucontrol == `MULT_CONTROL);
+	assign mult_valid = (alucontrol == `MULT_CONTROL) | (alucontrol == `MULTU_CONTROL) ;
+
+	wire mult_ready;
+	assign mult_ready = !(cnt ^ 4'b1001);
+
+	// is_multD   stallD   flushE   flush_exceptionM
+
+	always@(posedge clk_i) begin
+		cnt <= rst_i | (id_is_mult & ~id_stall & ~ex_flush) | ex_flush ? (0 : mult_ready ? cnt : cnt + 1);
+	end
+
+	wire unsigned_mult_ce;
+	wire signed_mult_ce;
+
+	assign unsigned_mult_ce = ~mult_sign & mult_valid & ~mult_ready;
+	assign signed_mult_ce = mult_sign & mult_valid & ~mult_ready;
+	assign mult_stallE = mult_valid & ~mult_ready & ~mem_excepttype;
+
+	signed_mult signed_mult0 (
+		.CLK(clk),  // input wire CLK
+		.A(reg1_i),      // input wire [31 : 0] A
+		.B(reg2_i),      // input wire [31 : 0] B
+		.CE(signed_mult_ce),    // input wire CE
+		.SCLR(ex_flush),
+		.P(alu_out_signed_mult)      // output wire [63 : 0] P
+	);
+
+	unsigned_mult unsigned_mult0 (
+		.CLK(clk),  // input wire CLK
+		.A(reg1_i),      // input wire [31 : 0] A
+		.B(reg2_i),      // input wire [31 : 0] B
+		.CE(unsigned_mult_ce),    // input wire CE
+		.SCLR(ex_flush),
+		.P(alu_out_unsigned_mult)      // output wire [63 : 0] P
+	);
+        ////////////////////////multiply////////////////////////////////////
+
+
+
+
+
+	assign hi_alu_out = 	alucontrol== `MULT_CONTROL  ? alu_out_signed_mult[63:32]          :
+				alucontrol== `MULTU_CONTROL ? alu_out_unsigned_mult[63:32]        :
 				alucontrol== `MTHI_CONTROL  ? reg1_i                     :32'b0;
 
-	assign lo_alu_out = 	alucontrol== `MULT_CONTROL  ? signed_mul[31:0]           :
-				alucontrol== `MULTU_CONTROL ? unsigned_mul[31:0]         :
+	assign lo_alu_out = 	alucontrol== `MULT_CONTROL  ? alu_out_signed_mult[31:0]           :
+				alucontrol== `MULTU_CONTROL ? alu_out_unsigned_mult[31:0]         :
 				alucontrol== `MTLO_CONTROL  ? reg1_i                     :32'b0;
 
 	assign ov = alucontrol==`ADD_CONTROL ? (reg1_i[31] & reg2_i[31] & ~wdata_o[31] | ~reg1_i[31] & ~reg2_i[31] & wdata_o[31])    : 

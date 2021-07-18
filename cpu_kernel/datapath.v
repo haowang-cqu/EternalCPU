@@ -140,6 +140,7 @@ module datapath(
 	wire		   id_cp0we;
 	wire		   id_memen;
 
+        wire wb_stall;
 
 	//hazard detection
 	hazard h(
@@ -158,6 +159,7 @@ module datapath(
 		.ex_stall			(ex_stall),
 		.div_start			(ex_start),
 		.div_ready			(ex_ready),
+		.ex_mult_stall			(ex_mult_stall),
 
 		.mem_stall			(mem_stall),
 		.mem_flush			(mem_flush),
@@ -167,7 +169,8 @@ module datapath(
 
 		.wb_flush			(wb_flush),
 		.stallreq_from_if	(stallreq_from_if),
-		.stallreq_from_mem	(stallreq_from_mem)
+		.stallreq_from_mem	(stallreq_from_mem),
+		.wb_stall		(wb_stall)
 	);
 
     // wb stage
@@ -365,10 +368,17 @@ module datapath(
     	.except_o(ex_except)
     );
 
+    wire ex_mult_stall;
+
     // EXE stage
     EXE datapath_EXE(
 	    .clk(clk),
 	    .rst(rst),
+// is_multD   stallD   flushE   flush_exceptionM
+	.id_is_mult(id_alucontrol),
+	.id_stall(id_stall),
+	.ex_flush(ex_flush),
+	.mem_excepttype(mem_excepttype),
 		
         .ex_rdata1_i(ex_regdata1),
         .ex_rdata2_i(ex_regdata2),
@@ -420,7 +430,8 @@ module datapath(
         .ex_waddr_o(ex_waddr),
         .ex_ready_o(ex_ready),
         .ex_hi_data_o(ex_hi_data),
-        .ex_lo_data_o(ex_lo_data)
+        .ex_lo_data_o(ex_lo_data),
+	.ex_mult_stall(ex_mult_stall)
     );
 
 
@@ -508,7 +519,7 @@ module datapath(
 		.clk_i(clk),
 		.rst_i(rst),
 		.flush_i(wb_flush),
-		.stall_i(1'b0),
+		.stall_i(wb_stall),
 
 		.result_i(mem_result),
 		.finaldata_i(mem_finaldata),

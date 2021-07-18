@@ -21,6 +21,8 @@ module hazard(
 	output wire         ex_stall,
 	output wire         div_start,
 	input  wire         div_ready,
+	input  wire	    ex_mult_stall,
+
 	//mem stage
 	output wire         mem_stall,
 	output wire         mem_flush,
@@ -31,7 +33,8 @@ module hazard(
 	//write back stage
 	output wire         wb_flush,
 	input  wire         stallreq_from_if,
-	input  wire         stallreq_from_mem
+	input  wire         stallreq_from_mem,
+	output wire         wb_stall
     );
 
 	wire id_lwstall;
@@ -46,10 +49,11 @@ module hazard(
 
 	assign except_flush = mem_excepttype != 32'b0;
 
-	assign if_stall     = id_lwstall | div_start | stallreq_from_if | stallreq_from_mem;
-	assign id_stall     = id_lwstall | div_start | stallreq_from_if | stallreq_from_mem;
-	assign ex_stall     =              div_start |                    stallreq_from_mem;		       
-	assign mem_stall    =              div_start |                    stallreq_from_mem;
+	assign if_stall     = id_lwstall | div_start | stallreq_from_if | stallreq_from_mem | ex_mult_stall;
+	assign id_stall     = id_lwstall | div_start | stallreq_from_if | stallreq_from_mem | ex_mult_stall;
+	assign ex_stall     =              div_start |                    stallreq_from_mem | ex_mult_stall;		       
+	assign mem_stall    =              div_start |                    stallreq_from_mem | ex_mult_stall;
+        assign wb_stall     =                                                                 ex_mult_stall;
 
 	assign if_flush     =              except_flush;	
 	assign id_flush     =              except_flush;
