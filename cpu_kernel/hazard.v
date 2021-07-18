@@ -44,12 +44,12 @@ module hazard(
 
 	assign id_lwstall = mem_rmem & (ex_rt == id_rs | ex_rt == id_rt);
 
+	assign except_flush = mem_excepttype != 32'b0;
+
 	assign if_stall     = id_lwstall | div_start | stallreq_from_if | stallreq_from_mem;
 	assign id_stall     = id_lwstall | div_start | stallreq_from_if | stallreq_from_mem;
 	assign ex_stall     =              div_start |                    stallreq_from_mem;		       
 	assign mem_stall    =              div_start |                    stallreq_from_mem;
-
-	assign except_flush = mem_excepttype != 32'b0;
 
 	assign if_flush     =              except_flush;	
 	assign id_flush     =              except_flush;

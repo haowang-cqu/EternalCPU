@@ -3,7 +3,7 @@
 // ??CP0?????????????2??
 
 module d_cache #(parameter A_WIDTH = 32,
-    parameter C_INDEX = 13)(
+    parameter C_INDEX = 6)(
         input wire[A_WIDTH-1:0] p_a,
         input wire[31:0] p_dout,
         output wire[31:0] p_din,
