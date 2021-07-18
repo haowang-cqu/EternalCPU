@@ -57,11 +57,11 @@ module alu(
 			alucontrol== `MTC0_CONTROL  ? (reg2_i)         :   32'b0 ;
 
 
-        wire[63:0] signed_mul;
-        wire[63:0] unsigned_mul;
+//    wire[63:0] signed_mul;
+//    wire[63:0] unsigned_mul;
 
-	assign signed_mul   = $signed(reg1_i)*$signed(reg2_i);
-	assign unsigned_mul = reg1_i * reg2_i;
+//	assign signed_mul   = $signed(reg1_i)*$signed(reg2_i);
+//	assign unsigned_mul = reg1_i * reg2_i;
 
 	////////////////////////multiply////////////////////////////////////
 	reg [3:0] cnt;
@@ -98,8 +98,19 @@ module alu(
 		.C(32'b0),
 		.CE(signed_mult_ce),    // input wire CE
 		.SCLR(ex_flush),
+		.SUBTRACT(1'b0),
 		.P(alu_out_signed_mult)      // output wire [63 : 0] P
 	);
+	
+//  .CLK(CLK),            // input wire CLK
+//  .CE(CE),              // input wire CE
+//  .SCLR(SCLR),          // input wire SCLR
+//  .A(A),                // input wire [31 : 0] A
+//  .B(B),                // input wire [31 : 0] B
+//  .C(C),                // input wire [31 : 0] C
+//  .SUBTRACT(SUBTRACT),  // input wire SUBTRACT
+//  .P(P),                // output wire [63 : 0] P
+//  .PCOUT(PCOUT)        // output wire [47 : 0] PCOUT
 
 	unsigned_mult unsigned_mult0 (
 		.CLK(clk_i),  // input wire CLK
@@ -108,6 +119,7 @@ module alu(
 		.C(32'b0),
 		.CE(unsigned_mult_ce),    // input wire CE
 		.SCLR(ex_flush),
+		.SUBTRACT(1'b0),
 		.P(alu_out_unsigned_mult)      // output wire [63 : 0] P
 	);
         ////////////////////////multiply////////////////////////////////////

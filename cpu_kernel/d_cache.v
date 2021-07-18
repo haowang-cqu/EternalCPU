@@ -3,7 +3,7 @@
 // ??CP0?????????????2??
 
 module d_cache #(parameter A_WIDTH = 32,
-    parameter C_INDEX = 6)(
+    parameter C_INDEX = 4)(
         input wire[A_WIDTH-1:0] p_a,
         input wire[31:0] p_dout,
         output wire[31:0] p_din,
@@ -105,7 +105,7 @@ module d_cache #(parameter A_WIDTH = 32,
     wire    [T_WIDTH-1:0]   tagout;
     wire    [31:0]          c_out;
 
-    //cache å†�?�ç´¢å�??
+    //cache å†�?�ç´¢å�??
     wire [C_INDEX-1:0]  index   =   aluoutM[C_INDEX+1:2];
     wire [T_WIDTH-1:0]  tag     =   aluoutM[A_WIDTH-1:C_INDEX+2];
     wire                valid   =   d_valid[index];
@@ -160,7 +160,7 @@ module d_cache #(parameter A_WIDTH = 32,
             d_data4[index]  <=  data_rdata[7:0];
 
         end
-        else if( cache_hit & memenM & memwriteM )       //hit å¹¶ä¸�? å†™cache
+        else if( cache_hit & memenM & memwriteM )       //hit å¹¶ä¸�? å†™cache
         begin
             // wirte dirty bit
             //D_SRAM[index][51]     <=  1'b1;
@@ -197,7 +197,7 @@ module d_cache #(parameter A_WIDTH = 32,
         end
     end
 
-    // data_cache writes dram   cacheå†™å†�?�å­˜çš�?�æ�?�°æ�?
+    // data_cache writes dram   cacheå†™å†�?�å­˜çš�?�æ�?�°æ�?
     //assign dram_wr_data = D_SRAM[index][31:0];
     assign dram_wr_data =c_out;
 
