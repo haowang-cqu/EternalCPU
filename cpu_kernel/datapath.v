@@ -376,7 +376,7 @@ module datapath(
 	.rst(rst),
 
         // is_multD   stallD   flushE   flush_exceptionM
-	.id_is_mult((id_alucontrol==`MULT_CONTROL | id_alucontrol==`MULTU_CONTROL |)),
+	.id_is_mult((id_alucontrol==`MULT_CONTROL | id_alucontrol==`MULTU_CONTROL)),
 	.id_stall(id_stall),
 	.ex_flush(ex_flush),
 	.mem_excepttype(mem_excepttype),

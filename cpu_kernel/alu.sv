@@ -81,7 +81,7 @@ module alu(
 	// is_multD   stallD   flushE   flush_exceptionM
 
 	always@(posedge clk_i) begin
-		cnt <= rst_i | (id_is_mult & ~id_stall & ~ex_flush) | ex_flush ? (0 : mult_ready ? cnt : cnt + 1);
+		cnt <= rst_i | (id_is_mult & ~id_stall & ~ex_flush) | ex_flush ? 0 : mult_ready ? cnt : cnt + 1;
 	end
 
 	wire unsigned_mult_ce;
@@ -92,7 +92,7 @@ module alu(
 	assign mult_stallE = mult_valid & ~mult_ready & ~mem_excepttype;
 
 	signed_mult signed_mult0 (
-		.CLK(clk),  // input wire CLK
+		.CLK(clk_i),  // input wire CLK
 		.A(reg1_i),      // input wire [31 : 0] A
 		.B(reg2_i),      // input wire [31 : 0] B
 		.CE(signed_mult_ce),    // input wire CE
@@ -101,7 +101,7 @@ module alu(
 	);
 
 	unsigned_mult unsigned_mult0 (
-		.CLK(clk),  // input wire CLK
+		.CLK(clk_i),  // input wire CLK
 		.A(reg1_i),      // input wire [31 : 0] A
 		.B(reg2_i),      // input wire [31 : 0] B
 		.CE(unsigned_mult_ce),    // input wire CE
