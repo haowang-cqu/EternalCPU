@@ -16,9 +16,10 @@ module pc_reg(
 		if(rst_i) begin
 			pc_o <= 32'hbfc00000;
 		end else if(flush_i) begin
-        		 pc_o <= new_pc_i;
-        	end else if(stall_i) begin
+        		pc_o <= new_pc_i;
+        	end else if(~stall_i) begin
 			pc_o <= pc_i;
 		end
+		// if(stall_i) Default unchanged
 	end
 endmodule
