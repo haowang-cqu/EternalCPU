@@ -236,11 +236,11 @@ module datapath(
 	// ID stage
 	ID datapath_ID(
 		.clk_i(clk),
-    	.rst_i(rst),
+    		.rst_i(rst),
 
-	    .id_stall_i(id_stall),
+	    	.id_stall_i(id_stall),
 
-    	.id_instr_i(id_instr),
+    		.id_instr_i(id_instr),
 
 		.ex_wdata_i(ex_wdata),
 		.mem_wdata_i(mem_result),
@@ -250,13 +250,13 @@ module datapath(
 
 		.ex_waddr_i(ex_waddr),
 		.mem_waddr_i(mem_rdst),
-        .wb_waddr_i(wb_regdst),
+       		.wb_waddr_i(wb_regdst),
 
 		.ex_we_i(ex_wreg),
 		.mem_we_i(mem_memwe),
 		.wb_we_i(wb_wreg),
 
-    	.sign_imm_o(id_sign_imm),
+    		.sign_imm_o(id_sign_imm),
 		.branch_addr_o(id_branch_addr),
 
 		.id_op_o(id_op), 

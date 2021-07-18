@@ -100,29 +100,28 @@ module ID(
 	assign do_branch_o = branch_flag_o & id_equal_o;
 
 	id_reg_harzrd id_id_reg_harzrd (
+		.rst_i(rst_i),
 
-    	.rst_i(rst_i),
+		.reg_addr1_i(id_rs_o),
+		.reg_addr2_i(id_rt_o),
 
-    	.reg_addr1_i(id_rs_o),
-    	.reg_addr2_i(id_rt_o),
+		.reg_data1_i(reg_data1),
+		.reg_data2_i(reg_data2),
 
-    	.reg_data1_i(reg_data1),
-    	.reg_data2_i(reg_data2),
+		.ex_we_i(ex_we_i),
+		.ex_waddr_i(ex_waddr_i),
+		.ex_wdata_i(ex_wdata_i),
 
-    	.ex_we_i(ex_we_i),
-    	.ex_waddr_i(ex_waddr_i),
-    	.ex_wdata_i(ex_wdata_i),
+		.mem_we_i(mem_we_i),
+		.mem_waddr_i(mem_waddr_i),
+		.mem_wdata_i(mem_wdata_i),
 
-    	.mem_we_i(mem_we_i),
-    	.mem_waddr_i(mem_waddr_i),
-    	.mem_wdata_i(mem_wdata_i),
+		.wb_we_i(wb_we_i),
+		.wb_waddr_i(wb_waddr_i),
+		.wb_wdata_i(wb_wdata_i),
 
-    	.wb_we_i(wb_we_i),
-    	.wb_waddr_i(wb_waddr_i),
-    	.wb_wdata_i(wb_wdata_i),
-
-    	.rdata1_o(rdata1_o),
-    	.rdata2_o(rdata2_o)
+		.rdata1_o(rdata1_o),
+		.rdata2_o(rdata2_o)
 	);
 
 	instr_decode id_instr_decode(
