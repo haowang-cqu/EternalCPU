@@ -34,7 +34,7 @@ module datapath(
 	input wire         stallreq_from_if,
 	input wire         stallreq_from_mem,
 
-    output wire        mem_we,// mips使用
+        output wire        mem_we,// mips使用
 	output wire        mem_en// mips使用
 
     );
@@ -187,7 +187,7 @@ module datapath(
 		.clk_i(clk),
 		.rst_i(rst),
 
-	    .if_flush_i(if_flush),
+	        .if_flush_i(if_flush),
 		.if_stall_i(if_stall),
 
 		.id_branch_addr_i(id_branch_addr),
@@ -402,17 +402,17 @@ module datapath(
         .ex_rs_i(ex_rs),
         .ex_rt_i(ex_rt),
 
-		.mem_waddr_i(mem_rdst),
-		.mem_we_i(mem_memwe),
-		.wb_waddr_i(wb_regdst),
-		.wb_we_i(wb_wreg),
+	.mem_waddr_i(mem_rdst),
+	.mem_we_i(mem_memwe),
+	.wb_waddr_i(wb_regdst),
+	.wb_we_i(wb_wreg),
 
-		.ex_hilo_we_i(ex_hilo_we),
-		.mem_hilo_we_i(mem_hilo_we),
-		.wb_hilo_we_i(wb_hilo_we),
+	.ex_hilo_we_i(ex_hilo_we),
+	.mem_hilo_we_i(mem_hilo_we),
+	.wb_hilo_we_i(wb_hilo_we),
 
-		.mem_rd_i(mem_rd),
-		.mem_wcp0_i(mem_cp0we),
+	.mem_rd_i(mem_rd),
+	.mem_wcp0_i(mem_cp0we),
 
 	    .rdata2_o(ex_regdata2_last),
         .ov_o(ov),

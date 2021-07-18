@@ -42,12 +42,12 @@ module hazard(
 				(ex_alucontrol == `DIVU_CONTROL && div_ready == 1'b0 ) ? 1'b1 : 
 				(ex_alucontrol == `DIVU_CONTROL && div_ready == 1'b1 ) ? 1'b0 : 1'b0;
 
-	assign  id_lwstall = mem_rmem & (ex_rt == id_rs | ex_rt == id_rt);
+	assign id_lwstall = mem_rmem & (ex_rt == id_rs | ex_rt == id_rt);
 
 	assign if_stall     = id_lwstall | div_start | stallreq_from_if | stallreq_from_mem;
 	assign id_stall     = id_lwstall | div_start | stallreq_from_if | stallreq_from_mem;
-	assign ex_stall     =              div_start | stallreq_from_mem;		       
-	assign mem_stall    =                          stallreq_from_mem;
+	assign ex_stall     =              div_start |                    stallreq_from_mem;		       
+	assign mem_stall    =              div_start |                    stallreq_from_mem;
 
 	assign except_flush = mem_excepttype != 32'b0;
 

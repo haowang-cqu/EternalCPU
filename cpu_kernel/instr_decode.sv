@@ -72,28 +72,28 @@ module instr_decode(
 
 				// R_TYPE Logic operation instrs
 				`AND: controls <= `AND_DECODE;
-                `OR: controls <=  `OR_DECODE;
-                `XOR: controls <= `XOR_DECODE;
-                `NOR: controls <= `NOR_DECODE;
-                `ADD: controls <= `ADD_DECODE;
-                `ADDU: controls <=`ADDU_DECODE;
-                `SUB: controls <= `SUB_DECODE;
-                `SUBU: controls <=`SUBU_DECODE;
-                `SLT: controls <= `SLT_DECODE;
-                `SLTU: controls <=`SLTU_DECODE;
-                `SLL: controls <= `SLL_DECODE;
+                		`OR: controls <=  `OR_DECODE;
+                		`XOR: controls <= `XOR_DECODE;
+                		`NOR: controls <= `NOR_DECODE;
+                		`ADD: controls <= `ADD_DECODE;
+                		`ADDU: controls <=`ADDU_DECODE;
+                		`SUB: controls <= `SUB_DECODE;
+                		`SUBU: controls <=`SUBU_DECODE;
+                		`SLT: controls <= `SLT_DECODE;
+                		`SLTU: controls <=`SLTU_DECODE;
+                		`SLL: controls <= `SLL_DECODE;
 				`SRL: controls <= `SRL_DECODE;
-                `SRA: controls <= `SRA_DECODE;
-                `SLLV: controls <=`SLLV_DECODE;
-                `SRLV: controls <=`SRLV_DECODE;
-                `SRAV: controls <=`SRAV_DECODE;
+                		`SRA: controls <= `SRA_DECODE;
+                		`SLLV: controls <=`SLLV_DECODE;
+                		`SRLV: controls <=`SRLV_DECODE;
+                		`SRAV: controls <=`SRAV_DECODE;
 
 				// Privileged instrs
 				`BREAK:controls <=`BREAK_DECODE;
 				`SYSCALL:controls <=`SYSCALL_DECODE;
 
 				default:invalid_o = 1;
-				endcase
+			endcase
 
 			`J:controls <= `J_DECODE;
 			`JAL:controls<=`JAL_DECODE;

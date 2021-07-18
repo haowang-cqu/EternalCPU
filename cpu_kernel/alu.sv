@@ -4,18 +4,18 @@
 `include "defines.h"
 
 module alu(
-	input wire [31:0]  reg1_i,
-	input wire [31:0]  reg2_i,
+	input wire [31:0]   reg1_i,
+	input wire [31:0]   reg2_i,
 
-	input wire [4:0]   sa,
-	input wire [4:0]   alucontrol,
+	input wire [4:0]    sa,
+	input wire [4:0]    alucontrol,
 
-	input wire [31:0]  hi_in,
-	input wire [31:0]  lo_in,
-	input wire [31:0]  cp0_reg_data_i,
+	input wire [31:0]   hi_in,
+	input wire [31:0]   lo_in,
+	input wire [31:0]   cp0_reg_data_i,
 
-	output wire [31:0]   wdata_o,
-	output wire          ov,
+	output wire [31:0]  wdata_o,
+	output wire         ov,
 	output wire [31:0]  hi_alu_out,
 	output wire [31:0]  lo_alu_out
     );

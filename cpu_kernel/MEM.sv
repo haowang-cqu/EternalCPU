@@ -3,7 +3,7 @@
 
 module MEM(
     input logic          clk,
-	input logic          rst,
+	input logic      rst,
 
     // // input
     input logic [31:0]   mem_pc,
@@ -31,20 +31,20 @@ module MEM(
     output logic [31:0]  mem_result
 );
 
-    // // logic
+	// // logic
 
-    logic [31:0] bad_addrM;
-    logic        adelM;
-    logic        adesM;
-    logic [31:0] data_o;
-    logic [31:0] count_o;
-    logic [31:0] compare_o;
-    logic [31:0] status_o;
-    logic [31:0] cause_o;
-    logic [31:0] config_o;
-    logic [31:0] prid_o;
-    logic [31:0] badvaddr;
-    logic        timer_int_o;
+	logic [31:0] bad_addrM;
+	logic        adelM;
+	logic        adesM;
+	logic [31:0] data_o;
+	logic [31:0] count_o;
+	logic [31:0] compare_o;
+	logic [31:0] status_o;
+	logic [31:0] cause_o;
+	logic [31:0] config_o;
+	logic [31:0] prid_o;
+	logic [31:0] badvaddr;
+	logic        timer_int_o;
 
 	memsel mems(
 		mem_pc,
