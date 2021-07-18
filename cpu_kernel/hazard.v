@@ -34,26 +34,28 @@ module hazard(
 	input  wire         stallreq_from_mem
     );
 
-	wire lwstallD,flush_except;
+	wire id_lwstall;
+	wire except_flush;
 
-	assign div_start = (ex_alucontrol == `DIV_CONTROL  && div_ready == 1'b0 ) ? 1'b1 : 
-				       (ex_alucontrol == `DIV_CONTROL  && div_ready == 1'b1 ) ? 1'b0 : 
-				       (ex_alucontrol == `DIVU_CONTROL && div_ready == 1'b0 ) ? 1'b1 : 
-				       (ex_alucontrol == `DIVU_CONTROL && div_ready == 1'b1 ) ? 1'b0 : 1'b0;
+	assign div_start = 	(ex_alucontrol == `DIV_CONTROL  && div_ready == 1'b0 ) ? 1'b1 : 
+				(ex_alucontrol == `DIV_CONTROL  && div_ready == 1'b1 ) ? 1'b0 : 
+				(ex_alucontrol == `DIVU_CONTROL && div_ready == 1'b0 ) ? 1'b1 : 
+				(ex_alucontrol == `DIVU_CONTROL && div_ready == 1'b1 ) ? 1'b0 : 1'b0;
 
-	assign  lwstallD = mem_rmem & (ex_rt == id_rs | ex_rt == id_rt);
+	assign  id_lwstall = mem_rmem & (ex_rt == id_rs | ex_rt == id_rt);
 
-	assign if_stall = lwstallD | div_start | stallreq_from_if | stallreq_from_mem;
-	assign id_stall = lwstallD | div_start | stallreq_from_if | stallreq_from_mem;
-	assign ex_stall = div_start | stallreq_from_mem;		       
-	assign mem_stall = stallreq_from_mem;
-	assign flush_except = (mem_excepttype != 32'b0);
+	assign if_stall     = id_lwstall | div_start | stallreq_from_if | stallreq_from_mem;
+	assign id_stall     = id_lwstall | div_start | stallreq_from_if | stallreq_from_mem;
+	assign ex_stall     =              div_start | stallreq_from_mem;		       
+	assign mem_stall    =                          stallreq_from_mem;
 
-	assign if_flush = flush_except;	
-	assign id_flush = flush_except;
-	assign ex_flush = lwstallD | flush_except;
-	assign mem_flush = flush_except;
-	assign wb_flush = flush_except | stallreq_from_mem;
+	assign except_flush = mem_excepttype != 32'b0;
+
+	assign if_flush  =              except_flush;	
+	assign id_flush  =              except_flush;
+	assign ex_flush  = id_lwstall | except_flush;
+	assign mem_flush =              except_flush;
+	assign wb_flush  =              except_flush | stallreq_from_mem;
 
   	always @(*) begin
 		if(mem_excepttype != 32'b0) begin
