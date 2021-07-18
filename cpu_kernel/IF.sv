@@ -38,7 +38,7 @@ module IF(
 	pc_reg if_pc_reg(
         .clk_i(clk_i),
         .rst_i(rst_i),
-        .stall_i(~if_stall_i),
+        .stall_i(if_stall_i),
         .flush_i(if_flush_i),
         .pc_i(pc_next),
         .new_pc_i(mem_newpc_i),
