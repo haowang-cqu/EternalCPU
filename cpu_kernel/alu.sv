@@ -95,6 +95,7 @@ module alu(
 		.CLK(clk_i),  // input wire CLK
 		.A(reg1_i),      // input wire [31 : 0] A
 		.B(reg2_i),      // input wire [31 : 0] B
+		.C(32'b0),
 		.CE(signed_mult_ce),    // input wire CE
 		.SCLR(ex_flush),
 		.P(alu_out_signed_mult)      // output wire [63 : 0] P
@@ -104,6 +105,7 @@ module alu(
 		.CLK(clk_i),  // input wire CLK
 		.A(reg1_i),      // input wire [31 : 0] A
 		.B(reg2_i),      // input wire [31 : 0] B
+		.C(32'b0),
 		.CE(unsigned_mult_ce),    // input wire CE
 		.SCLR(ex_flush),
 		.P(alu_out_unsigned_mult)      // output wire [63 : 0] P
