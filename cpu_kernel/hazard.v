@@ -51,11 +51,11 @@ module hazard(
 
 	assign except_flush = mem_excepttype != 32'b0;
 
-	assign if_flush  =              except_flush;	
-	assign id_flush  =              except_flush;
-	assign ex_flush  = id_lwstall | except_flush;
-	assign mem_flush =              except_flush;
-	assign wb_flush  =              except_flush | stallreq_from_mem;
+	assign if_flush     =              except_flush;	
+	assign id_flush     =              except_flush;
+	assign ex_flush     = id_lwstall | except_flush;
+	assign mem_flush    =              except_flush;
+	assign wb_flush     =              except_flush | stallreq_from_mem;
 
   	always @(*) begin
 		if(mem_excepttype != 32'b0) begin
@@ -98,7 +98,5 @@ module hazard(
 				default : /* default */;
 			endcase
 		end
-	
 	end
-  	
 endmodule
