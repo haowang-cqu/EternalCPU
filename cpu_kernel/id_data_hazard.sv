@@ -24,7 +24,9 @@ module id_reg_harzrd (
 
     // 读取到的结果
     output logic    [31:0]  rdata1_o,
-    output logic    [31:0]  rdata2_o
+    output logic    [31:0]  rdata2_o,
+
+    output logic            branch_stall_o
 );
 
     // 这是数据冒险模块，在这里，我们需要对读取的数据进行选择：
@@ -34,15 +36,18 @@ module id_reg_harzrd (
     // 3、判断当前回写阶段的写入目标，是否是当前寄存器，如果是就将回写阶段的结果当作读取结果
     // 4、都不是的情况下，就将读取结果作为最终结果
 
+    assign branch_stall_o = ((ex_we_i == 1'b1 && ex_waddr_i == reg_addr1_i   ) ? 1  : 0 ) | 
+                          ((ex_we_i == 1'b1 && ex_waddr_i == reg_addr2_i   ) ? 1  : 0 );
+
     assign rdata1_o =   (rst_i == 1'b1                                  ) ? `ZeroWord   :
                         (reg_addr1_i == 0                               ) ? reg_data1_i :
-                        (ex_we_i == 1'b1 && ex_waddr_i == reg_addr1_i   ) ? ex_wdata_i  :
+                        // (ex_we_i == 1'b1 && ex_waddr_i == reg_addr1_i   ) ? ex_wdata_i  :
                         (mem_we_i == 1'b1 && mem_waddr_i == reg_addr1_i ) ? mem_wdata_i :
                         (wb_we_i == 1'b1 && wb_waddr_i == reg_addr1_i   ) ? wb_wdata_i  : reg_data1_i;
     
     assign rdata2_o =   (rst_i == 1'b1                                  ) ? `ZeroWord   :
                         (reg_addr2_i == 0                               ) ? reg_data2_i :
-                        (ex_we_i == 1'b1 && ex_waddr_i == reg_addr2_i   ) ? ex_wdata_i  :
+                        // (ex_we_i == 1'b1 && ex_waddr_i == reg_addr2_i   ) ? ex_wdata_i  :
                         (mem_we_i == 1'b1 && mem_waddr_i == reg_addr2_i ) ? mem_wdata_i : 
                         (wb_we_i == 1'b1 && wb_waddr_i == reg_addr2_i   ) ? wb_wdata_i  : reg_data2_i;
 

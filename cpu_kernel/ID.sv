@@ -65,8 +65,9 @@ module ID(
 	output logic		id_regdst_o,
 	output logic		id_wreg_o,
 	output logic		id_wcp0_o,
-	output logic		id_memen_o
+	output logic		id_memen_o,
 
+        output logic            id_branch_stall_o
 
 );
 	logic  [31:0]    reg_data1;
@@ -121,7 +122,9 @@ module ID(
 		.wb_wdata_i(wb_wdata_i),
 
 		.rdata1_o(rdata1_o),
-		.rdata2_o(rdata2_o)
+		.rdata2_o(rdata2_o),
+
+		.branch_stall_o(id_branch_stall_o)
 	);
 
 	instr_decode id_instr_decode(

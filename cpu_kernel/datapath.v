@@ -170,7 +170,9 @@ module datapath(
 		.wb_flush			(wb_flush),
 		.stallreq_from_if	(stallreq_from_if),
 		.stallreq_from_mem	(stallreq_from_mem),
-		.wb_stall		(wb_stall)
+		.wb_stall		(wb_stall),
+
+		.id_branch_stall_o      (id_branch_stall_o)
 	);
 
     // wb stage
@@ -232,7 +234,7 @@ module datapath(
         .is_in_delayslot_o(id_is_in_delayslot)
     );
 
-
+	wire id_branch_stall_o;
 	// ID stage
 	ID datapath_ID(
 		.clk_i(clk),
@@ -295,7 +297,9 @@ module datapath(
 		.id_regdst_o(id_regdst),
 		.id_wreg_o(id_wreg),
 		.id_wcp0_o(id_cp0we),
-		.id_memen_o(id_memen)
+		.id_memen_o(id_memen),
+
+		.id_branch_stall_o(id_branch_stall_o)
     );
 	
     // ID stage to EXE stage triger
