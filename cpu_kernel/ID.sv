@@ -123,6 +123,7 @@ module ID(
 
 		.rdata1_o(rdata1_o),
 		.rdata2_o(rdata2_o),
+		.branch_flag_i(branch_flag_o),
 
 		.branch_stall_o(id_branch_stall_o)
 	);
