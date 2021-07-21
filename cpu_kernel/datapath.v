@@ -55,6 +55,8 @@ module datapath(
 	wire [5:0] 		id_op;
 	wire [31:0] 	id_sign_imm;
 	wire [31:0] 	id_reg_data1,id_reg_data1_last,id_reg_data2,id_reg_data2_last;
+
+	wire [31:0]     reg_data1,reg_data2;
 	wire [31:0] 	id_pc;
 	wire [31:0] 	id_hi,id_lo;
 
@@ -299,7 +301,9 @@ module datapath(
 		.id_wcp0_o(id_cp0we),
 		.id_memen_o(id_memen),
 
-		.id_branch_stall_o(id_branch_stall_o)
+		.id_branch_stall_o(id_branch_stall_o),
+		.reg_data1	(reg_data1),
+		.reg_data2	(reg_data2)
     );
 	
     // ID stage to EXE stage triger
@@ -309,8 +313,12 @@ module datapath(
     	.flush_i(ex_flush),
     	.stall_i(ex_stall),
 
-    	.rdata1_i(id_reg_data1_last),
-    	.rdata2_i(id_reg_data2_last),
+    	// .rdata1_i(id_reg_data1_last),
+    	// .rdata2_i(id_reg_data2_last),
+	    
+	.rdata1_i(reg_data1),
+    	.rdata2_i(reg_data2),
+
     	.sign_imm_i(id_sign_imm),
 
     	.rs_i(id_rs),

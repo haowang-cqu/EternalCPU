@@ -58,7 +58,7 @@ module hazard(
 
 	assign if_flush     =              except_flush;	
 	assign id_flush     =              except_flush;
-	assign ex_flush     = id_lwstall | except_flush;
+	assign ex_flush     = id_lwstall | except_flush | id_branch_stall_o;
 	assign mem_flush    =              except_flush;
 	assign wb_flush     =              except_flush | stallreq_from_mem;
 
