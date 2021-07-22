@@ -100,7 +100,7 @@ module hazard(
 				32'h0000000e:begin 
 					mem_newpc <= mem_cp0_epc;
 				end
-				default : /* default */;
+				default : mem_newpc <= 32'hBFC00380;
 			endcase
 		end
 	end

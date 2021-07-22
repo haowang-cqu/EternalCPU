@@ -28,6 +28,7 @@ module id_reg_harzrd (
 
     input logic             branch_flag_i,
     input logic             jr_flag_hazard_i,
+    
     output logic            branch_stall_o
 );
 
@@ -38,19 +39,20 @@ module id_reg_harzrd (
     // 3、判断当前回写阶段的写入目标，是否是当前寄存器，如果是就将回写阶段的结果当作读取结果
     // 4、都不是的情况下，就将读取结果作为最终结果
 
-    // assign branch_stall_o = (((branch_flag_i==1 || jr_flag_hazard_i==1) && ex_we_i == 1'b1 && ex_waddr_i == reg_addr1_i && reg_addr1_i!=0  ) ? 1  : 0 ) | 
-    //                       (((branch_flag_i==1 || jr_flag_hazard_i==1) && ex_we_i == 1'b1 && ex_waddr_i == reg_addr2_i  &&  reg_addr2_i!=0) ? 1  : 0 );
-    assign branch_stall_o = ((ex_we_i == 1'b1 && ex_waddr_i == reg_addr1_i && reg_addr1_i!=0  ) ? 1  : 0 ) | 
-                            ((ex_we_i == 1'b1 && ex_waddr_i == reg_addr2_i  &&  reg_addr2_i!=0) ? 1  : 0 );
+    // assign branch_stall_o = (((branch_flag_i==1'b1 || jr_flag_hazard_i==1'b1) && ex_we_i == 1'b1 && ex_waddr_i == reg_addr1_i  &&  reg_addr1_i!=0  ) ? 1  : 0 ) | 
+    //                         (((branch_flag_i==1'b1 || jr_flag_hazard_i==1'b1) && ex_we_i == 1'b1 && ex_waddr_i == reg_addr2_i  &&  reg_addr2_i!=0  ) ? 1  : 0 );
+    
+    assign branch_stall_o = ((ex_we_i == 1'b1 && ex_waddr_i == reg_addr1_i  &&  reg_addr1_i!=0  ) ? 1  : 0 ) | 
+                            ((ex_we_i == 1'b1 && ex_waddr_i == reg_addr2_i  &&  reg_addr2_i!=0  ) ? 1  : 0 );
 
     assign rdata1_o =   (rst_i == 1'b1                                  ) ? `ZeroWord   :
-                        (reg_addr1_i == 0                               ) ? reg_data1_i :
+                        // (reg_addr1_i == 0                               ) ? reg_data1_i :
                         // (ex_we_i == 1'b1 && ex_waddr_i == reg_addr1_i   ) ? ex_wdata_i  :
                         (mem_we_i == 1'b1 && mem_waddr_i == reg_addr1_i && reg_addr1_i!=0  ) ? mem_wdata_i :
                         (wb_we_i == 1'b1 && wb_waddr_i == reg_addr1_i   && reg_addr1_i!=0  ) ? wb_wdata_i  : reg_data1_i;
     
     assign rdata2_o =   (rst_i == 1'b1                                  ) ? `ZeroWord   :
-                        (reg_addr2_i == 0                               ) ? reg_data2_i :
+                        // (reg_addr2_i == 0                               ) ? reg_data2_i :
                         // (ex_we_i == 1'b1 && ex_waddr_i == reg_addr2_i   ) ? ex_wdata_i  :
                         (mem_we_i == 1'b1 && mem_waddr_i == reg_addr2_i && reg_addr2_i!=0  ) ? mem_wdata_i : 
                         (wb_we_i == 1'b1 && wb_waddr_i == reg_addr2_i   && reg_addr2_i!=0  ) ? wb_wdata_i  : reg_data2_i;
