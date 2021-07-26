@@ -35,7 +35,9 @@ module datapath(
 	input wire         stallreq_from_mem,
 
         output wire        mem_we,// mips使用
-	output wire        mem_en// mips使用
+	output wire        mem_en,// mips使用
+
+	output wire        wb_wreg
 
     );
 
@@ -127,7 +129,7 @@ module datapath(
 	wire mem_memwe;
 	wire mem_cp0we;
 
-	wire wb_wreg;
+	
     wire ex_wmem,ex_cp0we,ex_memen;
 
 	wire wb_wmem;

@@ -206,7 +206,8 @@ module mycpu_top(
 		.stallreq_from_mem	(stallreq_from_mem),
 		
 		.mem_we			(memwriteM),// mips使用
-		.mem_en				(memenM)// mips使用
+		.mem_en				(memenM),// mips使用
+		.wb_wreg		(regwriteW)
 	);
 	
 
