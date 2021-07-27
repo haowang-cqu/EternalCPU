@@ -75,6 +75,7 @@ module ID(
 
 );
 	logic jr_flag_hazard;
+logic branch_flag_hazard,jr_flag__hazard,jalr_flag__hazard;
 
 	assign sign_imm_o = (id_instr_i[29:28] == 2'b11) ? ({{16{1'b0}},id_instr_i[15:0]}) : ({{16{id_instr_i[15]}},id_instr_i[15:0]});
   
@@ -102,7 +103,7 @@ module ID(
 
 	assign do_branch_o = branch_flag_o & id_equal_o;
 
-	assign jr_flag_hazard = jr_flag_o | jalr_flag_o;
+	assign jr_flag_hazard = jr_flag__hazard | jalr_flag__hazard;
 
 	id_reg_harzrd id_id_reg_harzrd (
 		.rst_i(rst_i),
@@ -127,7 +128,8 @@ module ID(
 
 		.rdata1_o(rdata1_o),
 		.rdata2_o(rdata2_o),
-		.branch_flag_i(branch_flag_o),
+
+		.branch_flag_i(branch_flag_hazard && id_equal_o),
 
 		.jr_flag_hazard_i(jr_flag_hazard),
 
@@ -162,6 +164,21 @@ module ID(
 		.wmem_o(id_wmem_o),
 		.memen_o(id_memen_o)
 	);
+
+	instr_decode id_instr_decode_no_stall(
+
+		.id_stall_i(1'b0),
+		.id_instr_i(id_instr_i),
+
+		//decode stage
+		.branch_flag_o(branch_flag_hazard), // 作为 hazard 和 IF 模块的输入
+
+		.jr_flag_o(jr_flag__hazard),     // 作为 hazard 和 IF 模块的输入
+		.jalr_flag_o(jalr_flag__hazard)  // hazard if id2exe
+
+	);
+
+
 
 	    // wb stage
 	regfile ID_regfile(
