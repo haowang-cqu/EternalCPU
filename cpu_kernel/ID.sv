@@ -4,11 +4,11 @@
 
 module ID(
 	input  logic            clk_i,
-        input  logic            rst_i,
+    input  logic            rst_i,
 
 	input  logic            id_stall_i,
 
-        input  logic  [31:0]    id_instr_i,
+    input  logic  [31:0]    id_instr_i,
 
 	input  logic  [31:0]    ex_wdata_i,
 	input  logic  [31:0]    mem_wdata_i,
@@ -24,7 +24,7 @@ module ID(
 	input  logic            mem_we_i,
 	input  logic            wb_we_i,
 
-        output logic  [31:0]    sign_imm_o,
+    output logic  [31:0]    sign_imm_o,
 	output logic  [31:0]    branch_addr_o,
 
 	output logic  [5:0]     id_op_o, 
@@ -67,7 +67,7 @@ module ID(
 	output logic		id_wcp0_o,
 	output logic		id_memen_o,
 
-        output logic            id_branch_stall_o,
+    output logic            id_branch_stall_o,
 
 	output logic  [31:0]    reg_data1,
 	output logic  [31:0]    reg_data2
@@ -183,6 +183,7 @@ logic branch_flag_hazard,jr_flag__hazard,jalr_flag__hazard;
 	    // wb stage
 	regfile ID_regfile(
 		clk_i,
+		rst_i,
 		wb_we_i,
 		id_rs_o,
 		id_rt_o,

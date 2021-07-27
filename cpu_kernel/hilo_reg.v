@@ -8,7 +8,7 @@ module hilo_reg(
 	output wire [31:0]hi_o,lo_o
     );
 	reg [31:0] hi_reg,lo_reg;
-	always @(negedge clk) begin
+	always @(posedge clk) begin
 		if(rst) begin
 			hi_reg <= 0;
 			lo_reg <= 0;
@@ -17,6 +17,7 @@ module hilo_reg(
 			if(we[0]) lo_reg <= lo;
 		end
 	end
-	assign hi_o = hi_reg;
-	assign lo_o = lo_reg;
+	// 优先读出将要写的数据
+	assign hi_o = we[1] ? hi : hi_reg;
+	assign lo_o = we[0] ? lo : lo_reg;
 endmodule

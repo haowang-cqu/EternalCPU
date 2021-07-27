@@ -12,12 +12,14 @@ module pc_reg(
 	
 	output reg  [31:0]  pc_o
     );
-	always @(posedge clk_i,posedge rst_i) begin
+	always @(posedge clk_i) begin
 		if(rst_i) begin
 			pc_o <= 32'hbfc00000;
-		end else if(flush_i) begin
-        		pc_o <= new_pc_i;
-        	end else if(~stall_i) begin
+		end 
+		else if(flush_i) begin
+        	pc_o <= new_pc_i;
+        end 
+		else if(~stall_i) begin
 			pc_o <= pc_i;
 		end
 		// if(stall_i) Default unchanged

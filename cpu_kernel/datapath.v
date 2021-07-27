@@ -134,6 +134,9 @@ module datapath(
 
 	wire wb_wmem;
 
+	wire id_branch_stall_o;
+    wire ex_mult_stall;
+
 
 	// controller的触发器
 	wire		   id_rmem;
@@ -144,7 +147,7 @@ module datapath(
 	wire		   id_cp0we;
 	wire		   id_memen;
 
-        wire wb_stall;
+    wire wb_stall;
 
 	//hazard detection
 	hazard h(
@@ -238,7 +241,6 @@ module datapath(
         .is_in_delayslot_o(id_is_in_delayslot)
     );
 
-	wire id_branch_stall_o;
 	// ID stage
 	ID datapath_ID(
 		.clk_i(clk),
@@ -382,7 +384,6 @@ module datapath(
     	.except_o(ex_except)
     );
 
-    wire ex_mult_stall;
 
     // EXE stage
     EXE datapath_EXE(

@@ -54,7 +54,7 @@ module hazard(
 	assign id_stall     = id_lwstall   |   id_branch_stall_o   | div_start | stallreq_from_if | stallreq_from_mem | ex_mult_stall;
 	assign ex_stall     =                                        div_start |                    stallreq_from_mem | ex_mult_stall;		       
 	assign mem_stall    =                                        div_start |                    stallreq_from_mem | ex_mult_stall;
-        assign wb_stall     =                                                                                           ex_mult_stall;
+    assign wb_stall     =                                                                                           ex_mult_stall;
 
 	assign if_flush     =              except_flush;	
 	assign id_flush     =              except_flush;
@@ -102,6 +102,10 @@ module hazard(
 				end
 				default : mem_newpc <= 32'hBFC00380;
 			endcase
+		end
+		// 避免锁存器
+		else begin
+			mem_newpc <= 32'b0;
 		end
 	end
 endmodule

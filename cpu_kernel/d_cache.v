@@ -24,10 +24,7 @@ module d_cache #(parameter A_WIDTH = 32,
         input wire m_ready
     );
   
-    wire flag;
-    assign flag =  (aluoutM[31:16] == 16'hbfaf) ? 1'b1 : 1'b0;
-    
-
+    wire flag;    
     wire                memwriteM;          //p_rw
     wire [3:0]          sel;                //p_wen
     wire [1:0]    data_sram_size;     //P_size
@@ -36,6 +33,8 @@ module d_cache #(parameter A_WIDTH = 32,
     wire          memenM;            //p_strobe
     wire [31:0]  readdataM;          //p_din
     wire              cache_ready;
+    
+    assign flag =  (aluoutM[31:16] == 16'hbfaf) ? 1'b1 : 1'b0;
 
     assign memwriteM = p_rw;
     assign sel = p_wen;

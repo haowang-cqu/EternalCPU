@@ -87,7 +87,10 @@ module memsel(
 					default : /* default */;
 				endcase
 			end
-			default : sel <= 4'b0000;
+			default :begin
+				size <= 2'b00;
+				sel <= 4'b0000;			
+			end 
 		endcase
 		// bad_addr <= pc - 8;
 		case (op)
@@ -95,6 +98,10 @@ module memsel(
 				if(addr[1:0] == 2'b00) begin
 					/* code */
 					finaldata <= readdata;
+				end
+				// 防止锁存器
+				else begin
+					finaldata <= `ZeroWord;
 				end
 			end
 			`LB:begin 
@@ -119,14 +126,14 @@ module memsel(
 				case (addr[1:0])
 					2'b10: finaldata <= {{16{readdata[31]}},readdata[31:16]};
 					2'b00: finaldata <= {{16{readdata[15]}},readdata[15:0]};
-					default :;
+					default : finaldata <= `ZeroWord;
 				endcase
 			end
 			`LHU:begin 
 				case (addr[1:0])
 					2'b10: finaldata <= {{16{1'b0}},readdata[31:16]};
 					2'b00: finaldata <= {{16{1'b0}},readdata[15:0]};
-					default :;
+					default : finaldata <= `ZeroWord;
 				endcase
 			end
 			default : finaldata <= `ZeroWord;
