@@ -180,16 +180,16 @@ module datapath(
 	);
 
     // wb stage
-	regfile datapath_regfile(
-		clk,
-		wb_wreg,
-		id_rs,
-		id_rt,
-		wb_regdst,
-		wb_wdata,
-		id_reg_data1,
-		id_reg_data2
-	);
+	// regfile datapath_regfile(
+	// 	clk,
+	// 	wb_wreg,
+	// 	id_rs,
+	// 	id_rt,
+	// 	wb_regdst,
+	// 	wb_wdata,
+	// 	id_reg_data1,
+	// 	id_reg_data2
+	// );
 
 	// IF stage
 	IF datapath_IF(
