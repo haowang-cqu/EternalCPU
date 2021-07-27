@@ -314,11 +314,11 @@ module datapath(
     	.flush_i(ex_flush),
     	.stall_i(ex_stall),
 
-    	// .rdata1_i(id_reg_data1_last),
-    	// .rdata2_i(id_reg_data2_last),
+    	.rdata1_i(id_reg_data1_last),
+    	.rdata2_i(id_reg_data2_last),
 	    
-	.rdata1_i(reg_data1),
-    	.rdata2_i(reg_data2),
+	// .rdata1_i(reg_data1),
+    	// .rdata2_i(reg_data2),
 
     	.sign_imm_i(id_sign_imm),
 

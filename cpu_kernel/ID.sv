@@ -74,8 +74,7 @@ module ID(
 
 
 );
-	logic jr_flag_hazard;
-logic branch_flag_hazard,jr_flag_hazard,jalr_flag_hazard;
+	logic branch_flag_hazard,jr_flag_hazard,jalr_flag_hazard;
 
 	assign sign_imm_o = (id_instr_i[29:28] == 2'b11) ? ({{16{1'b0}},id_instr_i[15:0]}) : ({{16{id_instr_i[15]}},id_instr_i[15:0]});
   
