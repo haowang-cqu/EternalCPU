@@ -145,6 +145,7 @@ module datapath(
 	wire		   id_memen;
 
         wire wb_stall;
+	wire id_branch_stall_o;
 
 	//hazard detection
 	hazard h(
@@ -237,8 +238,6 @@ module datapath(
         .except_o(id_except),
         .is_in_delayslot_o(id_is_in_delayslot)
     );
-
-	wire id_branch_stall_o;
 	// ID stage
 	ID datapath_ID(
 		.clk_i(clk),
