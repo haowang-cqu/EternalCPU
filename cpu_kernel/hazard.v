@@ -1,6 +1,7 @@
 `timescale 1ns / 1ps
 
 `include "defines.h"
+`include "alu_defines.vh"
 
 module hazard(
 	//fetch stage
@@ -14,7 +15,7 @@ module hazard(
 	output wire         id_stall,
 
 	//execute stage
-	input wire[4:0]     ex_alucontrol,
+	input wire[5:0]     ex_alucontrol,
 	input wire[4:0]     ex_rt,
 	input wire          mem_rmem,
 	output wire         ex_flush,

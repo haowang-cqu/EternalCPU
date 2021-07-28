@@ -53,7 +53,7 @@ module ID(
 	output  logic           bal_flag_o,
 	output  logic           jalr_flag_o,
 
-	output  logic [4:0]     id_alucontrol_o,
+	output  logic [5:0]     id_alucontrol_o,
 
 	output logic [1:0]      id_whilo_o,
 	output logic            id_invalid_o,
@@ -75,11 +75,11 @@ module ID(
 
 );
 	logic jr_flag_hazard;
-logic branch_flag_hazard,jr_flag__hazard,jalr_flag__hazard;
+	logic branch_flag_hazard,jr_flag__hazard,jalr_flag__hazard;
 
 	assign sign_imm_o = (id_instr_i[29:28] == 2'b11) ? ({{16{1'b0}},id_instr_i[15:0]}) : ({{16{id_instr_i[15]}},id_instr_i[15:0]});
   
-        assign branch_addr_o = id_pc4_i + {sign_imm_o[29:0],2'b00};
+    assign branch_addr_o = id_pc4_i + {sign_imm_o[29:0],2'b00};
 
 	assign id_op_o   = id_instr_i[31:26];
 	assign id_func_o = id_instr_i[5:0];

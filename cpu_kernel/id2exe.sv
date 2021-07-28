@@ -15,7 +15,7 @@ module id2exe(
     input   logic [4:0]    rt_i,
     input   logic [4:0]    rd_i,
     input   logic [4:0]    sa_i,
-    input   logic [4:0]    alucontrol_i,
+    input   logic [5:0]    alucontrol_i,
     input   logic [31:0]   pc_i,
     input   logic          bal_i,
     input   logic          jal_i,
@@ -51,7 +51,7 @@ module id2exe(
     output  logic  [4:0]   rt_o,
     output  logic  [4:0]   rd_o,
     output  logic  [4:0]   sa_o,
-    output  logic  [4:0]   alucontrol_o,
+    output  logic  [5:0]   alucontrol_o,
     output  logic  [31:0]  pc_o,
 
     output  logic          bal_o,

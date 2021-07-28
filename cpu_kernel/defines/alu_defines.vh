@@ -38,6 +38,7 @@
 // 添加指令
 `define CLO_CONTROL     6'b10_0000
 `define CLZ_CONTROL     6'b10_0001
+`define MUL_CONTROL     6'b10_1101
 `define MADD_CONTROL    6'b10_0010
 `define MADDU_CONTROL   6'b10_0011
 `define MSUB_CONTROL    6'b10_0100

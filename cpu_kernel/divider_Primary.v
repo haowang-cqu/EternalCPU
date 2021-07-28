@@ -2,6 +2,7 @@
 
 
 `include "defines.h"
+`include "alu_defines.vh"
 
 module divider_Primary(
 

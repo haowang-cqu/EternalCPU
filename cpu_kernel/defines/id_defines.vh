@@ -1,7 +1,10 @@
-`include "defines.h"
+`include "alu_defines.vh"
 
-// wreg_o,regdst_o,use_imm_o,branch_flag_o,wmem_o,rmem_o,jump_flag_o,jal_flag_o,jr_flag_o,bal_flag_o,jalr_flag_o,alucontrol_o,memen_o,whilo_o
+// wreg_o,regdst_o,use_imm_o,branch_flag_o,wmem_o,rmem_o,jump_flag_o,jal_flag_o,jr_flag_o,bal_flag_o,jalr_flag_o,
+// alucontrol_o,
+// memen_o,whilo_o
 
+// WIDTH 20
 `define MFHI_DECODE     {11'b1_1_0_0_0_0_0_0_0_0_0, `MFHI_CONTROL,  3'b000}
 `define MFLO_DECODE     {11'b1_1_0_0_0_0_0_0_0_0_0, `MFLO_CONTROL,  3'b000}
 `define MTHI_DECODE     {11'b0_0_0_0_0_0_0_0_0_0_0, `MTHI_CONTROL,  3'b010}
@@ -32,26 +35,26 @@
 `define BREAK_DECODE    {11'b0_0_0_0_0_0_0_0_0_0_0, `ZERO_CONTROL,  3'b000}
 `define SYSCALL_DECODE  {11'b0_0_0_0_0_0_0_0_0_0_0, `ZERO_CONTROL,  3'b000}
 
-`define J_DECODE        {11'b0_0_0_0_0_0_1_0_0_0_0, `ZERO_CONTROL,  3'b000 }
-`define JAL_DECODE      {11'b1_0_0_0_0_0_0_1_0_0_0, `ZERO_CONTROL,  3'b000 }
+`define J_DECODE        {11'b0_0_0_0_0_0_1_0_0_0_0, `ZERO_CONTROL,  3'b000}
+`define JAL_DECODE      {11'b1_0_0_0_0_0_0_1_0_0_0, `ZERO_CONTROL,  3'b000}
 `define JR_DECODE       {11'b0_0_0_0_0_0_0_0_1_0_0, `ZERO_CONTROL,  3'b000}
 `define JALR_DECODE     {11'b1_1_0_0_0_0_0_0_0_0_1, `ZERO_CONTROL,  3'b000}
 
 `define BEQ_DECODE      {11'b0_0_0_1_0_0_0_0_0_0_0, `ZERO_CONTROL,  3'b000}
 `define BNE_DECODE      {11'b0_0_0_1_0_0_0_0_0_0_0, `ZERO_CONTROL,  3'b000}
-`define BGTZ_DECODE     {11'b0_0_0_1_0_0_0_0_0_0_0, `ZERO_CONTROL,  3'b000 }
+`define BGTZ_DECODE     {11'b0_0_0_1_0_0_0_0_0_0_0, `ZERO_CONTROL,  3'b000}
 `define BLEZ_DECODE     {11'b0_0_0_1_0_0_0_0_0_0_0, `ZERO_CONTROL,  3'b000}
 
-`define BLTZ_DECODE     {11'b0_0_0_1_0_0_0_0_0_0_0, `ZERO_CONTROL,  3'b000 }
+`define BLTZ_DECODE     {11'b0_0_0_1_0_0_0_0_0_0_0, `ZERO_CONTROL,  3'b000}
 `define BLTZAL_DECODE   {11'b1_0_0_1_0_0_0_0_0_1_0, `ZERO_CONTROL,  3'b000}
-`define BGEZ_DECODE     {11'b0_0_0_1_0_0_0_0_0_0_0, `ZERO_CONTROL,  3'b000 }
-`define BGEZAL_DECODE   {11'b1_0_0_1_0_0_0_0_0_1_0, `ZERO_CONTROL,  3'b000 }
+`define BGEZ_DECODE     {11'b0_0_0_1_0_0_0_0_0_0_0, `ZERO_CONTROL,  3'b000}
+`define BGEZAL_DECODE   {11'b1_0_0_1_0_0_0_0_0_1_0, `ZERO_CONTROL,  3'b000}
 
-`define ANDI_DECODE     {11'b1_0_1_0_0_0_0_0_0_0_0, `AND_CONTROL,   3'b000 }
+`define ANDI_DECODE     {11'b1_0_1_0_0_0_0_0_0_0_0, `AND_CONTROL,   3'b000}
 `define XORI_DECODE     {11'b1_0_1_0_0_0_0_0_0_0_0, `XOR_CONTROL,   3'b000}
-`define LUI_DECODE      {11'b1_0_1_0_0_0_0_0_0_0_0, `LUI_CONTROL,   3'b000 }
-`define ORI_DECODE      {11'b1_0_1_0_0_0_0_0_0_0_0, `OR_CONTROL,    3'b000 }
-`define ADDI_DECODE     {11'b1_0_1_0_0_0_0_0_0_0_0, `ADD_CONTROL,   3'b000 }
+`define LUI_DECODE      {11'b1_0_1_0_0_0_0_0_0_0_0, `LUI_CONTROL,   3'b000}
+`define ORI_DECODE      {11'b1_0_1_0_0_0_0_0_0_0_0, `OR_CONTROL,    3'b000}
+`define ADDI_DECODE     {11'b1_0_1_0_0_0_0_0_0_0_0, `ADD_CONTROL,   3'b000}
 `define ADDIU_DECODE    {11'b1_0_1_0_0_0_0_0_0_0_0, `ADD_CONTROL,   3'b000}
 `define SLTI_DECODE     {11'b1_0_1_0_0_0_0_0_0_0_0, `SLT_CONTROL,   3'b000}
 `define SLTIU_DECODE    {11'b1_0_1_0_0_0_0_0_0_0_0, `SLTU_CONTROL,  3'b000}
@@ -61,10 +64,26 @@
 `define LB_DECODE       {11'b1_0_1_0_0_1_0_0_0_0_0, `ADD_CONTROL,   3'b100}
 `define LBU_DECODE      {11'b1_0_1_0_0_1_0_0_0_0_0, `ADD_CONTROL,   3'b100}
 `define LH_DECODE       {11'b1_0_1_0_0_1_0_0_0_0_0, `ADD_CONTROL,   3'b100}
-`define LHU_DECODE      {11'b1_0_1_0_0_1_0_0_0_0_0, `ADD_CONTROL,   3'b100 }
+`define LHU_DECODE      {11'b1_0_1_0_0_1_0_0_0_0_0, `ADD_CONTROL,   3'b100}
 `define SH_DECODE       {11'b0_0_1_0_1_0_0_0_0_0_0, `ADD_CONTROL,   3'b100}
 `define SB_DECODE       {11'b0_0_1_0_1_0_0_0_0_0_0, `ADD_CONTROL,   3'b100}
 
-`define MTC0_DECODE     {11'b0_0_0_0_0_0_0_0_0_0_0, `MTC0_CONTROL,  3'b000 }
+`define MTC0_DECODE     {11'b0_0_0_0_0_0_0_0_0_0_0, `MTC0_CONTROL,  3'b000}
 `define MFC0_DECODE     {11'b1_0_0_0_0_0_0_0_0_0_0, `MFC0_CONTROL,  3'b000}
 `define ERET_DECODE     {11'b1_0_0_0_0_0_0_0_0_0_0, `ZERO_CONTROL,  3'b000}
+
+// 添加指令
+`define CLO_DECODE      {11'b1_1_0_0_0_0_0_0_0_0_0, `CLO_CONTROL,   3'b000}
+`define CLZ_DECODE      {11'b1_1_0_0_0_0_0_0_0_0_0, `CLZ_CONTROL,   3'b000}
+`define MUL_DECODE      {11'b1_1_0_0_0_0_0_0_0_0_0, `MUL_CONTROL,   3'b000}
+`define MADD_DECODE     {11'b0_0_0_0_0_0_0_0_0_0_0, `MADD_CONTROL,  3'b011}
+`define MADDU_DECODE    {11'b0_0_0_0_0_0_0_0_0_0_0, `MADDU_CONTROL, 3'b011}
+`define MSUB_DECODE     {11'b0_0_0_0_0_0_0_0_0_0_0, `MSUB_CONTROL,  3'b011}
+`define MSUBU_DECODE    {11'b0_0_0_0_0_0_0_0_0_0_0, `MSUBU_CONTROL, 3'b011}
+`define SC_DECODE       {}
+`define TEQ_DECODE      {}
+`define TGE_DECODE      {}
+`define TGEU_DECODE     {}
+`define TLT_DECODE      {}
+`define TLTU_DECODE     {}
+`define TNE_DECODE      {}

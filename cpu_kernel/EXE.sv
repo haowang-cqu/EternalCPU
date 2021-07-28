@@ -1,6 +1,7 @@
 `timescale 1ns / 1ps
 
 `include "defines.h"
+`include "alu_defines.vh"
 
 module EXE(
     input logic          clk,
@@ -32,7 +33,7 @@ module EXE(
 
     input logic [31 : 0] ex_cp0_data_i,
     input logic [4 : 0]  ex_sa_i,
-    input logic [4 : 0]  ex_alucontrol_i,
+    input logic [5 : 0]  ex_alucontrol_i,
 
     input logic [31 : 0] ex_pc_i,
     input logic          ex_jal_i,
@@ -111,10 +112,26 @@ module EXE(
 
     assign cp0data2E = ((ex_rd_i!=0)&(ex_rd_i == mem_rd_i)&(mem_wcp0_i)) ? mem_wdata_i : ex_cp0_data_i;
 
-	alu alu(clk,rst,id_is_mult,
-	id_stall,
-	ex_flush,
-	mem_excepttype,srca2E,srcb3E,ex_sa_i,ex_alucontrol_i,hi2E,lo2E,cp0data2E,aluoutE,ov_o,hi_alu_outE,lo_alu_outE,ex_mult_stall);
+	alu alu(
+        clk,
+        rst,
+        id_is_mult,
+	    id_stall,
+	    ex_flush,
+	    mem_excepttype,
+        srca2E,
+        srcb3E,
+        ex_sa_i,
+        ex_alucontrol_i,
+        hi2E,
+        lo2E,
+        cp0data2E,
+        aluoutE,
+        ov_o,
+        hi_alu_outE,
+        lo_alu_outE,
+        ex_mult_stall
+    );
 	
 
 
