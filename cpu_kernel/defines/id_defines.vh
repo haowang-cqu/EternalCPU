@@ -80,6 +80,12 @@
 `define MADDU_DECODE    {11'b0_0_0_0_0_0_0_0_0_0_0, `MADDU_CONTROL, 3'b011}
 `define MSUB_DECODE     {11'b0_0_0_0_0_0_0_0_0_0_0, `MSUB_CONTROL,  3'b011}
 `define MSUBU_DECODE    {11'b0_0_0_0_0_0_0_0_0_0_0, `MSUBU_CONTROL, 3'b011}
+
+`define LWL_DECODE      {11'b1_0_1_0_0_1_0_0_0_0_0, `ADD_CONTROL,   3'b100}
+`define LWR_DECODE      {11'b1_0_1_0_0_1_0_0_0_0_0, `ADD_CONTROL,   3'b100}
+`define SWL_DECODE      {11'b0_0_1_0_1_0_0_0_0_0_0, `ADD_CONTROL,   3'b100}
+`define SWR_DECODE      {11'b0_0_1_0_1_0_0_0_0_0_0, `ADD_CONTROL,   3'b100}
+
 `define SC_DECODE       {}
 `define TEQ_DECODE      {}
 `define TGE_DECODE      {}

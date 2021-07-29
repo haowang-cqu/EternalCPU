@@ -163,6 +163,7 @@
 // 添加指令
 // 整形指令
 `define SPECIAL2_INST 6'b011100
+// func
 `define CLO           6'b100001
 `define CLZ           6'b100000
 `define MUL           6'b000010
@@ -170,3 +171,10 @@
 `define MADDU         6'b000001
 `define MSUB          6'b000100
 `define MSUBU         6'b000101
+// op
+`define LWL           6'b100010
+`define LWR           6'b100110
+`define SWL           6'b101010
+`define SWR           6'b101110
+`define LL            6'b110000
+`define SC            6'b111000

@@ -127,7 +127,12 @@ module instr_decode(
 			`LHU:controls <=`LHU_DECODE;
 			`SH:controls <= `SH_DECODE;
 			`SB:controls <= `SB_DECODE;
-			
+			// 添加指令[非对其访存指令]
+			`LWL: controls <= `LWL_DECODE;
+			`LWR: controls <= `LWR_DECODE;
+			`SWL: controls <= `SWL_DECODE;
+			`SWR: controls <= `SWR_DECODE;
+			// 添加指令[整形运算指令]
 			`SPECIAL2_INST: case(func)
 				`CLO:controls <= `CLO_DECODE;
 				`CLZ:controls <= `CLZ_DECODE;
