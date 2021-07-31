@@ -109,24 +109,24 @@ module ID(
 		.id_instr_i(id_instr_i),
 		.id_stall_i(1'b0),
 		//decode stage
-		.branch_flag_o(branch_flag_o_hazard), // 作为 hazard 和 IF 模块的输入
-		.jr_flag_o(jr_flag_o_hazard),     // 作为 hazard 和 IF 模块的输入
+		.branch_flag_o(branch_flag_o_hazard), // 作为 hazard �? IF 模块的输�?
+		.jr_flag_o(jr_flag_o_hazard),     // 作为 hazard �? IF 模块的输�?
 		.jalr_flag_o(jalr_flag_o_hazard)   // hazard if id2exe
 
 	);
 
 
-//	assign j_b_stall_o =
-//	(ex_we_i == 1'b1 && ex_waddr_i == id_rs_o  &&  id_rs_o!=0  &&  branch_flag_o_hazard==1'b1                         )|
-//	(ex_we_i == 1'b1 && ex_waddr_i == id_rt_o  &&  id_rt_o!=0  &&  branch_flag_o_hazard==1'b1                         )|
-//	(ex_we_i == 1'b1 && ex_waddr_i == id_rs_o  &&  id_rs_o!=0  && (jr_flag_o_hazard==1'b1 | jalr_flag_o_hazard==1'b1) )|
-//	(ex_we_i == 1'b1 && ex_waddr_i == id_rt_o  &&  id_rt_o!=0  && (jr_flag_o_hazard==1'b1 | jalr_flag_o_hazard==1'b1) )? 1:0;
-
 	assign j_b_stall_o =
-	(ex_we_i == 1'b1 && ex_waddr_i == id_rs_o  &&  id_rs_o!=0   )|
-	(ex_we_i == 1'b1 && ex_waddr_i == id_rt_o  &&  id_rt_o!=0   )|
-	(ex_we_i == 1'b1 && ex_waddr_i == id_rs_o  &&  id_rs_o!=0   )|
-	(ex_we_i == 1'b1 && ex_waddr_i == id_rt_o  &&  id_rt_o!=0   )? 1:0;
+	(ex_we_i == 1'b1 && ex_waddr_i == id_rs_o  &&  id_rs_o!=0  &&  branch_flag_o_hazard==1'b1                         )|
+	(ex_we_i == 1'b1 && ex_waddr_i == id_rt_o  &&  id_rt_o!=0  &&  branch_flag_o_hazard==1'b1                         )|
+	(ex_we_i == 1'b1 && ex_waddr_i == id_rs_o  &&  id_rs_o!=0  && (jr_flag_o_hazard==1'b1 | jalr_flag_o_hazard==1'b1) )|
+	(ex_we_i == 1'b1 && ex_waddr_i == id_rt_o  &&  id_rt_o!=0  && (jr_flag_o_hazard==1'b1 | jalr_flag_o_hazard==1'b1) )? 1:0;
+
+//	assign j_b_stall_o =
+//	(ex_we_i == 1'b1 && ex_waddr_i == id_rs_o  &&  id_rs_o!=0   )|
+//	(ex_we_i == 1'b1 && ex_waddr_i == id_rt_o  &&  id_rt_o!=0   )|
+//	(ex_we_i == 1'b1 && ex_waddr_i == id_rs_o  &&  id_rs_o!=0   )|
+//	(ex_we_i == 1'b1 && ex_waddr_i == id_rt_o  &&  id_rt_o!=0   )? 1:0;
 
 	id_reg_harzrd id_id_reg_harzrd (
 		.rst_i(rst_i),
@@ -160,12 +160,12 @@ module ID(
 		.id_instr_i(id_instr_i),
 
 		//decode stage
-		.branch_flag_o(branch_flag_o), // 作为 hazard 和 IF 模块的输入
-		.jump_flag_o(jump_flag_o),   // 作为 IF 模块的输入
+		.branch_flag_o(branch_flag_o), // 作为 hazard �? IF 模块的输�?
+		.jump_flag_o(jump_flag_o),   // 作为 IF 模块的输�?
 
-		.jal_flag_o(jal_flag_o),    // 作为 id2exe 和IF 模块的输入
-		.jr_flag_o(jr_flag_o),     // 作为 hazard 和 IF 模块的输入
-		.bal_flag_o(bal_flag_o),    // 作为 id2exe 模块的输入
+		.jal_flag_o(jal_flag_o),    // 作为 id2exe 和IF 模块的输�?
+		.jr_flag_o(jr_flag_o),     // 作为 hazard �? IF 模块的输�?
+		.bal_flag_o(bal_flag_o),    // 作为 id2exe 模块的输�?
 		.jalr_flag_o(jalr_flag_o),   // hazard if id2exe
 
 		.alucontrol_o(id_alucontrol_o),  // id2exe
