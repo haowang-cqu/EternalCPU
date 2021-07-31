@@ -54,12 +54,13 @@ module hazard(
 	assign id_stall     = id_lwstall   |   id_j_b_stall   | div_start | stallreq_from_if | stallreq_from_mem | ex_mult_stall;
 	assign ex_stall     =                                   div_start |                    stallreq_from_mem | ex_mult_stall;		       
 	assign mem_stall    =                                   div_start |                    stallreq_from_mem | ex_mult_stall;
-    	assign wb_stall     =                                                                  stallreq_from_mem | ex_mult_stall;
+    	assign wb_stall     =                                   div_start |                     stallreq_from_mem| ex_mult_stall;
 
 	assign if_flush     =              except_flush;	
 	assign id_flush     =              except_flush;
-	assign ex_flush     = id_lwstall | except_flush | id_j_b_stall;
+	assign ex_flush     = id_lwstall | except_flush | (id_j_b_stall&&!mem_stall);
 	assign mem_flush    =              except_flush;
+//	assign wb_flush     =              except_flush | stallreq_from_mem;
 	assign wb_flush     =              except_flush;
 
   	always @(*) begin
