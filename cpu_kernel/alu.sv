@@ -76,7 +76,7 @@ module alu(
 	assign mult_valid = (alucontrol == `MULT_CONTROL) | (alucontrol == `MULTU_CONTROL) ;
 
 	wire mult_ready;
-	assign mult_ready = !(cnt ^ 4'b1101);
+	assign mult_ready = !(cnt ^ 4'b1001);
 
 	// is_multD   stallD   flushE   flush_exceptionM
 

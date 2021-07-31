@@ -28,7 +28,7 @@ module ID(
 	output logic  [31:0]    branch_addr_o,
 
 	output logic  [5:0]     id_op_o, 
-	output logic  [5:0]     id_func_o,
+	output logic  [5:0]     id_func_o,  // not use
 	output logic  [4:0]     id_rs_o, 
 	output logic  [4:0]     id_rt_o, 
 	output logic  [4:0]     id_rd_o, 
@@ -67,18 +67,19 @@ module ID(
 	output logic		id_wcp0_o,
 	output logic		id_memen_o,
 
-        output logic            id_branch_stall_o,
-
-	output logic  [31:0]    reg_data1,
-	output logic  [31:0]    reg_data2
-
+    	output logic            j_b_stall_o
 
 );
-	logic branch_flag_hazard,jr_flag_hazard,jalr_flag_hazard;
+	logic  [31:0]    reg_data1;
+	logic  [31:0]    reg_data2;
+
+	logic            branch_flag_o_hazard;
+	logic            jr_flag_o_hazard;
+	logic            jalr_flag_o_hazard;
 
 	assign sign_imm_o = (id_instr_i[29:28] == 2'b11) ? ({{16{1'b0}},id_instr_i[15:0]}) : ({{16{id_instr_i[15]}},id_instr_i[15:0]});
   
-        assign branch_addr_o = id_pc4_i + {sign_imm_o[29:0],2'b00};
+    	assign branch_addr_o = id_pc4_i + {sign_imm_o[29:0],2'b00};
 
 	assign id_op_o   = id_instr_i[31:26];
 	assign id_func_o = id_instr_i[5:0];
@@ -101,8 +102,31 @@ module ID(
 	);
 
 	assign do_branch_o = branch_flag_o & id_equal_o;
+	
 
-	assign jr_flag_hazard = jr_flag_hazard | jalr_flag_hazard;
+	instr_decode id_instr_decode_nostall(
+
+		.id_instr_i(id_instr_i),
+		.id_stall_i(1'b0),
+		//decode stage
+		.branch_flag_o(branch_flag_o_hazard), // 作为 hazard 和 IF 模块的输入
+		.jr_flag_o(jr_flag_o_hazard),     // 作为 hazard 和 IF 模块的输入
+		.jalr_flag_o(jalr_flag_o_hazard)   // hazard if id2exe
+
+	);
+
+
+//	assign j_b_stall_o =
+//	(ex_we_i == 1'b1 && ex_waddr_i == id_rs_o  &&  id_rs_o!=0  &&  branch_flag_o_hazard==1'b1                         )|
+//	(ex_we_i == 1'b1 && ex_waddr_i == id_rt_o  &&  id_rt_o!=0  &&  branch_flag_o_hazard==1'b1                         )|
+//	(ex_we_i == 1'b1 && ex_waddr_i == id_rs_o  &&  id_rs_o!=0  && (jr_flag_o_hazard==1'b1 | jalr_flag_o_hazard==1'b1) )|
+//	(ex_we_i == 1'b1 && ex_waddr_i == id_rt_o  &&  id_rt_o!=0  && (jr_flag_o_hazard==1'b1 | jalr_flag_o_hazard==1'b1) )? 1:0;
+
+	assign j_b_stall_o =
+	(ex_we_i == 1'b1 && ex_waddr_i == id_rs_o  &&  id_rs_o!=0   )|
+	(ex_we_i == 1'b1 && ex_waddr_i == id_rt_o  &&  id_rt_o!=0   )|
+	(ex_we_i == 1'b1 && ex_waddr_i == id_rs_o  &&  id_rs_o!=0   )|
+	(ex_we_i == 1'b1 && ex_waddr_i == id_rt_o  &&  id_rt_o!=0   )? 1:0;
 
 	id_reg_harzrd id_id_reg_harzrd (
 		.rst_i(rst_i),
@@ -126,13 +150,8 @@ module ID(
 		.wb_wdata_i(wb_wdata_i),
 
 		.rdata1_o(rdata1_o),
-		.rdata2_o(rdata2_o),
+		.rdata2_o(rdata2_o)
 
-		.branch_flag_i(branch_flag_hazard && id_equal_o),
-
-		.jr_flag_hazard_i(jr_flag_hazard),
-
-		.branch_stall_o(id_branch_stall_o)
 	);
 
 	instr_decode id_instr_decode(
@@ -142,8 +161,8 @@ module ID(
 
 		//decode stage
 		.branch_flag_o(branch_flag_o), // 作为 hazard 和 IF 模块的输入
-
 		.jump_flag_o(jump_flag_o),   // 作为 IF 模块的输入
+
 		.jal_flag_o(jal_flag_o),    // 作为 id2exe 和IF 模块的输入
 		.jr_flag_o(jr_flag_o),     // 作为 hazard 和 IF 模块的输入
 		.bal_flag_o(bal_flag_o),    // 作为 id2exe 模块的输入
@@ -163,21 +182,6 @@ module ID(
 		.wmem_o(id_wmem_o),
 		.memen_o(id_memen_o)
 	);
-
-	instr_decode id_instr_decode_no_stall(
-
-		.id_stall_i(1'b0),
-		.id_instr_i(id_instr_i),
-
-		//decode stage
-		.branch_flag_o(branch_flag_hazard), // 作为 hazard 和 IF 模块的输入
-
-		.jr_flag_o(jr_flag_hazard),     // 作为 hazard 和 IF 模块的输入
-		.jalr_flag_o(jalr_flag_hazard)  // hazard if id2exe
-
-	);
-
-
 
 	    // wb stage
 	regfile ID_regfile(

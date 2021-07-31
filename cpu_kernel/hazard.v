@@ -35,7 +35,7 @@ module hazard(
 	input  wire         stallreq_from_if,
 	input  wire         stallreq_from_mem,
 	output wire         wb_stall,
-	input  wire         id_branch_stall_o
+	input  wire         id_j_b_stall
     );
 
 	wire id_lwstall;
@@ -50,15 +50,15 @@ module hazard(
 
 	assign except_flush = mem_excepttype != 32'b0;
 
-	assign if_stall     = id_lwstall   |   id_branch_stall_o   | div_start | stallreq_from_if | stallreq_from_mem | ex_mult_stall;
-	assign id_stall     = id_lwstall   |   id_branch_stall_o   | div_start | stallreq_from_if | stallreq_from_mem | ex_mult_stall;
-	assign ex_stall     =                                        div_start |                    stallreq_from_mem | ex_mult_stall;		       
-	assign mem_stall    =                                        div_start |                    stallreq_from_mem | ex_mult_stall;
-        assign wb_stall     =                                                                                           ex_mult_stall;
+	assign if_stall     = id_lwstall   |   id_j_b_stall   | div_start | stallreq_from_if | stallreq_from_mem | ex_mult_stall;
+	assign id_stall     = id_lwstall   |   id_j_b_stall   | div_start | stallreq_from_if | stallreq_from_mem | ex_mult_stall;
+	assign ex_stall     =                                   div_start |                    stallreq_from_mem | ex_mult_stall;		       
+	assign mem_stall    =                                   div_start |                    stallreq_from_mem | ex_mult_stall;
+    assign wb_stall     =                                                                                      ex_mult_stall;
 
 	assign if_flush     =              except_flush;	
 	assign id_flush     =              except_flush;
-	assign ex_flush     = id_lwstall | except_flush | id_branch_stall_o;
+	assign ex_flush     = id_lwstall | except_flush | id_j_b_stall;
 	assign mem_flush    =              except_flush;
 	assign wb_flush     =              except_flush | stallreq_from_mem;
 
@@ -100,7 +100,7 @@ module hazard(
 				32'h0000000e:begin 
 					mem_newpc <= mem_cp0_epc;
 				end
-				default : mem_newpc <= 32'hBFC00380;
+				default : /* default */;
 			endcase
 		end
 	end

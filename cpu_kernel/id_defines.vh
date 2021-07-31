@@ -2,6 +2,9 @@
 
 // wreg_o,regdst_o,use_imm_o,branch_flag_o,wmem_o,rmem_o,jump_flag_o,jal_flag_o,jr_flag_o,bal_flag_o,jalr_flag_o,alucontrol_o,memen_o,whilo_o
 
+`define JR_DECODE       {11'b0_0_0_0_0_0_0_0_1_0_0, `ZERO_CONTROL,  3'b000}
+`define JALR_DECODE     {11'b1_1_0_0_0_0_0_0_0_0_1, `ZERO_CONTROL,  3'b000}
+
 `define MFHI_DECODE     {11'b1_1_0_0_0_0_0_0_0_0_0, `MFHI_CONTROL,  3'b000}
 `define MFLO_DECODE     {11'b1_1_0_0_0_0_0_0_0_0_0, `MFLO_CONTROL,  3'b000}
 `define MTHI_DECODE     {11'b0_0_0_0_0_0_0_0_0_0_0, `MTHI_CONTROL,  3'b010}
@@ -34,8 +37,6 @@
 
 `define J_DECODE        {11'b0_0_0_0_0_0_1_0_0_0_0, `ZERO_CONTROL,  3'b000 }
 `define JAL_DECODE      {11'b1_0_0_0_0_0_0_1_0_0_0, `ZERO_CONTROL,  3'b000 }
-`define JR_DECODE       {11'b0_0_0_0_0_0_0_0_1_0_0, `ZERO_CONTROL,  3'b000}
-`define JALR_DECODE     {11'b1_1_0_0_0_0_0_0_0_0_1, `ZERO_CONTROL,  3'b000}
 
 `define BEQ_DECODE      {11'b0_0_0_1_0_0_0_0_0_0_0, `ZERO_CONTROL,  3'b000}
 `define BNE_DECODE      {11'b0_0_0_1_0_0_0_0_0_0_0, `ZERO_CONTROL,  3'b000}

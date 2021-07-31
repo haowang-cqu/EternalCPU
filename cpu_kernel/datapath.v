@@ -34,10 +34,11 @@ module datapath(
 	input wire         stallreq_from_if,
 	input wire         stallreq_from_mem,
 
-        output wire        mem_we,// mips使用
+    output wire        mem_we,// mips使用
 	output wire        mem_en,// mips使用
 
-	output wire        wb_wreg
+	output	wire wb_wreg
+
 
     );
 
@@ -57,14 +58,13 @@ module datapath(
 	wire [5:0] 		id_op;
 	wire [31:0] 	id_sign_imm;
 	wire [31:0] 	id_reg_data1,id_reg_data1_last,id_reg_data2,id_reg_data2_last;
-
-	wire [31:0]     reg_data1,reg_data2;
 	wire [31:0] 	id_pc;
 	wire [31:0] 	id_hi,id_lo;
 
 	wire			id_is_in_delayslot;
 	wire [7:0]		id_except;
 	wire			id_syscall,id_break,id_eret;
+	wire 			id_j_b_stall;
 
 	//execute stage
 	wire [4:0] 		ex_rs,ex_rt,ex_rd,ex_sa;
@@ -86,6 +86,7 @@ module datapath(
 	wire            ex_is_in_delayslot;	
 	wire [7:0]      ex_except;
 	wire [31:0]     ex_cp0data;
+    wire 			ex_mult_stall;
 
 	//mem stage
 	wire [4:0]      mem_rdst;
@@ -129,7 +130,6 @@ module datapath(
 	wire mem_memwe;
 	wire mem_cp0we;
 
-	
     wire ex_wmem,ex_cp0we,ex_memen;
 
 	wire wb_wmem;
@@ -145,7 +145,6 @@ module datapath(
 	wire		   id_memen;
 
         wire wb_stall;
-	wire id_branch_stall_o;
 
 	//hazard detection
 	hazard h(
@@ -177,20 +176,20 @@ module datapath(
 		.stallreq_from_mem	(stallreq_from_mem),
 		.wb_stall		(wb_stall),
 
-		.id_branch_stall_o      (id_branch_stall_o)
+		.id_j_b_stall      (id_j_b_stall)
 	);
 
     // wb stage
-	// regfile datapath_regfile(
-	// 	clk,
-	// 	wb_wreg,
-	// 	id_rs,
-	// 	id_rt,
-	// 	wb_regdst,
-	// 	wb_wdata,
-	// 	id_reg_data1,
-	// 	id_reg_data2
-	// );
+	regfile datapath_regfile(
+		clk,
+		wb_wreg,
+		id_rs,
+		id_rt,
+		wb_regdst,
+		wb_wdata,
+		id_reg_data1,
+		id_reg_data2
+	);
 
 	// IF stage
 	IF datapath_IF(
@@ -238,14 +237,15 @@ module datapath(
         .except_o(id_except),
         .is_in_delayslot_o(id_is_in_delayslot)
     );
+
 	// ID stage
 	ID datapath_ID(
 		.clk_i(clk),
-    		.rst_i(rst),
+    	.rst_i(rst),
 
-	    	.id_stall_i(id_stall),
+	    .id_stall_i(id_stall),
 
-    		.id_instr_i(id_instr),
+    	.id_instr_i(id_instr),
 
 		.ex_wdata_i(ex_wdata),
 		.mem_wdata_i(mem_result),
@@ -255,13 +255,13 @@ module datapath(
 
 		.ex_waddr_i(ex_waddr),
 		.mem_waddr_i(mem_rdst),
-       		.wb_waddr_i(wb_regdst),
+       	.wb_waddr_i(wb_regdst),
 
 		.ex_we_i(ex_wreg),
 		.mem_we_i(mem_memwe),
 		.wb_we_i(wb_wreg),
 
-    		.sign_imm_o(id_sign_imm),
+    	.sign_imm_o(id_sign_imm),
 		.branch_addr_o(id_branch_addr),
 
 		.id_op_o(id_op), 
@@ -302,9 +302,7 @@ module datapath(
 		.id_wcp0_o(id_cp0we),
 		.id_memen_o(id_memen),
 
-		.id_branch_stall_o(id_branch_stall_o),
-		.reg_data1	(reg_data1),
-		.reg_data2	(reg_data2)
+		.j_b_stall_o(id_j_b_stall)
     );
 	
     // ID stage to EXE stage triger
@@ -316,10 +314,6 @@ module datapath(
 
     	.rdata1_i(id_reg_data1_last),
     	.rdata2_i(id_reg_data2_last),
-	    
-	// .rdata1_i(reg_data1),
-    	// .rdata2_i(reg_data2),
-
     	.sign_imm_i(id_sign_imm),
 
     	.rs_i(id_rs),
@@ -381,7 +375,6 @@ module datapath(
     	.except_o(ex_except)
     );
 
-    wire ex_mult_stall;
 
     // EXE stage
     EXE datapath_EXE(

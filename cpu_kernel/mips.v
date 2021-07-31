@@ -1,11 +1,11 @@
 `timescale 1ns / 1ps
 `include "defines.h"
 
-// cputop¶¥²ãÄ£¿é
+// cputopï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½
 /*
-	¶ÔÓÚÕâ¸öÄ£¿é
-	ÎÒÃÇ½«Ó²¼þÖÐ¶Ï½øÐÐÁË´¦Àí£¬ÎÒÃÇ·¢ÏÖÖ®Ç°Ñ§³¤ÎªÁËÍµÀÁÖ±½Ó½«Ó²¼þÖÐ¶Ïµ±×÷Áù¸öÁã´«ÈëÁË£¨TAT£©
-	ÏÖÔÚÎÒÃÇ¶ÔËû½øÐÐÁË´¦Àí£¬Ëü»á±»´«µ½datapath½øÐÐ¾ßÌåµÄ´¦Àí
+	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½
+	ï¿½ï¿½ï¿½Ç½ï¿½Ó²ï¿½ï¿½ï¿½Ð¶Ï½ï¿½ï¿½ï¿½ï¿½Ë´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ö®Ç°Ñ§ï¿½ï¿½Îªï¿½ï¿½Íµï¿½ï¿½Ö±ï¿½Ó½ï¿½Ó²ï¿½ï¿½ï¿½Ð¶Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã´«ï¿½ï¿½ï¿½Ë£ï¿½TATï¿½ï¿½
+	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á±»ï¿½ï¿½ï¿½ï¿½datapathï¿½ï¿½ï¿½Ð¾ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½
 
 */
 module mycpu_top(
@@ -205,21 +205,21 @@ module mycpu_top(
 		.stallreq_from_if	(stallreq_from_if),
 		.stallreq_from_mem	(stallreq_from_mem),
 		
-		.mem_we			(memwriteM),// mipsÊ¹ÓÃ
-		.mem_en				(memenM),// mipsÊ¹ÓÃ
-		.wb_wreg		(regwriteW)
+		.mem_we			(memwriteM),// mipsÊ¹ï¿½ï¿½
+		.mem_en				(memenM),// mipsÊ¹ï¿½ï¿½
+		.wb_wreg(regwriteW)
 	);
 	
 
 	i_cache i_cache(
-		// cpu ¶Ë½»»¥ÐÅºÅ
+		// cpu ï¿½Ë½ï¿½ï¿½ï¿½ï¿½Åºï¿½
 		.p_flush			(|excepttypeM),
         .p_a				(inst_sram_addr),
         .p_din				(inst_sram_rdata),
         .p_strobe			(inst_sram_en),
         .p_ready			(i_ready),
 		.cache_miss			(cache_miss),
-		// ÄÚ´æ¶Ë½»»¥ÐÅºÅ
+		// ï¿½Ú´ï¿½Ë½ï¿½ï¿½ï¿½ï¿½Åºï¿½
         .clk				(aclk),
 		.clrn				(aresetn),
         .m_a				(i_addr),
@@ -230,7 +230,7 @@ module mycpu_top(
     );
 
 	d_cache d_cache(
-		// cpu ¶Ë½»»¥ÐÅºÅ
+		// cpu ï¿½Ë½ï¿½ï¿½ï¿½ï¿½Åºï¿½
         .p_a				(data_sram_addr),
         .p_dout				(data_sram_wdata),
         .p_din				(data_sram_rdata),
@@ -239,7 +239,7 @@ module mycpu_top(
 		.p_size				(data_sram_size),
         .p_rw				(data_sram_write), //0: read, 1:write
         .p_ready			(d_ready),
-		// ÄÚ´æ¶Ë½»»¥ÐÅºÅ
+		// ï¿½Ú´ï¿½Ë½ï¿½ï¿½ï¿½ï¿½Åºï¿½
         .clk				(aclk),
 		.clrn				(aresetn),
         .m_a				(d_addr),
@@ -253,9 +253,9 @@ module mycpu_top(
     );
 
 	
-	// cacheµÄÑ¡Ôñ²¿·Ö
-	// ´æÔÚµÄÔ­Òò£º axi_interfaceÒ»´ÎÖ»ÄÜ¶ÁÐ´µØ·½
-	// Ö´ÐÐÂß¼­£º	i_cacheÓÅÏÈÔ­Ôò
+	// cacheï¿½ï¿½Ñ¡ï¿½ñ²¿·ï¿½
+	// ï¿½ï¿½ï¿½Úµï¿½Ô­ï¿½ï¿½ axi_interfaceÒ»ï¿½ï¿½Ö»ï¿½Ü¶ï¿½Ð´ï¿½Ø·ï¿½
+	// Ö´ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½	i_cacheï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½
 	assign sel_i 				= cache_miss;
 	assign m_addr 				= sel_i ? i_addr : d_addr;
 	assign mem_access 			= sel_i ? m_fetch : m_ld_st;

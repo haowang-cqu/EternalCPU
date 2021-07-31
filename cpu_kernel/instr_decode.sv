@@ -49,7 +49,7 @@ module instr_decode(
 
 	always @(*) begin
 		invalid_o = 0;
-		controls <= {11'b0_0_0_0_0_0_0_0_0_0_0,4'b0000, 3'b000};
+		controls <= {11'b0_0_0_0_0_0_0_0_0_0_0,5'b00000, 3'b000};
 		if (~id_stall_i) begin
 			case (op)
 			`R_TYPE:case (func)

@@ -21,7 +21,7 @@
 
 // 此处CP0暂时用学长的替代，下一步用2路组
 
-module i_cache#(parameter A_WIDTH = 32,parameter C_INDEX = 4)(
+module i_cache#(parameter A_WIDTH = 32,parameter C_INDEX = 16)(
         input wire p_flush,
         input wire[A_WIDTH-1:0] p_a,
         output wire[31:0] p_din,

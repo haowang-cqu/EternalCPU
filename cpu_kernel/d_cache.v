@@ -3,7 +3,7 @@
 // ??CP0?????????????2??
 
 module d_cache #(parameter A_WIDTH = 32,
-    parameter C_INDEX = 4)(
+    parameter C_INDEX = 16)(
         input wire[A_WIDTH-1:0] p_a,
         input wire[31:0] p_dout,
         output wire[31:0] p_din,
@@ -12,6 +12,7 @@ module d_cache #(parameter A_WIDTH = 32,
 		input wire[1:0] p_size,
         input wire p_rw, //0: read, 1:write
         output wire p_ready,
+
         // output wire cache_miss,
         input wire clk,clrn,
         output wire[A_WIDTH-1:0] m_a,
@@ -23,13 +24,12 @@ module d_cache #(parameter A_WIDTH = 32,
         output wire m_rw,
         input wire m_ready
     );
-  
+
     wire flag;
-    assign flag =  (aluoutM[31:16] == 16'hbfaf) ? 1'b1 : 1'b0;
     
 
     wire                memwriteM;          //p_rw
-    wire [3:0]          sel;                //p_wen
+    wire [3:0]    sel;                //p_wen
     wire [1:0]    data_sram_size;     //P_size
     wire [31:0]   aluoutM;            //p_a
     wire [31:0]   writedata2M;        //p_dout
@@ -37,14 +37,6 @@ module d_cache #(parameter A_WIDTH = 32,
     wire [31:0]  readdataM;          //p_din
     wire              cache_ready;
 
-    assign memwriteM = p_rw;
-    assign sel = p_wen;
-    assign data_sram_size = p_size;
-    assign aluoutM = p_a;
-    assign writedata2M = p_dout;
-    assign memenM = p_strobe;
-    assign p_din = flag ? m_dout : readdataM;
-    assign p_ready = cache_ready;
 
     wire rst;
     wire            data_req;
@@ -55,18 +47,6 @@ module d_cache #(parameter A_WIDTH = 32,
     wire [31:0] data_wdata;
     wire [31:0] data_rdata;
     wire        data_data_ok;
-
-    assign rst = ~clrn;
-    assign data_data_ok = m_ready;
-    assign data_rdata= m_dout ;
-    assign m_a =flag ? {16'h1faf,aluoutM[15:0]} : data_addr;
-    assign m_din = flag ? p_dout : data_wdata;
-    assign m_strobe = flag ? p_strobe : data_req;
-    assign m_wen = flag? p_wen : data_wen;
-    assign m_size = flag? p_size: data_size;
-    assign m_rw =flag ? p_rw : data_wr;
-    assign data_data_ok = m_ready;
-
 
 
     localparam      CPU_EXEC    =   0;
@@ -110,6 +90,29 @@ module d_cache #(parameter A_WIDTH = 32,
     wire [T_WIDTH-1:0]  tag     =   aluoutM[A_WIDTH-1:C_INDEX+2];
     wire                valid   =   d_valid[index];
 
+
+    assign rst = ~clrn;
+    assign data_data_ok = m_ready;
+    assign data_rdata= m_dout ;
+    assign m_a =flag ? {16'h1faf,aluoutM[15:0]} : data_addr;
+    assign m_din = flag ? p_dout : data_wdata;
+    assign m_strobe = flag ? p_strobe : data_req;
+    assign m_wen = flag? p_wen : data_wen;
+    assign m_size = flag? p_size: data_size;
+    assign m_rw =flag ? p_rw : data_wr;
+    assign data_data_ok = m_ready;
+
+    assign flag =  (aluoutM[31:16] == 16'hbfaf) ? 1'b1 : 1'b0;
+
+    assign memwriteM = p_rw;
+    assign sel = p_wen;
+    assign data_sram_size = p_size;
+    assign aluoutM = p_a;
+    assign writedata2M = p_dout;
+    assign memenM = p_strobe;
+    assign p_din = flag ? m_dout : readdataM;
+    assign p_ready = cache_ready;
+
     //read from cache
     //assign    D_SRAM_block    =   {d_valid[index],d_dirty[index],d_tags[index],d_data1[index],d_data2[index],d_data3[index],d_data4[index]};
     assign  tagout          =   d_tags[index];
@@ -117,6 +120,7 @@ module d_cache #(parameter A_WIDTH = 32,
 
     //cache control
     assign  cache_hit       =   valid & (tag==tagout) & memenM & !flag ;
+    // assign  cache_hit =0;
     assign  dirty           =   d_dirty[index];
     assign  dram_wr_addr    =   {tagout,index,2'b00};
     assign  dram_rd_addr    =   aluoutM;
