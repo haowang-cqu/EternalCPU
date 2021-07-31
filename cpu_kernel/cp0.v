@@ -31,8 +31,11 @@ module cp0(
 	output reg timer_int_o
     );
 
+	reg one_bit_counter;
+
 	always @(posedge clk) begin
 		if(rst == `RstEnable) begin
+			one_bit_counter <= 1'b0;
 			count_o <= `ZeroWord;
 			compare_o <= `ZeroWord;
 			status_o <= 32'b00010000000000000000000000000000;
@@ -42,7 +45,8 @@ module cp0(
 			prid_o <= 32'b00000000010011000000000100000010;
 			timer_int_o <= `InterruptNotAssert;
 		end else begin
-			count_o <= count_o + 1;
+			count_o <= count_o + one_bit_counter;
+			one_bit_counter <= ~one_bit_counter;
 			cause_o[15:10] <= int_i;
 			if(compare_o != `ZeroWord && count_o == compare_o) begin
 				/* code */

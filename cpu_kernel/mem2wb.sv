@@ -65,7 +65,7 @@ module mwm2wb(
             hilo_we_o<=hilo_we_o;        
 
             memtoreg_o<=memtoreg_o;
-            regwrite_o<=regwrite_o;
+            regwrite_o<=0; // avoid multiple output
 
         end
         else begin
