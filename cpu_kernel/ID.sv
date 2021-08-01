@@ -4,11 +4,11 @@
 
 module ID(
 	input  logic            clk_i,
-        input  logic            rst_i,
+	input  logic            rst_i,
 
 	input  logic            id_stall_i,
 
-        input  logic  [31:0]    id_instr_i,
+	input  logic  [31:0]    id_instr_i,
 
 	input  logic  [31:0]    ex_wdata_i,
 	input  logic  [31:0]    mem_wdata_i,
@@ -24,7 +24,7 @@ module ID(
 	input  logic            mem_we_i,
 	input  logic            wb_we_i,
 
-        output logic  [31:0]    sign_imm_o,
+	output logic  [31:0]    sign_imm_o,
 	output logic  [31:0]    branch_addr_o,
 
 	output logic  [5:0]     id_op_o, 
@@ -42,7 +42,7 @@ module ID(
 
 	output  logic [31:0]    rdata1_o,
 	output  logic [31:0]    rdata2_o,
-    
+	
 	// controller
 	output  logic           do_branch_o,
 	output  logic           branch_flag_o,
@@ -66,8 +66,8 @@ module ID(
 	output logic		id_wreg_o,
 	output logic		id_wcp0_o,
 	output logic		id_memen_o,
-
-    	output logic            j_b_stall_o
+	
+	output logic            j_b_stall_o
 
 );
 	logic  [31:0]    reg_data1;
@@ -78,8 +78,8 @@ module ID(
 	logic            jalr_flag_o_hazard;
 
 	assign sign_imm_o = (id_instr_i[29:28] == 2'b11) ? ({{16{1'b0}},id_instr_i[15:0]}) : ({{16{id_instr_i[15]}},id_instr_i[15:0]});
-  
-    	assign branch_addr_o = id_pc4_i + {sign_imm_o[29:0],2'b00};
+	
+	assign branch_addr_o = id_pc4_i + {sign_imm_o[29:0],2'b00};
 
 	assign id_op_o   = id_instr_i[31:26];
 	assign id_func_o = id_instr_i[5:0];
@@ -183,7 +183,7 @@ module ID(
 		.memen_o(id_memen_o)
 	);
 
-	    // wb stage
+		// wb stage
 	regfile ID_regfile(
 		clk_i,
 		wb_we_i,
