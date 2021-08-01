@@ -54,6 +54,7 @@ def do_param(params):
 	cmd = "{} -mode tcl -source scripts/gen_perf_bit.tcl {}/nscscc/perf_test_v0.01/soc_axi_perf/run_vivado/mycpu_prj1/mycpu.xpr".format(VIVADO,stor_dir)
 	print(cmd)
 	os.system(cmd)
+	os.copy("{}/nscscc/perf_test_v0.01/soc_axi_perf/run_vivado/mycpu_prj1/mycpu.runs/impl_1/soc_axi_lite_top.bit".format(stor_dir),"{}/{}.bit".format(BUILD_PREFIX,gen_dir_name(params)))
 	print("Done with param {}".format(params))
 
 def do_new_param(params):
