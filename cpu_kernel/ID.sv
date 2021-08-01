@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-`include "defines.h"
+`include "defines.vh"
 
 module ID(
 	input  logic            clk_i,
@@ -109,8 +109,8 @@ module ID(
 		.id_instr_i(id_instr_i),
 		.id_stall_i(1'b0),
 		//decode stage
-		.branch_flag_o(branch_flag_o_hazard), // 作为 hazard �? IF 模块的输�?
-		.jr_flag_o(jr_flag_o_hazard),     // 作为 hazard �? IF 模块的输�?
+		.branch_flag_o(branch_flag_o_hazard), // 作为 hazard �? IF 模块的输�?
+		.jr_flag_o(jr_flag_o_hazard),     // 作为 hazard �? IF 模块的输�?
 		.jalr_flag_o(jalr_flag_o_hazard)   // hazard if id2exe
 
 	);
@@ -160,12 +160,12 @@ module ID(
 		.id_instr_i(id_instr_i),
 
 		//decode stage
-		.branch_flag_o(branch_flag_o), // 作为 hazard �? IF 模块的输�?
-		.jump_flag_o(jump_flag_o),   // 作为 IF 模块的输�?
+		.branch_flag_o(branch_flag_o), // 作为 hazard �? IF 模块的输�?
+		.jump_flag_o(jump_flag_o),   // 作为 IF 模块的输�?
 
-		.jal_flag_o(jal_flag_o),    // 作为 id2exe 和IF 模块的输�?
-		.jr_flag_o(jr_flag_o),     // 作为 hazard �? IF 模块的输�?
-		.bal_flag_o(bal_flag_o),    // 作为 id2exe 模块的输�?
+		.jal_flag_o(jal_flag_o),    // 作为 id2exe 和IF 模块的输�?
+		.jr_flag_o(jr_flag_o),     // 作为 hazard �? IF 模块的输�?
+		.bal_flag_o(bal_flag_o),    // 作为 id2exe 模块的输�?
 		.jalr_flag_o(jalr_flag_o),   // hazard if id2exe
 
 		.alucontrol_o(id_alucontrol_o),  // id2exe

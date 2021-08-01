@@ -1,4 +1,4 @@
-`include "defines.h"
+`include "defines.vh"
 
 // wreg_o,regdst_o,use_imm_o,branch_flag_o,wmem_o,rmem_o,jump_flag_o,jal_flag_o,jr_flag_o,bal_flag_o,jalr_flag_o,alucontrol_o,memen_o,whilo_o
 
