@@ -1,0 +1,4 @@
+*/*.gen
+*/*/run_vivado/mycpu_prj1/*
+!*/*/run_vivado/mycpu_prj1/*.xpr
+!*/*/run_vivado/mycpu_prj1/*.tcl
