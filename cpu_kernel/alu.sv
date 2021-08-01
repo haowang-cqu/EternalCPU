@@ -56,14 +56,7 @@ module alu(
 			alucontrol== `MFC0_CONTROL  ? (cp0_reg_data_i) :
 			alucontrol== `MTC0_CONTROL  ? (reg2_i)         :   32'b0 ;
 
-
-//    wire[63:0] signed_mul;
-//    wire[63:0] unsigned_mul;
-
-//	assign signed_mul   = $signed(reg1_i)*$signed(reg2_i);
-//	assign unsigned_mul = reg1_i * reg2_i;
-
-	////////////////////////multiply////////////////////////////////////
+///////////////////////////////////////////multiply////////////////////////////////////
 	reg [3:0] cnt;
 
 	wire mult_sign;
@@ -76,7 +69,7 @@ module alu(
 	assign mult_valid = (alucontrol == `MULT_CONTROL) | (alucontrol == `MULTU_CONTROL) ;
 
 	wire mult_ready;
-	assign mult_ready = !(cnt ^ 4'b1001);
+	assign mult_ready = !(cnt ^ 4'b1101);
 
 	// is_multD   stallD   flushE   flush_exceptionM
 
@@ -122,11 +115,7 @@ module alu(
 		.SUBTRACT(1'b0),
 		.P(alu_out_unsigned_mult)      // output wire [63 : 0] P
 	);
-        ////////////////////////multiply////////////////////////////////////
-
-
-
-
+///////////////////////////////////////////multiply////////////////////////////////////
 
 	assign hi_alu_out = 	alucontrol== `MULT_CONTROL  ? alu_out_signed_mult[63:32]          :
 				alucontrol== `MULTU_CONTROL ? alu_out_unsigned_mult[63:32]        :
