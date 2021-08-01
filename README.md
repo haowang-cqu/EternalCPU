@@ -29,3 +29,11 @@ vivado -mode tcl -source scripts/run_simulation.tcl nscscc/func_test_v0.01/soc_a
 ```bash
 vivado -mode tcl -source scripts/gen_perf_bit.tcl nscscc/perf_test_v0.01/soc_axi_perf/run_vivado/mycpu_prj1/mycpu.xpr
 ```
+
+## 自动内卷机
+
+首先在`scripts/gen_mtx.py`中设置参数
+
+```bash
+python3 scripts/gen_mtx.py
+```
