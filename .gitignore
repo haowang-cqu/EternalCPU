@@ -1,4 +1,2 @@
-**/vivado.jou
-**/vivado.log
-vivado.jou
-vivado.log
+*.jou
+*.log

@@ -14,9 +14,18 @@
 
 # 2. 自动化测试
 
+```bash
+source /tools/Xilinx/Vivado/2019.2/settings64.sh
+```
+
 ## 功能仿真测试
 
 ```bash
-source /tools/Xilinx/Vivado/2019.2/settings64.sh
 vivado -mode tcl -source scripts/run_simulation.tcl nscscc/func_test_v0.01/soc_axi_func/run_vivado/mycpu_prj1/mycpu.xpr
+```
+
+## 生成性能测试bit流
+
+```bash
+vivado -mode tcl -source scripts/gen_perf_bit.tcl nscscc/perf_test_v0.01/soc_axi_perf/run_vivado/mycpu_prj1/mycpu.xpr
 ```
