@@ -11,3 +11,12 @@
 ### 提取码：eT2g
 ### 文件名：nscscc2021_group_v0.01.zip
 ### 解压密码：nscscc2021
+
+# 2. 自动化测试
+
+## 功能仿真测试
+
+```bash
+source /tools/Xilinx/Vivado/2019.2/settings64.sh
+vivado -mode tcl -source scripts/run_simulation.tcl nscscc/func_test_v0.01/soc_axi_func/run_vivado/mycpu_prj1/mycpu.xpr
+```
