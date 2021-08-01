@@ -1,9 +1,10 @@
 `timescale 1ns / 1ps
 
-// ??CP0?????????????2??
+`include "compile_options.vh"
 
-module d_cache #(parameter A_WIDTH = 32,
-    parameter C_INDEX = 16)(
+// 此处d_cache暂时用学长的替代，下一步用2路组
+
+module d_cache #(parameter A_WIDTH = 32, parameter C_INDEX = `D_CACHE_INDEX)(
         input wire[A_WIDTH-1:0] p_a,
         input wire[31:0] p_dout,
         output wire[31:0] p_din,

@@ -1,27 +1,10 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 2018/07/28 09:21:49
-// Design Name: 
-// Module Name: i_cache
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 
-// 此处CP0暂时用学长的替代，下一步用2路组
+`include "compile_options.vh"
 
-module i_cache#(parameter A_WIDTH = 32,parameter C_INDEX = 16)(
+// 此处i_cache暂时用学长的替代，下一步用2路组
+
+module i_cache#(parameter A_WIDTH = 32, parameter C_INDEX = `I_CACHE_INDEX)(
         input wire p_flush,
         input wire[A_WIDTH-1:0] p_a,
         output wire[31:0] p_din,

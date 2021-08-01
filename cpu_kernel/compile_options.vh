@@ -1,0 +1,2 @@
+`define I_CACHE_INDEX 10
+`define D_CACHE_INDEX 10
