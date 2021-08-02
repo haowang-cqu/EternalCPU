@@ -391,42 +391,6 @@
 `define MTC0_OP 4'b1010
 `define USELESS_OP 4'b1111
 
-// ALU CONTROL 5bit
-`define AND_CONTROL 5'b00111
-`define OR_CONTROL  5'b00001
-`define XOR_CONTROL 5'b00010
-`define NOR_CONTROL 5'b00011
-`define LUI_CONTROL 5'b00100
-
-`define SLL_CONTROL 5'b01000
-`define SRL_CONTROL 5'b01001
-`define SRA_CONTROL 5'b01010
-`define SLLV_CONTROL    5'b01011
-`define SRLV_CONTROL    5'b01100
-`define SRAV_CONTROL    5'b01101
-
-`define ADD_CONTROL     5'b10000
-`define ADDU_CONTROL    5'b10001
-`define SUB_CONTROL     5'b10010
-`define SUBU_CONTROL    5'b10011
-`define SLT_CONTROL     5'b10100
-`define SLTU_CONTROL    5'b10101
-
-`define MULT_CONTROL    5'b11000
-`define MULTU_CONTROL   5'b11001
-`define DIV_CONTROL     5'b11010
-`define DIVU_CONTROL    5'b11011
-
-`define MFHI_CONTROL  	5'b11100
-`define MTHI_CONTROL  	5'b11101
-`define MFLO_CONTROL  	5'b11110
-`define MTLO_CONTROL  	5'b11111
-
-`define MFC0_CONTROL 	5'b00101
-`define MTC0_CONTROL 	5'b00110
-
-`define ZERO_CONTROL 	5'b00000
-
 //inst ROM macro definition
 `define InstAddrBus		31:0
 `define InstBus 		31:0
@@ -466,3 +430,24 @@
 `define CP0_REG_EPC    5'b01110          
 `define CP0_REG_PRID    5'b01111         
 `define CP0_REG_CONFIG    5'b10000       
+
+
+// 添加指令
+// 整形指令
+`define SPECIAL2_INST 6'b011100
+// func
+`define CLO           6'b100001
+`define CLZ           6'b100000
+`define MUL           6'b000010
+`define MADD          6'b000000
+`define MADDU         6'b000001
+`define MSUB          6'b000100
+`define MSUBU         6'b000101 
+
+// op
+`define LWL           6'b100010
+`define LWR           6'b100110
+`define SWL           6'b101010
+`define SWR           6'b101110
+`define LL            6'b110000
+`define SC            6'b111000

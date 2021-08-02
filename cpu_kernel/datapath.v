@@ -1,6 +1,7 @@
 `timescale 1ns / 1ps
 
 `include "defines.vh"
+`include "alu_defines.vh"
 
 module datapath(
 	input wire         clk,
@@ -81,7 +82,7 @@ module datapath(
 
 	//hi-lo reg value propagate
 	wire [31:0]		ex_hi,ex_lo;
-	wire [4:0]      ex_alucontrol;
+	wire [5:0]      ex_alucontrol;
 	wire [1:0]      ex_hilo_we;
 	wire            ex_is_in_delayslot;	
 	wire [7:0]      ex_except;
@@ -116,7 +117,7 @@ module datapath(
 	wire id_do_brach,id_brach_flag,id_jump_flag;
 	wire id_jal,id_jr,id_bal,id_jalr;
 
-	wire [4:0] id_alucontrol;
+	wire [5:0] id_alucontrol;
    
     wire [1:0] id_hilo_we; 
     wire       id_invalid;
@@ -134,6 +135,9 @@ module datapath(
 
 	wire wb_wmem;
 
+	wire id_branch_stall_o;
+    wire ex_mult_stall;
+
 
 	// controller的触发器
 	wire		   id_rmem;
@@ -144,7 +148,7 @@ module datapath(
 	wire		   id_cp0we;
 	wire		   id_memen;
 
-        wire wb_stall;
+    wire wb_stall;
 
 	//hazard detection
 	hazard h(

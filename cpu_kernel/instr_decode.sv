@@ -16,7 +16,7 @@ module instr_decode(
 	output wire       bal_flag_o,
 	output wire       jalr_flag_o,
 
-	output wire[4:0]  alucontrol_o,
+	output wire[5:0]  alucontrol_o,
 	output wire[1:0]  whilo_o,
 	output reg        invalid_o,
 
@@ -35,7 +35,7 @@ module instr_decode(
 
 	wire [4:0]  rt,rs,rd;
 	wire [5:0]  op,func;
-	reg  [18:0] controls;
+	reg  [19:0] controls;
 
 	assign op   =   id_instr_i[31:26];
 	assign rs   =   id_instr_i[25:21];
@@ -49,7 +49,7 @@ module instr_decode(
 
 	always @(*) begin
 		invalid_o = 0;
-		controls <= {11'b0_0_0_0_0_0_0_0_0_0_0,5'b00000, 3'b000};
+		controls <= {11'b0_0_0_0_0_0_0_0_0_0_0,6'b00_0000, 3'b000};
 		if (~id_stall_i) begin
 			case (op)
 			`R_TYPE:case (func)
@@ -127,7 +127,23 @@ module instr_decode(
 			`LHU:controls <=`LHU_DECODE;
 			`SH:controls <= `SH_DECODE;
 			`SB:controls <= `SB_DECODE;
-			
+			// 添加指令[非对其访存指令]
+			`LWL: controls <= `LWL_DECODE;
+			`LWR: controls <= `LWR_DECODE;
+			`SWL: controls <= `SWL_DECODE;
+			`SWR: controls <= `SWR_DECODE;
+			// 添加指令[整形运算指令]
+			`SPECIAL2_INST: case(func)
+				`CLO:controls <= `CLO_DECODE;
+				`CLZ:controls <= `CLZ_DECODE;
+				`MUL:controls <= `MUL_DECODE;
+				`MADD:controls <= `MADD_DECODE;
+				`MADDU:controls <= `MADDU_DECODE;
+				`MSUB:controls <= `MSUB_DECODE;
+				`MSUBU:controls <= `MSUB_DECODE;
+				default:invalid_o = 1;
+				endcase
+
 			//mfc0 and mtc0
 			`SPECIAL3_INST:case(rs)
 				`MTC0:controls <= `MTC0_DECODE;

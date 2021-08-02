@@ -1,6 +1,7 @@
 `timescale 1ns / 1ps
 
 `include "defines.vh"
+`include "alu_defines.vh"
 
 module hazard(
 	//fetch stage
@@ -14,7 +15,7 @@ module hazard(
 	output wire         id_stall,
 
 	//execute stage
-	input wire[4:0]     ex_alucontrol,
+	input wire[5:0]     ex_alucontrol,
 	input wire[4:0]     ex_rt,
 	input wire          mem_rmem,
 	output wire         ex_flush,
@@ -54,7 +55,7 @@ module hazard(
 	assign id_stall     = id_lwstall   |   id_j_b_stall   | div_start | stallreq_from_if | stallreq_from_mem | ex_mult_stall;
 	assign ex_stall     =                                   div_start |                    stallreq_from_mem | ex_mult_stall;		       
 	assign mem_stall    =                                   div_start |                    stallreq_from_mem | ex_mult_stall;
-    	assign wb_stall     =                                   div_start |                    stallreq_from_mem | ex_mult_stall;
+    assign wb_stall     =                                   div_start |                    stallreq_from_mem | ex_mult_stall;
 
 	assign if_flush     =              	             except_flush;	
 	assign id_flush     =                            except_flush;
@@ -102,6 +103,10 @@ module hazard(
 				end
 				default : /* default */;
 			endcase
+		end
+		// 避免锁存器
+		else begin
+			mem_newpc <= 32'b0;
 		end
 	end
 endmodule

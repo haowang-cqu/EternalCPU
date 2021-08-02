@@ -97,7 +97,7 @@ module mycpu_top(
 	wire 			equalD;
 	wire 			invalidD;
 	wire 	[1:0] 	hilo_weD;
-	wire 	[4:0] 	alucontrolD;
+	wire 	[5:0] 	alucontrolD;
 	wire            stallD;
 
 	// execute stage

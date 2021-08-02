@@ -2,12 +2,13 @@
 
 
 `include "defines.vh"
+`include "alu_defines.vh"
 
 module divider_Primary(
 
     input wire      clk,
     input wire      rst,
-    input wire[4:0] op,//change the length
+    input wire[5:0] op,//change the length
     input wire[31:0]opdata1_i,
     input wire[31:0]opdata2_i,
     input wire      annul_i,

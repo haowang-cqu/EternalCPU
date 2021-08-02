@@ -1,6 +1,7 @@
 `timescale 1ns / 1ps
 
 `include "defines.vh"
+`include "alu_defines.vh"
 
 module EXE(
     input logic          clk,
@@ -32,7 +33,7 @@ module EXE(
 
     input logic [31 : 0] ex_cp0_data_i,
     input logic [4 : 0]  ex_sa_i,
-    input logic [4 : 0]  ex_alucontrol_i,
+    input logic [5 : 0]  ex_alucontrol_i,
 
     input logic [31 : 0] ex_pc_i,
     input logic          ex_jal_i,
@@ -83,7 +84,7 @@ module EXE(
     logic                 div_signalE;
 	
     exe_reg_harzrd exe_exe_reg_harzrd (
-        // 用于读取的地�?和数�?
+        // 用于读取的地�?和数�?
         .rst_i(rst),
 
         .reg_addr1_i(ex_rs_i),

@@ -53,7 +53,7 @@ module ID(
 	output  logic           bal_flag_o,
 	output  logic           jalr_flag_o,
 
-	output  logic [4:0]     id_alucontrol_o,
+	output  logic [5:0]     id_alucontrol_o,
 
 	output logic [1:0]      id_whilo_o,
 	output logic            id_invalid_o,
