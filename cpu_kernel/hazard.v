@@ -21,7 +21,7 @@ module hazard(
 	output wire         ex_stall,
 	output wire         div_start,
 	input  wire         div_ready,
-	input  wire	    ex_mult_stall,
+	input  wire	  ex_mult_stall,
 
 	//mem stage
 	output wire         mem_stall,
@@ -41,10 +41,10 @@ module hazard(
 	wire id_lwstall;
 	wire except_flush;
 
-	assign div_start = 	(ex_alucontrol == `DIV_CONTROL  && div_ready == 1'b0 ) ? 1'b1 : 
-				(ex_alucontrol == `DIV_CONTROL  && div_ready == 1'b1 ) ? 1'b0 : 
-				(ex_alucontrol == `DIVU_CONTROL && div_ready == 1'b0 ) ? 1'b1 : 
-				(ex_alucontrol == `DIVU_CONTROL && div_ready == 1'b1 ) ? 1'b0 : 1'b0;
+	assign div_start = (ex_alucontrol == `DIV_CONTROL  && div_ready == 1'b0 ) ? 1'b1 : 
+		 (ex_alucontrol == `DIV_CONTROL  && div_ready == 1'b1 ) ? 1'b0 : 
+		 (ex_alucontrol == `DIVU_CONTROL && div_ready == 1'b0 ) ? 1'b1 : 
+		 (ex_alucontrol == `DIVU_CONTROL && div_ready == 1'b1 ) ? 1'b0 : 1'b0;
 
 	assign id_lwstall = mem_rmem & (ex_rt == id_rs | ex_rt == id_rt);
 
@@ -54,14 +54,13 @@ module hazard(
 	assign id_stall     = id_lwstall   |   id_j_b_stall   | div_start | stallreq_from_if | stallreq_from_mem | ex_mult_stall;
 	assign ex_stall     =                                   div_start |                    stallreq_from_mem | ex_mult_stall;		       
 	assign mem_stall    =                                   div_start |                    stallreq_from_mem | ex_mult_stall;
-    	assign wb_stall     =                                   div_start |                     stallreq_from_mem| ex_mult_stall;
+    	assign wb_stall     =                                   div_start |                    stallreq_from_mem | ex_mult_stall;
 
-	assign if_flush     =              except_flush;	
-	assign id_flush     =              except_flush;
-	assign ex_flush     = id_lwstall | except_flush | (id_j_b_stall&&!mem_stall);
-	assign mem_flush    =              except_flush;
-//	assign wb_flush     =              except_flush | stallreq_from_mem;
-	assign wb_flush     =              except_flush;
+	assign if_flush     =              	             except_flush;	
+	assign id_flush     =                            except_flush;
+	assign ex_flush     = (id_lwstall&&!mem_stall) | except_flush | (id_j_b_stall&&!mem_stall);
+	assign mem_flush    =                            except_flush;
+	assign wb_flush     =                            except_flush;
 
   	always @(*) begin
 		if(mem_excepttype != 32'b0) begin

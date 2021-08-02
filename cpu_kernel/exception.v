@@ -3,10 +3,12 @@
 
 
 module exception(
-	input wire rst,
-	input wire[7:0] except,
-	input wire adel,ades,
-	input wire[31:0] cp0_status,cp0_cause,
+	input wire 	 rst,
+	input wire[7:0]  except,
+	input wire 	 adel,
+	input wire	 ades,
+	input wire[31:0] cp0_status,
+	input wire[31:0] cp0_cause,
 	output reg[31:0] excepttype
     );
 
