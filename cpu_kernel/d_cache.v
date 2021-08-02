@@ -95,7 +95,7 @@ module d_cache #(parameter A_WIDTH = 32, parameter C_INDEX = `D_CACHE_INDEX)(
     assign rst = ~clrn;
     assign data_data_ok = m_ready;
     assign data_rdata= m_dout ;
-    assign m_a =flag ? {16'h1faf,aluoutM[15:0]} : data_addr;
+    assign m_a =flag ? {3'b000,aluoutM[28:0]} : data_addr;
     assign m_din = flag ? p_dout : data_wdata;
     assign m_strobe = flag ? p_strobe : data_req;
     assign m_wen = flag? p_wen : data_wen;
@@ -103,7 +103,7 @@ module d_cache #(parameter A_WIDTH = 32, parameter C_INDEX = `D_CACHE_INDEX)(
     assign m_rw =flag ? p_rw : data_wr;
     assign data_data_ok = m_ready;
 
-    assign flag =  (aluoutM[31:16] == 16'hbfaf) ? 1'b1 : 1'b0;
+    assign flag =  (aluoutM[31:29] == 3'b101) ? 1'b1 : 1'b0;
 
     assign memwriteM = p_rw;
     assign sel = p_wen;

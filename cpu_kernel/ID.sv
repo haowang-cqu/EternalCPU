@@ -8,13 +8,13 @@ module ID(
 
 	input  logic            id_stall_i,
 
-	input  logic  [31:0]    id_instr_i,
+	(* mark_debug = "true" *) input  logic  [31:0]    id_instr_i,
 
 	input  logic  [31:0]    ex_wdata_i,
 	input  logic  [31:0]    mem_wdata_i,
 	input  logic  [31:0]    wb_wdata_i,
 
-	input  logic  [31:0]    id_pc4_i,
+	(* mark_debug = "true" *) input  logic  [31:0]    id_pc4_i,
 
 	input  logic  [4:0]     ex_waddr_i,
 	input  logic  [4:0]     mem_waddr_i,

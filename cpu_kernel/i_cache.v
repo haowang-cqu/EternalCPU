@@ -36,10 +36,11 @@ module i_cache#(parameter A_WIDTH = 32, parameter C_INDEX = `I_CACHE_INDEX)(
     // cache control 
     wire cache_hit = valid & (tagout == tag);
     assign cache_miss = ~cache_hit;
-    assign m_a = p_a;
+    assign m_a = {3'b000,p_a[28:0]}; // 3 bit msb is segment remove
+    // TODO: connect to tlb and transfer true pa to cache
     assign m_strobe = p_strobe & cache_miss;
     assign p_ready = cache_hit | cache_miss & m_ready & ~flush_ready;
-    wire c_write = cache_miss & m_ready;
+    wire c_write = cache_miss & m_ready; // kseg1 should be uncached
     wire sel_out = cache_hit;
     wire [A_WIDTH-1:0] c_din = m_dout;
     assign p_din = sel_out? c_dout:m_dout;

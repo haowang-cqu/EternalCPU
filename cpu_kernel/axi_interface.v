@@ -5,33 +5,33 @@ module axi_interface(
     input   wire            resetn,
     
     //cache port
-    input   wire    [31:0]  mem_a,
+    (* mark_debug = "true" *) input   wire    [31:0]  mem_a,
     input   wire            mem_access,
     input   wire            mem_write,
     input   wire    [1:0]   mem_size,
     input   wire    [3:0]   mem_sel,
     output  wire            mem_ready,
     input   wire    [31:0]  mem_st_data,
-    output  wire    [31:0]  mem_data,
+    (* mark_debug = "true" *) output  wire    [31:0]  mem_data,
 
     // axi port
     //ar
     output  wire    [3:0]   arid,       //read request id, fixed 4'b0
-    output  wire    [31:0]  araddr,     //read request address
+    (* mark_debug = "true" *) output  wire    [31:0]  araddr,     //read request address
     output  wire    [7:0]   arlen,      //read request transfer length(beats), fixed 4'b0
     output  wire    [2:0]   arsize,     //read request transfer size(bytes per beats)
     output  wire    [1:0]   arburst,    //transfer type, fixed 2'b01
     output  wire    [1:0]   arlock,     //atomic lock, fixed 2'b0
     output  wire    [3:0]   arcache,    //cache property, fixed 4'b0
     output  wire    [2:0]   arprot,     //protect property, fixed 3'b0
-    output  wire            arvalid,    //read request address valid
-    input   wire            arready,    //slave end ready to receive address transfer
+    (* mark_debug = "true" *) output  wire            arvalid,    //read request address valid
+    (* mark_debug = "true" *) input   wire            arready,    //slave end ready to receive address transfer
     //r              
     input   wire    [3:0]   rid,        //equal to arid, can be ignored
-    input   wire    [31:0]  rdata,      //read data
+    (* mark_debug = "true" *) input   wire    [31:0]  rdata,      //read data
     input   wire    [1:0]   rresp,      //this read request finished successfully, can be ignored
     input   wire            rlast,      //the last beat data for this request, can be ignored
-    input   wire            rvalid,     //read data valid
+    (* mark_debug = "true" *) input   wire            rvalid,     //read data valid
     output  wire            rready,     //master end ready to receive data transfer
     //aw           
     output  wire    [3:0]   awid,       //write request id, fixed 4'b0
