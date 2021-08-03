@@ -423,7 +423,7 @@ module mycpu_top(
 		.bready			(i_bready		)
 	);
 
-	axi_crossbar_2x1_wrapper axi_crossbar_2x1_wrapper(
+	axi_crossbar_2x1 axi_crossbar_2x1_wrapper(
 		.M00_AXI_0_araddr	(araddr),
 		.M00_AXI_0_arburst	(arburst),
 		.M00_AXI_0_arcache	(arcache),
