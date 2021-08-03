@@ -28,7 +28,8 @@ module MEM(
     output logic [31:0]  mem_excepttype,
     output logic [31:0]  epc_o,
     output logic [31:0]  ex_cp0data,
-    output logic [31:0]  mem_result
+    output logic [31:0]  mem_result,
+	input  logic [5:0]   ext_int
 );
 
 	// // logic
@@ -79,7 +80,7 @@ module MEM(
 		.waddr_i(mem_rd),
 		.raddr_i(ex_rd),
 		.data_i(mem_aluout),
-		.int_i(6'b000000),
+		.int_i(ext_int),
 		.excepttype_i(mem_excepttype),
 		.current_inst_addr_i(mem_pc),
 		.is_in_delayslot_i(mem_is_in_delayslot),

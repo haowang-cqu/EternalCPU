@@ -207,7 +207,8 @@ module mycpu_top(
 		
 		.mem_we			(memwriteM),// mipsʹ��
 		.mem_en				(memenM),// mipsʹ��
-		.wb_wreg(regwriteW)
+		.wb_wreg(regwriteW),
+		.ext_int			(ext_int)
 	);
 	
 

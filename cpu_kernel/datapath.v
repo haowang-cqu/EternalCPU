@@ -38,9 +38,9 @@ module datapath(
     output wire        mem_we,// mips使用
 	output wire        mem_en,// mips使用
 
-	output	wire wb_wreg
+	output	wire wb_wreg,
 
-
+	input wire [5:0]   ext_int // interrupt, high active
     );
 
 	// IF
@@ -87,7 +87,6 @@ module datapath(
 	wire            ex_is_in_delayslot;	
 	wire [7:0]      ex_except;
 	wire [31:0]     ex_cp0data;
-    wire 			ex_mult_stall;
 
 	//mem stage
 	wire [4:0]      mem_rdst;
@@ -529,7 +528,8 @@ module datapath(
         .mem_excepttype(mem_excepttype),
         .epc_o(epc_o),
         .ex_cp0data(ex_cp0data),
-        .mem_result(mem_result)
+        .mem_result(mem_result),
+		.ext_int(ext_int)
 	);
 
 
