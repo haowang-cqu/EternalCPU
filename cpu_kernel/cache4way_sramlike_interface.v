@@ -224,7 +224,7 @@ assign rdata =  state == `FIN ?     sraml_rdata  :
 
 assign stall =  state==`IDLE&&en&&(!cached||!cache_grant||!(|hit_way)) ||
                 state==`FETCH ||
-                state==`UNCACHE || !handler_fin;
+                state==`UNCACHE && !handler_fin;
 // miss handler interact channel
 assign handler_req= state==`IDLE&&en&&(!cached||cache_grant&&!(|hit_way)) ||
                     state==`FETCH ||

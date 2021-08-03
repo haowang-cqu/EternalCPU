@@ -182,7 +182,7 @@ end
 reg  [31          :0] miss_paddr;
 wire [TAG_BIT-1   :0] miss_ptag; // physical tag of the missed block
 wire [BLKIDX_BIT-1:0] miss_p_blkidx; // physical block tag of the missed block 
-assign miss_ptag = miss_paddr[31:31-TAG_BIT];
+assign miss_ptag = miss_paddr[31:31-TAG_BIT+1];
 assign miss_p_blkidx = miss_paddr[BLKIDX_BIT+WRDIDX_BIT+2-1:WRDIDX_BIT+2];
 reg [BLKIDX_BIT-1:0] miss_v_blkidx; // virtual block index of the missed block
 reg [3           :0] miss_way; // the way where the missed block will be placed
