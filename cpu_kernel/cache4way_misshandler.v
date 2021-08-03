@@ -459,7 +459,7 @@ assign arsize = 3'b010;
 assign arburst = 2'b01;
 assign arlock = 2'b0;
 assign arcache = 4'b0;
-assign arport = 3'b0;
+assign arprot = 3'b0;
 assign arvalid = axi_state==`PEND&&!axi_wr;
 
 // read date channel
@@ -473,7 +473,7 @@ assign awsize = 3'b010;
 assign awburst = 2'b01;
 assign awlock = 2'b0;
 assign awcache = 4'b0;
-assign awport = 3'b0;
+assign awprot = 3'b0;
 assign awvalid = axi_state==`PEND&&axi_wr;
 
 // write data channel

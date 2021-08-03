@@ -235,6 +235,12 @@ module mycpu_top(
 	wire 	 		i_bready;	
 
 	assign  arid 			= 4'b0;
+	assign  awid 			= 4'b0;
+	assign 	wid             = 4'b0;
+	assign  d_rid           = 4'b0;
+	assign 	i_rid           = 4'b0;
+	assign  d_bid           = 4'b0;
+	assign  i_bid           = 4'b0;
 
 	// inst_sram_parameters
 	assign 	rst 			= aresetn;
@@ -437,7 +443,7 @@ module mycpu_top(
 		.M00_AXI_0_arvalid	(arvalid),
 		.M00_AXI_0_awaddr	(awaddr),
 		.M00_AXI_0_awburst	(awburst),
-		.M00_AXI_0_awcache	(arcache),
+		.M00_AXI_0_awcache	(awcache),
 		.M00_AXI_0_awlen	(awlen),
 		.M00_AXI_0_awlock	(awlock),
 		.M00_AXI_0_awprot	(awprot),
