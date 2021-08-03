@@ -1,7 +1,7 @@
 -- Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
--- Date        : Tue Aug  3 21:54:19 2021
+-- Date        : Tue Aug  3 22:48:37 2021
 -- Host        : cyy-pc running 64-bit Debian GNU/Linux 11 (bullseye)
 -- Command     : write_vhdl -force -mode synth_stub
 --               /home/cyy/EternalCPU/cpu_kernel/XilinxIPs/axi_crossbar_2x1/ip/axi_crossbar_2x1_smartconnect_0_0/axi_crossbar_2x1_smartconnect_0_0_stub.vhdl
