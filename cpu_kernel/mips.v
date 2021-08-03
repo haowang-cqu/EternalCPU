@@ -152,8 +152,8 @@ module mycpu_top(
 
 	wire 			d_stall;
 
-	wire 			data_paddr;
-	wire 			inst_paddr;
+	wire 	[31:0]		data_paddr;
+	wire 	[31:0]		inst_paddr;
 	wire 			no_dcache;
 
 	wire 			i_stall;
@@ -431,7 +431,7 @@ module mycpu_top(
 		.M00_AXI_0_arlen	(arlen),
 		.M00_AXI_0_arlock	(arlock),
 		.M00_AXI_0_arprot	(arprot),
-		.M00_AXI_0_arqos	(4'b0),
+		.M00_AXI_0_arqos	(),
 		.M00_AXI_0_arready	(arready),
 		.M00_AXI_0_arsize	(arsize),
 		.M00_AXI_0_arvalid	(arvalid),
@@ -441,7 +441,7 @@ module mycpu_top(
 		.M00_AXI_0_awlen	(awlen),
 		.M00_AXI_0_awlock	(awlock),
 		.M00_AXI_0_awprot	(awprot),
-		.M00_AXI_0_awqos	(4'b0),
+		.M00_AXI_0_awqos	(),
 		.M00_AXI_0_awready	(awready),
 		.M00_AXI_0_awsize	(awsize),
 		.M00_AXI_0_awvalid	(awvalid),
