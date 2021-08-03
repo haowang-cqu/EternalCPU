@@ -10,10 +10,6 @@ module id_reg_harzrd (
     input logic     [31:0]  reg_data2_i,
 
     // 用于判断冒险的数据
-    input logic             ex_we_i,
-    input logic     [4:0]   ex_waddr_i,
-    input logic     [31:0]  ex_wdata_i,
-
     input logic             mem_we_i,
     input logic     [4:0]   mem_waddr_i,
     input logic     [31:0]  mem_wdata_i,
@@ -37,13 +33,11 @@ module id_reg_harzrd (
 
     assign rdata1_o =   (rst_i == 1'b1                                  ) ? `ZeroWord   :
                         (reg_addr1_i == 0                               ) ? reg_data1_i :
-                        // (ex_we_i == 1'b1 && ex_waddr_i == reg_addr1_i   ) ? ex_wdata_i  :
                         (mem_we_i == 1'b1 && mem_waddr_i == reg_addr1_i ) ? mem_wdata_i :
                         (wb_we_i == 1'b1 && wb_waddr_i == reg_addr1_i   ) ? wb_wdata_i  : reg_data1_i;
     
     assign rdata2_o =   (rst_i == 1'b1                                  ) ? `ZeroWord   :
                         (reg_addr2_i == 0                               ) ? reg_data2_i :
-                        // (ex_we_i == 1'b1 && ex_waddr_i == reg_addr2_i   ) ? ex_wdata_i  :
                         (mem_we_i == 1'b1 && mem_waddr_i == reg_addr2_i ) ? mem_wdata_i : 
                         (wb_we_i == 1'b1 && wb_waddr_i == reg_addr2_i   ) ? wb_wdata_i  : reg_data2_i;
 

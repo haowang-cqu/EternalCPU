@@ -17,7 +17,7 @@ module hazard(
 	//execute stage
 	input wire[5:0]     ex_alucontrol,
 	input wire[4:0]     ex_rt,
-	input wire          mem_rmem,
+	input wire          ex_rmem,
 	output wire         ex_flush,
 	output wire         ex_stall,
 	output wire         div_start,
@@ -30,6 +30,10 @@ module hazard(
 	input  wire[31:0]   mem_excepttype,
 	input  wire[31:0]   mem_cp0_epc,
 	output reg [31:0]   mem_newpc,
+
+
+	input wire          mem_rmem,
+	input wire[4:0]     mem_rt,
 
 	//write back stage
 	output wire         wb_flush,
@@ -47,7 +51,7 @@ module hazard(
 		 (ex_alucontrol == `DIVU_CONTROL && div_ready == 1'b0 ) ? 1'b1 : 
 		 (ex_alucontrol == `DIVU_CONTROL && div_ready == 1'b1 ) ? 1'b0 : 1'b0;
 
-	assign id_lwstall = mem_rmem & (ex_rt == id_rs | ex_rt == id_rt);
+	assign id_lwstall = (ex_rmem & (ex_rt == id_rs | ex_rt == id_rt)) | (mem_rmem & (mem_rt == id_rs | mem_rt == id_rt));
 
 	assign except_flush = mem_excepttype != 32'b0;
 

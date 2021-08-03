@@ -23,11 +23,15 @@ module exe2mem(
     input   logic          wcp0_i,
     input   logic          memen_i,
 
+    input   logic [4:0]    ex_rt_i,
+
     output  logic          rmem_o,
     output  logic          wmem_o,
     output  logic          wreg_o,
     output  logic          wcp0_o,
     output  logic          memen_o,
+
+    output   logic [4:0]   ex_rt_o,
 
     output  logic [31:0]   rdata2_o,
     output  logic [31:0]   aluout_o,
@@ -65,6 +69,8 @@ module exe2mem(
             wcp0_o<=0;
             memen_o<=0;
 
+            ex_rt_o<=0;
+
         end
         else if (flush_i == 1'b1) begin
             rdata2_o<=0;
@@ -84,6 +90,8 @@ module exe2mem(
             wreg_o<=0;
             wcp0_o<=0;
             memen_o<=0;
+
+            ex_rt_o<=0;
         end
         else if (stall_i == 1'b1) begin
             rdata2_o<=rdata2_o;
@@ -103,7 +111,7 @@ module exe2mem(
             wreg_o<=wreg_o;
             wcp0_o<=wcp0_o;
             memen_o<=memen_o;
-
+            ex_rt_o<=ex_rt_o;
         end
         else begin
             rdata2_o<=rdata2_i;
@@ -123,7 +131,7 @@ module exe2mem(
             wreg_o<=wreg_i;
             wcp0_o<=wcp0_i;
             memen_o<=memen_i;
-
+            ex_rt_o<=ex_rt_i;
         end
     end
 

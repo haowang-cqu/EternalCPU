@@ -160,9 +160,9 @@ module datapath(
 		.id_rt			    (id_rt),
 		.id_stall			(id_stall),
 
-		.ex_alucontrol		(ex_alucontrol),
-		.ex_rt			    (ex_rt),
-		.mem_rmem			(ex_rmem),
+		.ex_alucontrol			(ex_alucontrol),
+		.ex_rt			(ex_rt),
+		.ex_rmem			(ex_rmem),
 		.ex_flush			(ex_flush),
 		.ex_stall			(ex_stall),
 		.div_start			(ex_start),
@@ -171,16 +171,19 @@ module datapath(
 
 		.mem_stall			(mem_stall),
 		.mem_flush			(mem_flush),
-		.mem_excepttype		(mem_excepttype),
-		.mem_cp0_epc		(epc_o),
+		.mem_excepttype			(mem_excepttype),
+		.mem_cp0_epc			(epc_o),
 		.mem_newpc			(mem_newpc),
+
+		.mem_rmem			(mem_rmem),
+		.mem_rt			(mem_rt),
 
 		.wb_flush			(wb_flush),
 		.stallreq_from_if	(stallreq_from_if),
-		.stallreq_from_mem	(stallreq_from_mem),
-		.wb_stall		(wb_stall),
+		.stallreq_from_mem		(stallreq_from_mem),
+		.wb_stall			(wb_stall),
 
-		.id_j_b_stall      (id_j_b_stall)
+		.id_j_b_stall      		(id_j_b_stall)
 	);
 
     // wb stage
@@ -251,8 +254,7 @@ module datapath(
 
     	.id_instr_i(id_instr),
 
-		.ex_wdata_i(ex_wdata),
-		.mem_wdata_i(mem_result),
+		.mem_wdata_i(mem_wdata),
 		.wb_wdata_i(wb_wdata),
 
 		.id_pc4_i(id_pc4),
@@ -446,7 +448,7 @@ module datapath(
     );
 
 
-
+    wire [4:0] mem_rt;
     // EXE stage to MEM stage triger
     exe2mem datapath_exe2mem(
     	.clk_i(clk),
@@ -473,12 +475,18 @@ module datapath(
 		.wcp0_i(ex_cp0we),
 		.memen_i(ex_memen),
 
+
+		.ex_rt_i(ex_rt),
+
 	    // controller的触发器
 		.rmem_o(mem_rmem),
 		.wmem_o(mem_we),
 		.wreg_o(mem_memwe),
 		.wcp0_o(mem_cp0we),
 		.memen_o(mem_en),
+
+		.ex_rt_o(mem_rt),
+
 
     	.rdata2_o(mem_rdata2),
     	.aluout_o(mem_wdata),

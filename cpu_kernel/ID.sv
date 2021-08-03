@@ -10,7 +10,6 @@ module ID(
 
 	(* mark_debug = "true" *) input  logic  [31:0]    id_instr_i,
 
-	input  logic  [31:0]    ex_wdata_i,
 	input  logic  [31:0]    mem_wdata_i,
 	input  logic  [31:0]    wb_wdata_i,
 
@@ -122,12 +121,6 @@ module ID(
 	(ex_we_i == 1'b1 && ex_waddr_i == id_rs_o  &&  id_rs_o!=0  && (jr_flag_o_hazard==1'b1 | jalr_flag_o_hazard==1'b1) )|
 	(ex_we_i == 1'b1 && ex_waddr_i == id_rt_o  &&  id_rt_o!=0  && (jr_flag_o_hazard==1'b1 | jalr_flag_o_hazard==1'b1) )? 1:0;
 
-//	assign j_b_stall_o =
-//	(ex_we_i == 1'b1 && ex_waddr_i == id_rs_o  &&  id_rs_o!=0   )|
-//	(ex_we_i == 1'b1 && ex_waddr_i == id_rt_o  &&  id_rt_o!=0   )|
-//	(ex_we_i == 1'b1 && ex_waddr_i == id_rs_o  &&  id_rs_o!=0   )|
-//	(ex_we_i == 1'b1 && ex_waddr_i == id_rt_o  &&  id_rt_o!=0   )? 1:0;
-
 	id_reg_harzrd id_id_reg_harzrd (
 		.rst_i(rst_i),
 
@@ -136,10 +129,6 @@ module ID(
 
 		.reg_data1_i(reg_data1),
 		.reg_data2_i(reg_data2),
-
-		.ex_we_i(ex_we_i),
-		.ex_waddr_i(ex_waddr_i),
-		.ex_wdata_i(ex_wdata_i),
 
 		.mem_we_i(mem_we_i),
 		.mem_waddr_i(mem_waddr_i),
