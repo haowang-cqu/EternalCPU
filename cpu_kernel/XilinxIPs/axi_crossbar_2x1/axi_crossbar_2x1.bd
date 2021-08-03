@@ -411,8 +411,7 @@
             "mode": "Slave",
             "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
             "bridges": [
-              "M00_AXI",
-              "M01_AXI"
+              "M00_AXI"
             ],
             "parameters": {
               "NUM_READ_OUTSTANDING": {
@@ -427,8 +426,7 @@
             "mode": "Slave",
             "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
             "bridges": [
-              "M00_AXI",
-              "M01_AXI"
+              "M00_AXI"
             ],
             "parameters": {
               "NUM_READ_OUTSTANDING": {
@@ -467,10 +465,10 @@
       }
     },
     "interface_nets": {
-      "smartconnect_0_M00_AXI": {
+      "S00_AXI_0_1": {
         "interface_ports": [
-          "M00_AXI_0",
-          "smartconnect_0/M00_AXI"
+          "S00_AXI_0",
+          "smartconnect_0/S00_AXI"
         ]
       },
       "S01_AXI_0_1": {
@@ -479,10 +477,10 @@
           "smartconnect_0/S01_AXI"
         ]
       },
-      "S00_AXI_0_1": {
+      "smartconnect_0_M00_AXI": {
         "interface_ports": [
-          "S00_AXI_0",
-          "smartconnect_0/S00_AXI"
+          "M00_AXI_0",
+          "smartconnect_0/M00_AXI"
         ]
       }
     },

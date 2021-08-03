@@ -1,8 +1,8 @@
 //Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
-//Date        : Tue Aug  3 15:06:58 2021
-//Host        : NSCSCC-Server running 64-bit Debian GNU/Linux 11 (bullseye)
+//Date        : Tue Aug  3 21:53:04 2021
+//Host        : cyy-pc running 64-bit Debian GNU/Linux 11 (bullseye)
 //Command     : generate_target axi_crossbar_2x1_wrapper.bd
 //Design      : axi_crossbar_2x1_wrapper
 //Purpose     : IP block netlist

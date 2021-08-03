@@ -58,7 +58,7 @@ set run_remote_bd_flow 1
 if { $run_remote_bd_flow == 1 } {
   # Set the reference directory for source file relative paths (by default 
   # the value is script directory path)
-  set origin_dir ./workspaces/Xilinx/nscscc2021_group_v0.01/perf_test_v0.01/soc_axi_perf/rtl/xilinx_ip
+  set origin_dir ./EternalCPU/cpu_kernel/XilinxIPs
 
   # Use origin directory path location variable, if specified in the tcl shell
   if { [info exists ::origin_dir_loc] } {

@@ -1,7 +1,7 @@
 -- Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
--- Date        : Sun Aug  1 14:49:44 2021
+-- Date        : Tue Aug  3 21:21:13 2021
 -- Host        : cyy-pc running 64-bit Debian GNU/Linux 11 (bullseye)
 -- Command     : write_vhdl -force -mode synth_stub
 --               /home/cyy/EternalCPU/nscscc/perf_test_v0.01/soc_axi_perf/rtl/xilinx_ip/clk_pll_75/clk_pll_75_stub.vhdl

@@ -1,10 +1,10 @@
 -- Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
--- Date        : Tue Aug  3 20:10:59 2021
--- Host        : NSCSCC-Server running 64-bit Debian GNU/Linux 11 (bullseye)
+-- Date        : Tue Aug  3 21:54:19 2021
+-- Host        : cyy-pc running 64-bit Debian GNU/Linux 11 (bullseye)
 -- Command     : write_vhdl -force -mode synth_stub
---               /home/andy/workspaces/EternalCPU/cpu_kernel/XilinxIPs/axi_crossbar_2x1/ip/axi_crossbar_2x1_smartconnect_0_0/axi_crossbar_2x1_smartconnect_0_0_stub.vhdl
+--               /home/cyy/EternalCPU/cpu_kernel/XilinxIPs/axi_crossbar_2x1/ip/axi_crossbar_2x1_smartconnect_0_0/axi_crossbar_2x1_smartconnect_0_0_stub.vhdl
 -- Design      : axi_crossbar_2x1_smartconnect_0_0
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7a200tfbg676-2
