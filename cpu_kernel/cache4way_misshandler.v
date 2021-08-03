@@ -415,7 +415,7 @@ assign axi_finished = (rvalid&&rready&&rlast||bvalid&&bready&&bresp==`OKAY)
 //logic of generating output
 // sram interact channel
 assign fin = axi_finished&&(state==`UNCACHE||state==`FILL);
-assign req_rdate = rdata;
+assign req_rdata = rdata;
 //cache access request
 assign cache_req =  state==`TRANSGEN||
                     state==`WRBK||
