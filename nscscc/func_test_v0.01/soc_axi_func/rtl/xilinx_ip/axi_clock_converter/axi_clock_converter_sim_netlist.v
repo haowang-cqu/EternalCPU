@@ -1,7 +1,7 @@
 // Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
-// Date        : Sun Aug  1 14:34:11 2021
+// Date        : Tue Aug  3 21:18:51 2021
 // Host        : cyy-pc running 64-bit Debian GNU/Linux 11 (bullseye)
 // Command     : write_verilog -force -mode funcsim
 //               /home/cyy/EternalCPU/nscscc/func_test_v0.01/soc_axi_func/rtl/xilinx_ip/axi_clock_converter/axi_clock_converter_sim_netlist.v
