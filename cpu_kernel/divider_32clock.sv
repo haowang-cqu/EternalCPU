@@ -27,6 +27,9 @@ module divider_32clock(
     logic [31:0]         op1_temp;
     logic [31:0]         op2_temp;
 
+    logic[31:0]          opdata1_temp;
+    logic[31:0]          opdata2_temp;
+
     logic [1:0]          STATE;
 
     localparam DivFree   = 2'b00;
@@ -82,8 +85,8 @@ module divider_32clock(
                             dividend <= {`ZeroWord,`ZeroWord};
                             dividend[32:1] <= op1_temp;
                             divisor <= op2_temp;
-                            opdata1 <= opdata1_i;
-                            opdata2 <= opdata2_i;
+                            opdata1_temp <= opdata1_i;
+                            opdata2_temp <= opdata2_i;
                         end
                     end else 
                     begin
@@ -114,11 +117,11 @@ module divider_32clock(
                             count <= count + 1;
                         end else 
                         begin
-                            if((signed_div_op == 1'b1) && ((opdata1[31] ^ opdata2[31]) == 1'b1)) 
+                            if((signed_div_op == 1'b1) && ((opdata1_temp[31] ^ opdata2_temp[31]) == 1'b1)) 
                             begin
                                 dividend[31:0] <= (~dividend[31:0] + 1);
                             end
-                            if((signed_div_op == 1'b1) && ((opdata1[31] ^ dividend[64]) == 1'b1)) 
+                            if((signed_div_op == 1'b1) && ((opdata1_temp[31] ^ dividend[64]) == 1'b1)) 
                             begin
                                 dividend[64:33] <= (~dividend[64:33] + 1);
                             end
