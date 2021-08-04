@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 `include "defines.vh"
-
+`include "compile_options.vh"
 module mycpu_top(
 	input 	wire	[5:0] 	ext_int,
 	input 	wire 		aclk,
@@ -326,7 +326,11 @@ module mycpu_top(
 		.no_dcache(no_dcache)
 	);
 
-	cache4way data_cache4way(
+	cache4way #(
+		.BLKIDX_BIT(`D_CACHE_INDEX), 
+		.WRDIDX_BIT(`D_CACHE_WRD_INDEX)
+	)
+	data_cache4way(
 		.rst			(~rst), 
 		.clk			(clk), 
 
@@ -378,7 +382,11 @@ module mycpu_top(
 		.bready			(d_bready		)
 	);
 
-	cache4way instr_cache4way(
+	cache4way #(
+		.BLKIDX_BIT(`I_CACHE_INDEX), 
+		.WRDIDX_BIT(`I_CACHE_WRD_INDEX)
+	)
+	instr_cache4way(
 		.rst			(~rst), 
 		.clk			(clk), 
 

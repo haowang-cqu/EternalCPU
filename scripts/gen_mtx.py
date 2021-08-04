@@ -8,20 +8,26 @@ import subprocess
 
 # CONFIG BEGIN
 TO_GEN = [
-	{"PLL_FREQ":"clk_pll","I_CACHE_INDEX":"12","D_CACHE_INDEX":"12"},
-	{"PLL_FREQ":"clk_pll","I_CACHE_INDEX":"14","D_CACHE_INDEX":"14"},
+	{"PLL_FREQ":"clk_pll","I_CACHE_INDEX":"5","D_CACHE_INDEX":"5","I_CACHE_WRD_INDEX":"4", "D_CACHE_WRD_IDNEX":"4"},
+	{"PLL_FREQ":"clk_pll","I_CACHE_INDEX":"4","D_CACHE_INDEX":"4","I_CACHE_WRD_INDEX":"4", "D_CACHE_WRD_IDNEX":"4"},
 	#{"PLL_FREQ":"clk_pll_70","I_CACHE_INDEX":"12","D_CACHE_INDEX":"12"},
 	#{"PLL_FREQ":"clk_pll_80","I_CACHE_INDEX":"10","D_CACHE_INDEX":"10"},
-	{"PLL_FREQ":"clk_pll_90","I_CACHE_INDEX":"4","D_CACHE_INDEX":"4"},
-	{"PLL_FREQ":"clk_pll_90","I_CACHE_INDEX":"2","D_CACHE_INDEX":"2"},
-	{"PLL_FREQ":"clk_pll","I_CACHE_INDEX":"16","D_CACHE_INDEX":"16"},
-	{"PLL_FREQ":"clk_pll_70","I_CACHE_INDEX":"10","D_CACHE_INDEX":"10"},
-	{"PLL_FREQ":"clk_pll_80","I_CACHE_INDEX":"8","D_CACHE_INDEX":"8"}
+	{"PLL_FREQ":"clk_pll","I_CACHE_INDEX":"3","D_CACHE_INDEX":"3", "I_CACHE_WRD_INDEX":"4", "D_CACHE_WRD_IDNEX":"4"},
+	{"PLL_FREQ":"clk_pll_90","I_CACHE_INDEX":"5","D_CACHE_INDEX":"5","I_CACHE_WRD_INDEX":"4", "D_CACHE_WRD_IDNEX":"4"},
+	{"PLL_FREQ":"clk_pll_90","I_CACHE_INDEX":"4","D_CACHE_INDEX":"4","I_CACHE_WRD_INDEX":"4", "D_CACHE_WRD_IDNEX":"4"},
+	{"PLL_FREQ":"clk_pll_90","I_CACHE_INDEX":"3","D_CACHE_INDEX":"3","I_CACHE_WRD_INDEX":"4", "D_CACHE_WRD_IDNEX":"4"},
+	{"PLL_FREQ":"clk_pll_80","I_CACHE_INDEX":"5","D_CACHE_INDEX":"5","I_CACHE_WRD_INDEX":"4", "D_CACHE_WRD_IDNEX":"4"},
+	{"PLL_FREQ":"clk_pll_80","I_CACHE_INDEX":"4","D_CACHE_INDEX":"4","I_CACHE_WRD_INDEX":"4", "D_CACHE_WRD_IDNEX":"4"},
+	{"PLL_FREQ":"clk_pll_80","I_CACHE_INDEX":"3","D_CACHE_INDEX":"3","I_CACHE_WRD_INDEX":"4", "D_CACHE_WRD_IDNEX":"4"},
+	{"PLL_FREQ":"clk_pll_70","I_CACHE_INDEX":"5","D_CACHE_INDEX":"5","I_CACHE_WRD_INDEX":"4", "D_CACHE_WRD_IDNEX":"4"},
+	{"PLL_FREQ":"clk_pll_70","I_CACHE_INDEX":"4","D_CACHE_INDEX":"4","I_CACHE_WRD_INDEX":"4", "D_CACHE_WRD_IDNEX":"4"},
+	{"PLL_FREQ":"clk_pll_70","I_CACHE_INDEX":"3","D_CACHE_INDEX":"3","I_CACHE_WRD_INDEX":"4", "D_CACHE_WRD_IDNEX":"4"},
+
 	#{"PLL_FREQ":"clk_pll_90","I_CACHE_INDEX":"6","D_CACHE_INDEX":"6"},
 ]
 VIVADO = "/tools/Xilinx/Vivado/2019.2/bin/vivado"
 BUILD_PREFIX = "build/" + git.Repo(search_parent_directories=True).head.object.hexsha[0:7]
-MAX_TASKS = 4
+MAX_TASKS = 8
 # CONFIG END
 
 executor = ThreadPoolExecutor(max_workers=MAX_TASKS)
