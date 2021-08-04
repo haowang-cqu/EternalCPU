@@ -398,188 +398,188 @@ u_mux(
 
 assign mux_cache_grant = 1'b1; // since we haven't include judge and optimizer
 // cache data storage
-// cache_data #(
-//     .BLKIDX_BIT(BLKIDX_BIT), 
-//     .WRDIDX_BIT(WRDIDX_BIT)
-// ) u_cache_data_0(
-//     .clk       (clk), 
-//     .rst       (rst), 
-//     .blkidx    (mux_cache_blkidx), 
-//     .wrdidx    (mux_cache_wrdidx), 
-//     .wdata     (mux_cache_wdata[31:0]), 
-//     .wen       (mux_cache_wen  [ 3:0]), 
-//     .rdata     (mux_cache_rdata[31:0])
-// );
-
-// cache_data #(
-//     .BLKIDX_BIT(BLKIDX_BIT), 
-//     .WRDIDX_BIT(WRDIDX_BIT) 
-// ) u_cache_data_1(
-//     .clk       (clk), 
-//     .rst       (rst), 
-//     .blkidx    (mux_cache_blkidx), 
-//     .wrdidx    (mux_cache_wrdidx), 
-//     .wdata     (mux_cache_wdata[63:32]), 
-//     .wen       (mux_cache_wen  [ 7: 4]), 
-//     .rdata     (mux_cache_rdata[63:32])
-// );
-
-// cache_data #(
-//     .BLKIDX_BIT(BLKIDX_BIT), 
-//     .WRDIDX_BIT(WRDIDX_BIT) 
-// ) u_cache_data_2(
-//     .clk       (clk), 
-//     .rst       (rst), 
-//     .blkidx    (mux_cache_blkidx), 
-//     .wrdidx    (mux_cache_wrdidx), 
-//     .wdata     (mux_cache_wdata[95:64]), 
-//     .wen       (mux_cache_wen  [11: 8]), 
-//     .rdata     (mux_cache_rdata[95:64])
-// );
-
-// cache_data #(
-//     .BLKIDX_BIT(BLKIDX_BIT), 
-//     .WRDIDX_BIT(WRDIDX_BIT) 
-// ) u_cache_data_3(
-//     .clk       (clk), 
-//     .rst       (rst), 
-//     .blkidx    (mux_cache_blkidx), 
-//     .wrdidx    (mux_cache_wrdidx), 
-//     .wdata     (mux_cache_wdata[127:96]), 
-//     .wen       (mux_cache_wen  [15 :12]), 
-//     .rdata     (mux_cache_rdata[127:96])
-// );
-
-bram_cache_data_4KB bram_cache_data0(
-    .clka (clk), 
-    .wea  (mux_cache_wen[3:0]), 
-    .addra({mux_cache_blkidx, mux_cache_wrdidx}), 
-    .dina (mux_cache_wdata[31:0]), 
-    .clkb(~clk),
-    .addrb({mux_cache_blkidx, mux_cache_wrdidx}),
-    .doutb(mux_cache_rdata[31:0])
+cache_data #(
+    .BLKIDX_BIT(BLKIDX_BIT), 
+    .WRDIDX_BIT(WRDIDX_BIT)
+) u_cache_data_0(
+    .clk       (clk), 
+    .rst       (rst), 
+    .blkidx    (mux_cache_blkidx), 
+    .wrdidx    (mux_cache_wrdidx), 
+    .wdata     (mux_cache_wdata[31:0]), 
+    .wen       (mux_cache_wen  [ 3:0]), 
+    .rdata     (mux_cache_rdata[31:0])
 );
 
-bram_cache_data_4KB bram_cache_data1(
-    .clka (clk), 
-    .wea  (mux_cache_wen[7:4]), 
-    .addra({mux_cache_blkidx, mux_cache_wrdidx}), 
-    .dina (mux_cache_wdata[63:32]), 
-    .clkb(~clk), 
-    .addrb({mux_cache_blkidx, mux_cache_wrdidx}), 
-    .doutb(mux_cache_rdata[63:32])
+cache_data #(
+    .BLKIDX_BIT(BLKIDX_BIT), 
+    .WRDIDX_BIT(WRDIDX_BIT) 
+) u_cache_data_1(
+    .clk       (clk), 
+    .rst       (rst), 
+    .blkidx    (mux_cache_blkidx), 
+    .wrdidx    (mux_cache_wrdidx), 
+    .wdata     (mux_cache_wdata[63:32]), 
+    .wen       (mux_cache_wen  [ 7: 4]), 
+    .rdata     (mux_cache_rdata[63:32])
 );
 
-bram_cache_data_4KB bram_cache_data2(
-    .clka (clk), 
-    .wea  (mux_cache_wen[11:8]), 
-    .addra({mux_cache_blkidx, mux_cache_wrdidx}), 
-    .dina (mux_cache_wdata[95:64]), 
-    .clkb (~clk),
-    .addrb({mux_cache_blkidx, mux_cache_wrdidx}), 
-    .doutb(mux_cache_rdata[95:64])
+cache_data #(
+    .BLKIDX_BIT(BLKIDX_BIT), 
+    .WRDIDX_BIT(WRDIDX_BIT) 
+) u_cache_data_2(
+    .clk       (clk), 
+    .rst       (rst), 
+    .blkidx    (mux_cache_blkidx), 
+    .wrdidx    (mux_cache_wrdidx), 
+    .wdata     (mux_cache_wdata[95:64]), 
+    .wen       (mux_cache_wen  [11: 8]), 
+    .rdata     (mux_cache_rdata[95:64])
 );
 
-bram_cache_data_4KB bram_cache_data3(
-    .clka (clk), 
-    .wea  (mux_cache_wen[15:12]), 
-    .addra({mux_cache_blkidx, mux_cache_wrdidx}), 
-    .dina (mux_cache_wdata[127:96]), 
-    .clkb(~clk), 
-    .addrb({mux_cache_blkidx, mux_cache_wrdidx}), 
-    .doutb(mux_cache_rdata[127:96])
+cache_data #(
+    .BLKIDX_BIT(BLKIDX_BIT), 
+    .WRDIDX_BIT(WRDIDX_BIT) 
+) u_cache_data_3(
+    .clk       (clk), 
+    .rst       (rst), 
+    .blkidx    (mux_cache_blkidx), 
+    .wrdidx    (mux_cache_wrdidx), 
+    .wdata     (mux_cache_wdata[127:96]), 
+    .wen       (mux_cache_wen  [15 :12]), 
+    .rdata     (mux_cache_rdata[127:96])
 );
+
+// bram_cache_data_4KB bram_cache_data0(
+//     .clka (clk), 
+//     .wea  (mux_cache_wen[3:0]), 
+//     .addra({mux_cache_blkidx, mux_cache_wrdidx}), 
+//     .dina (mux_cache_wdata[31:0]), 
+//     .clkb(~clk),
+//     .addrb({mux_cache_blkidx, mux_cache_wrdidx}),
+//     .doutb(mux_cache_rdata[31:0])
+// );
+
+// bram_cache_data_4KB bram_cache_data1(
+//     .clka (clk), 
+//     .wea  (mux_cache_wen[7:4]), 
+//     .addra({mux_cache_blkidx, mux_cache_wrdidx}), 
+//     .dina (mux_cache_wdata[63:32]), 
+//     .clkb(~clk), 
+//     .addrb({mux_cache_blkidx, mux_cache_wrdidx}), 
+//     .doutb(mux_cache_rdata[63:32])
+// );
+
+// bram_cache_data_4KB bram_cache_data2(
+//     .clka (clk), 
+//     .wea  (mux_cache_wen[11:8]), 
+//     .addra({mux_cache_blkidx, mux_cache_wrdidx}), 
+//     .dina (mux_cache_wdata[95:64]), 
+//     .clkb (~clk),
+//     .addrb({mux_cache_blkidx, mux_cache_wrdidx}), 
+//     .doutb(mux_cache_rdata[95:64])
+// );
+
+// bram_cache_data_4KB bram_cache_data3(
+//     .clka (clk), 
+//     .wea  (mux_cache_wen[15:12]), 
+//     .addra({mux_cache_blkidx, mux_cache_wrdidx}), 
+//     .dina (mux_cache_wdata[127:96]), 
+//     .clkb(~clk), 
+//     .addrb({mux_cache_blkidx, mux_cache_wrdidx}), 
+//     .doutb(mux_cache_rdata[127:96])
+// );
 
 //cache meta storage
 // tag field
-// cache_meta #(
-//     .WIDTH     (32-2-WRDIDX_BIT-BLKIDX_BIT), 
-//     .BLKIDX_BIT(BLKIDX_BIT                ), 
-// )u_cache_tag_0(
-//     .clk       (clk), 
-//     .rst       (rst), 
-//     .wen       (mux_wen_cache_tag[0]), 
-//     .blkidx    (mux_cache_blkidx), 
-//     .wdata     (mux_cache_tag_w[TAG_BIT-1 :0]), 
-//     .rdata     (mux_cache_tag_r[TAG_BIT-1 :0])
-// );
-
-// cache_meta #(
-//     .WIDTH     (32-2-WRDIDX_BIT-BLKIDX_BIT), 
-//     .BLKIDX_BIT(BLKIDX_BIT                ), 
-// )u_cache_tag_1(
-//     .clk       (clk), 
-//     .rst       (rst), 
-//     .wen       (mux_wen_cache_tag[1]), 
-//     .blkidx    (mux_cache_blkidx), 
-//     .wdata     (mux_cache_tag_w[TAG_BIT*2-1 :TAG_BIT]), 
-//     .rdata     (mux_cache_tag_r[TAG_BIT*2-1 :TAG_BIT])
-// );
-
-// cache_meta #(
-//     .WIDTH     (32-2-WRDIDX_BIT-BLKIDX_BIT), 
-//     .BLKIDX_BIT(BLKIDX_BIT                ), 
-// )u_cache_tag_2(
-//     .clk       (clk), 
-//     .rst       (rst), 
-//     .wen       (mux_wen_cache_tag[2]), 
-//     .blkidx    (mux_cache_blkidx), 
-//     .wdata     (mux_cache_tag_w[TAG_BIT*3-1 :TAG_BIT*2]), 
-//     .rdata     (mux_cache_tag_r[TAG_BIT*3-1 :TAG_BIT*2])
-// );
-
-// cache_meta #(
-//     .WIDTH     (32-2-WRDIDX_BIT-BLKIDX_BIT), 
-//     .BLKIDX_BIT(BLKIDX_BIT                ), 
-// )u_cache_tag_3(
-//     .clk       (clk), 
-//     .rst       (rst), 
-//     .wen       (mux_wen_cache_tag[3]), 
-//     .blkidx    (mux_cache_blkidx), 
-//     .wdata     (mux_cache_tag_w[TAG_BIT*4-1 :TAG_BIT*3]), 
-//     .rdata     (mux_cache_tag_r[TAG_BIT*4-1 :TAG_BIT*3])
-// );
-
-
-bram_cache_tag_20bit_64line bram_cache_tag0(
-    .clka (clk), 
-    .wea  (mux_wen_cache_tag[0]), 
-    .addra(mux_cache_blkidx), 
-    .dina (mux_cache_tag_w[TAG_BIT-1:0]), 
-    .clkb(~clk), 
-    .addrb(mux_cache_blkidx), 
-    .doutb(mux_cache_tag_r[TAG_BIT-1:0])
+cache_meta #(
+    .WIDTH     (TAG_BIT), 
+    .BLKIDX_BIT(BLKIDX_BIT                )
+)u_cache_tag_0(
+    .clk       (clk), 
+    .rst       (rst), 
+    .wen       (mux_wen_cache_tag[0]), 
+    .blkidx    (mux_cache_blkidx), 
+    .wdata     (mux_cache_tag_w[TAG_BIT-1 :0]), 
+    .rdata     (mux_cache_tag_r[TAG_BIT-1 :0])
 );
 
-bram_cache_tag_20bit_64line bram_cache_tag1(
-    .clka (clk), 
-    .wea  (mux_wen_cache_tag[1]), 
-    .addra(mux_cache_blkidx), 
-    .dina (mux_cache_tag_w[TAG_BIT*2-1:TAG_BIT]), 
-    .clkb(~clk), 
-    .addrb(mux_cache_blkidx), 
-    .doutb(mux_cache_tag_r[TAG_BIT*2-1:TAG_BIT])
+cache_meta #(
+    .WIDTH     (TAG_BIT                   ), 
+    .BLKIDX_BIT(BLKIDX_BIT                ) 
+)u_cache_tag_1(
+    .clk       (clk), 
+    .rst       (rst), 
+    .wen       (mux_wen_cache_tag[1]), 
+    .blkidx    (mux_cache_blkidx), 
+    .wdata     (mux_cache_tag_w[TAG_BIT*2-1 :TAG_BIT]), 
+    .rdata     (mux_cache_tag_r[TAG_BIT*2-1 :TAG_BIT])
 );
 
-bram_cache_tag_20bit_64line bram_cache_tag2(
-    .clka (clk), 
-    .wea  (mux_wen_cache_tag[2]), 
-    .addra(mux_cache_blkidx), 
-    .dina (mux_cache_tag_w[TAG_BIT*3-1:TAG_BIT*2]), 
-    .clkb(~clk), 
-    .addrb(mux_cache_blkidx), 
-    .doutb(mux_cache_tag_r[TAG_BIT*3-1:TAG_BIT*2])
+cache_meta #(
+    .WIDTH     (TAG_BIT                   ), 
+    .BLKIDX_BIT(BLKIDX_BIT                ) 
+)u_cache_tag_2(
+    .clk       (clk), 
+    .rst       (rst), 
+    .wen       (mux_wen_cache_tag[2]), 
+    .blkidx    (mux_cache_blkidx), 
+    .wdata     (mux_cache_tag_w[TAG_BIT*3-1 :TAG_BIT*2]), 
+    .rdata     (mux_cache_tag_r[TAG_BIT*3-1 :TAG_BIT*2])
 );
 
-bram_cache_tag_20bit_64line bram_cache_tag3(
-    .clka (clk), 
-    .wea  (mux_wen_cache_tag[3]), 
-    .addra(mux_cache_blkidx), 
-    .dina (mux_cache_tag_w[TAG_BIT*4-1:TAG_BIT*3]), 
-    .clkb(~clk), 
-    .addrb(mux_cache_blkidx), 
-    .doutb(mux_cache_tag_r[TAG_BIT*4-1:TAG_BIT*3])
+cache_meta #(
+    .WIDTH     (TAG_BIT                   ), 
+    .BLKIDX_BIT(BLKIDX_BIT                )
+)u_cache_tag_3(
+    .clk       (clk), 
+    .rst       (rst), 
+    .wen       (mux_wen_cache_tag[3]), 
+    .blkidx    (mux_cache_blkidx), 
+    .wdata     (mux_cache_tag_w[TAG_BIT*4-1 :TAG_BIT*3]), 
+    .rdata     (mux_cache_tag_r[TAG_BIT*4-1 :TAG_BIT*3])
 );
+
+
+// bram_cache_tag_20bit_64line bram_cache_tag0(
+//     .clka (clk), 
+//     .wea  (mux_wen_cache_tag[0]), 
+//     .addra(mux_cache_blkidx), 
+//     .dina (mux_cache_tag_w[TAG_BIT-1:0]), 
+//     .clkb(~clk), 
+//     .addrb(mux_cache_blkidx), 
+//     .doutb(mux_cache_tag_r[TAG_BIT-1:0])
+// );
+
+// bram_cache_tag_20bit_64line bram_cache_tag1(
+//     .clka (clk), 
+//     .wea  (mux_wen_cache_tag[1]), 
+//     .addra(mux_cache_blkidx), 
+//     .dina (mux_cache_tag_w[TAG_BIT*2-1:TAG_BIT]), 
+//     .clkb(~clk), 
+//     .addrb(mux_cache_blkidx), 
+//     .doutb(mux_cache_tag_r[TAG_BIT*2-1:TAG_BIT])
+// );
+
+// bram_cache_tag_20bit_64line bram_cache_tag2(
+//     .clka (clk), 
+//     .wea  (mux_wen_cache_tag[2]), 
+//     .addra(mux_cache_blkidx), 
+//     .dina (mux_cache_tag_w[TAG_BIT*3-1:TAG_BIT*2]), 
+//     .clkb(~clk), 
+//     .addrb(mux_cache_blkidx), 
+//     .doutb(mux_cache_tag_r[TAG_BIT*3-1:TAG_BIT*2])
+// );
+
+// bram_cache_tag_20bit_64line bram_cache_tag3(
+//     .clka (clk), 
+//     .wea  (mux_wen_cache_tag[3]), 
+//     .addra(mux_cache_blkidx), 
+//     .dina (mux_cache_tag_w[TAG_BIT*4-1:TAG_BIT*3]), 
+//     .clkb(~clk), 
+//     .addrb(mux_cache_blkidx), 
+//     .doutb(mux_cache_tag_r[TAG_BIT*4-1:TAG_BIT*3])
+// );
 
 // valid bit
 cache_meta_1bit #(
@@ -671,27 +671,27 @@ cache_meta_1bit #(
     .rdata     (mux_cache_dirty_r[3])
 );
 
-// // history info
-// cache_meta #(
-//     .WIDTH     (3         ), 
-//     .BLKIDX_BIT(BLKIDX_BIT)
-// )u_cache_history(
-//     .clk       (clk), 
-//     .rst       (rst), 
-//     .wen       (mux_cache_wen_history), 
-//     .blkidx    (mux_cache_blkidx), 
-//     .wdata     (mux_cache_history_w), 
-//     .rdata     (mux_cache_history_r)
-// );
-bram_cache_history_3bit_64line bram_cache_history(
-    .clka (clk), 
-    .wea  (mux_cache_wen_history), 
-    .addra(mux_cache_blkidx), 
-    .dina (mux_cache_history_w), 
-    .clkb (~clk), 
-    .addrb(mux_cache_blkidx),
-    .doutb(mux_cache_history_r)
+// history info
+cache_meta #(
+    .WIDTH     (3         ), 
+    .BLKIDX_BIT(BLKIDX_BIT)
+)u_cache_history(
+    .clk       (clk), 
+    .rst       (rst), 
+    .wen       (mux_cache_wen_history), 
+    .blkidx    (mux_cache_blkidx), 
+    .wdata     (mux_cache_history_w), 
+    .rdata     (mux_cache_history_r)
 );
+// bram_cache_history_3bit_64line bram_cache_history(
+//     .clka (clk), 
+//     .wea  (mux_cache_wen_history), 
+//     .addra(mux_cache_blkidx), 
+//     .dina (mux_cache_history_w), 
+//     .clkb (~clk), 
+//     .addrb(mux_cache_blkidx),
+//     .doutb(mux_cache_history_r)
+// );
 
 
     
