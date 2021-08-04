@@ -451,35 +451,43 @@ assign mux_cache_grant = 1'b1; // since we haven't include judge and optimizer
 // );
 
 bram_cache_data_4KB bram_cache_data0(
-    .clka (~clk), 
+    .clka (clk), 
     .wea  (mux_cache_wen[3:0]), 
     .addra({mux_cache_blkidx, mux_cache_wrdidx}), 
     .dina (mux_cache_wdata[31:0]), 
-    .douta(mux_cache_rdata[31:0])
+    .clkb(~clk),
+    .addrb({mux_cache_blkidx, mux_cache_wrdidx}),
+    .doutb(mux_cache_rdata[31:0])
 );
 
 bram_cache_data_4KB bram_cache_data1(
-    .clka (~clk), 
+    .clka (clk), 
     .wea  (mux_cache_wen[7:4]), 
     .addra({mux_cache_blkidx, mux_cache_wrdidx}), 
     .dina (mux_cache_wdata[63:32]), 
-    .douta(mux_cache_rdata[63:32])
+    .clkb(~clk), 
+    .addrb({mux_cache_blkidx, mux_cache_wrdidx}), 
+    .doutb(mux_cache_rdata[63:32])
 );
 
 bram_cache_data_4KB bram_cache_data2(
-    .clka (~clk), 
+    .clka (clk), 
     .wea  (mux_cache_wen[11:8]), 
     .addra({mux_cache_blkidx, mux_cache_wrdidx}), 
     .dina (mux_cache_wdata[95:64]), 
-    .douta(mux_cache_rdata[95:64])
+    .clkb (~clk),
+    .addrb({mux_cache_blkidx, mux_cache_wrdidx}), 
+    .doutb(mux_cache_rdata[95:64])
 );
 
 bram_cache_data_4KB bram_cache_data3(
-    .clka (~clk), 
+    .clka (clk), 
     .wea  (mux_cache_wen[15:12]), 
     .addra({mux_cache_blkidx, mux_cache_wrdidx}), 
     .dina (mux_cache_wdata[127:96]), 
-    .douta(mux_cache_rdata[127:96])
+    .clkb(~clk), 
+    .addrb({mux_cache_blkidx, mux_cache_wrdidx}), 
+    .doutb(mux_cache_rdata[127:96])
 );
 
 //cache meta storage
@@ -534,35 +542,43 @@ bram_cache_data_4KB bram_cache_data3(
 
 
 bram_cache_tag_20bit_64line bram_cache_tag0(
-    .clka (~clk), 
+    .clka (clk), 
     .wea  (mux_wen_cache_tag[0]), 
     .addra(mux_cache_blkidx), 
     .dina (mux_cache_tag_w[TAG_BIT-1:0]), 
-    .douta(mux_cache_tag_r[TAG_BIT-1:0])
+    .clkb(~clk), 
+    .addrb(mux_cache_blkidx), 
+    .doutb(mux_cache_tag_r[TAG_BIT-1:0])
 );
 
 bram_cache_tag_20bit_64line bram_cache_tag1(
-    .clka (~clk), 
+    .clka (clk), 
     .wea  (mux_wen_cache_tag[1]), 
     .addra(mux_cache_blkidx), 
     .dina (mux_cache_tag_w[TAG_BIT*2-1:TAG_BIT]), 
-    .douta(mux_cache_tag_r[TAG_BIT*2-1:TAG_BIT])
+    .clkb(~clk), 
+    .addrb(mux_cache_blkidx), 
+    .doutb(mux_cache_tag_r[TAG_BIT*2-1:TAG_BIT])
 );
 
 bram_cache_tag_20bit_64line bram_cache_tag2(
-    .clka (~clk), 
+    .clka (clk), 
     .wea  (mux_wen_cache_tag[2]), 
     .addra(mux_cache_blkidx), 
     .dina (mux_cache_tag_w[TAG_BIT*3-1:TAG_BIT*2]), 
-    .douta(mux_cache_tag_r[TAG_BIT*3-1:TAG_BIT*2])
+    .clkb(~clk), 
+    .addrb(mux_cache_blkidx), 
+    .doutb(mux_cache_tag_r[TAG_BIT*3-1:TAG_BIT*2])
 );
 
 bram_cache_tag_20bit_64line bram_cache_tag3(
-    .clka (~clk), 
+    .clka (clk), 
     .wea  (mux_wen_cache_tag[3]), 
     .addra(mux_cache_blkidx), 
     .dina (mux_cache_tag_w[TAG_BIT*4-1:TAG_BIT*3]), 
-    .douta(mux_cache_tag_r[TAG_BIT*4-1:TAG_BIT*3])
+    .clkb(~clk), 
+    .addrb(mux_cache_blkidx), 
+    .doutb(mux_cache_tag_r[TAG_BIT*4-1:TAG_BIT*3])
 );
 
 // valid bit
@@ -668,11 +684,13 @@ cache_meta_1bit #(
 //     .rdata     (mux_cache_history_r)
 // );
 bram_cache_history_3bit_64line bram_cache_history(
-    .clka (~clk), 
+    .clka (clk), 
     .wea  (mux_cache_wen_history), 
     .addra(mux_cache_blkidx), 
     .dina (mux_cache_history_w), 
-    .douta(mux_cache_history_r)
+    .clkb (~clk), 
+    .addrb(mux_cache_blkidx),
+    .doutb(mux_cache_history_r)
 );
 
 

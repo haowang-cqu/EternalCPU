@@ -341,7 +341,7 @@ always @(posedge clk) begin
             end
         end
         `WRBK: begin
-            if (bvalid&&bresp&&bresp==`OKAY&&axi_seq==0) begin
+            if (bvalid&&bready&&bresp==`OKAY&&axi_seq==0) begin
                 axi_wr    <= 0;
                 axi_wen   <= 0;
                 axi_addr  <= miss_paddr;
