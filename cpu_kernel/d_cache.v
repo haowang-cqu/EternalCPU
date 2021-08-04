@@ -26,7 +26,7 @@ module d_cache #(parameter A_WIDTH = 32, parameter C_INDEX = `D_CACHE_INDEX)(
         input wire m_ready
     );
 
-    wire flag;
+    wire uncached;
     
 
     wire                memwriteM;          //p_rw
@@ -95,15 +95,15 @@ module d_cache #(parameter A_WIDTH = 32, parameter C_INDEX = `D_CACHE_INDEX)(
     assign rst = ~clrn;
     assign data_data_ok = m_ready;
     assign data_rdata= m_dout ;
-    assign m_a =flag ? {3'b000,aluoutM[28:0]} : data_addr;
-    assign m_din = flag ? p_dout : data_wdata;
-    assign m_strobe = flag ? p_strobe : data_req;
-    assign m_wen = flag? p_wen : data_wen;
-    assign m_size = flag? p_size: data_size;
-    assign m_rw =flag ? p_rw : data_wr;
+    assign m_a =uncached ? {3'b000,aluoutM[28:0]} : data_addr;
+    assign m_din = uncached ? p_dout : data_wdata;
+    assign m_strobe = uncached ? p_strobe : data_req;
+    assign m_wen = uncached? p_wen : data_wen;
+    assign m_size = uncached? p_size: data_size;
+    assign m_rw =uncached ? p_rw : data_wr;
     assign data_data_ok = m_ready;
 
-    assign flag =  (aluoutM[31:29] == 3'b101) ? 1'b1 : 1'b0;
+    assign uncached =  ((aluoutM[31:29] == 3'b101) | (aluoutM[31:28] == 4'b1000)) ? 1'b1 : 1'b0;
 
     assign memwriteM = p_rw;
     assign sel = p_wen;
@@ -111,7 +111,7 @@ module d_cache #(parameter A_WIDTH = 32, parameter C_INDEX = `D_CACHE_INDEX)(
     assign aluoutM = p_a;
     assign writedata2M = p_dout;
     assign memenM = p_strobe;
-    assign p_din = flag ? m_dout : readdataM;
+    assign p_din = uncached ? m_dout : readdataM;
     assign p_ready = cache_ready;
 
     //read from cache
@@ -120,13 +120,13 @@ module d_cache #(parameter A_WIDTH = 32, parameter C_INDEX = `D_CACHE_INDEX)(
     assign  c_out           =   {d_data1[index],d_data2[index],d_data3[index],d_data4[index]};
 
     //cache control
-    assign  cache_hit       =   valid & (tag==tagout) & memenM & !flag ;
+    assign  cache_hit       =   valid & (tag==tagout) & memenM & !uncached ;
     // assign  cache_hit =0;
     assign  dirty           =   d_dirty[index];
     assign  dram_wr_addr    =   {tagout,index,2'b00};
     assign  dram_rd_addr    =   aluoutM;
 
-    assign cache_ready      =   (memenM & cache_hit & !flag) || (memenM && flag && m_ready);
+    assign cache_ready      =   (memenM & cache_hit & !uncached) || (memenM && uncached && m_ready);
 
     assign readdataM        =   cache_hit ? c_out : data_rdata;
 
@@ -213,9 +213,9 @@ module d_cache #(parameter A_WIDTH = 32, parameter C_INDEX = `D_CACHE_INDEX)(
             state   <=  CPU_EXEC;
         else
             case(state)
-                CPU_EXEC:if( ~cache_hit & dirty & memenM & !flag)          // dirty block write back to dram
+                CPU_EXEC:if( ~cache_hit & dirty & memenM & !uncached)          // dirty block write back to dram
                             state   <=  WR_DRAM;
-                        else if( ~cache_hit & memenM & !flag)          // request new block from dram
+                        else if( ~cache_hit & memenM & !uncached)          // request new block from dram
                             state   <=  RD_DRAM;
                         else
                             state   <=  CPU_EXEC;
