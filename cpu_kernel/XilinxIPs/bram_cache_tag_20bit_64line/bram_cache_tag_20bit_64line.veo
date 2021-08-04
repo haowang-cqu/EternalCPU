@@ -59,7 +59,9 @@ bram_cache_tag_20bit_64line your_instance_name (
   .wea(wea),      // input wire [0 : 0] wea
   .addra(addra),  // input wire [5 : 0] addra
   .dina(dina),    // input wire [19 : 0] dina
-  .douta(douta)  // output wire [19 : 0] douta
+  .clkb(clkb),    // input wire clkb
+  .addrb(addrb),  // input wire [5 : 0] addrb
+  .doutb(doutb)  // output wire [19 : 0] doutb
 );
 // INST_TAG_END ------ End INSTANTIATION Template ---------
 
