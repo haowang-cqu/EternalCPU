@@ -7,21 +7,68 @@ import threading
 import subprocess
 
 # CONFIG BEGIN
+"""
 TO_GEN = [
-	{"PLL_FREQ":"clk_pll","I_CACHE_INDEX":"12","D_CACHE_INDEX":"12"},
 	{"PLL_FREQ":"clk_pll","I_CACHE_INDEX":"14","D_CACHE_INDEX":"14"},
+	{"PLL_FREQ":"clk_pll_60","I_CACHE_INDEX":"13","D_CACHE_INDEX":"13"},
+	{"PLL_FREQ":"clk_pll_65","I_CACHE_INDEX":"12","D_CACHE_INDEX":"12"},
+	{"PLL_FREQ":"clk_pll","I_CACHE_INDEX":"14","D_CACHE_INDEX":"14"},
+	#{"PLL_FREQ":"clk_pll","I_CACHE_INDEX":"14","D_CACHE_INDEX":"14"},
 	#{"PLL_FREQ":"clk_pll_70","I_CACHE_INDEX":"12","D_CACHE_INDEX":"12"},
 	#{"PLL_FREQ":"clk_pll_80","I_CACHE_INDEX":"10","D_CACHE_INDEX":"10"},
 	{"PLL_FREQ":"clk_pll_90","I_CACHE_INDEX":"4","D_CACHE_INDEX":"4"},
 	{"PLL_FREQ":"clk_pll_90","I_CACHE_INDEX":"2","D_CACHE_INDEX":"2"},
-	{"PLL_FREQ":"clk_pll","I_CACHE_INDEX":"16","D_CACHE_INDEX":"16"},
+	#{"PLL_FREQ":"clk_pll","I_CACHE_INDEX":"16","D_CACHE_INDEX":"16"},
 	{"PLL_FREQ":"clk_pll_70","I_CACHE_INDEX":"10","D_CACHE_INDEX":"10"},
 	{"PLL_FREQ":"clk_pll_80","I_CACHE_INDEX":"8","D_CACHE_INDEX":"8"}
 	#{"PLL_FREQ":"clk_pll_90","I_CACHE_INDEX":"6","D_CACHE_INDEX":"6"},
 ]
+"""
+"""
+TO_GEN = [
+	{"PLL_FREQ":"clk_pll_65","I_CACHE_INDEX":"13","D_CACHE_INDEX":"13"},
+	{"PLL_FREQ":"clk_pll_70","I_CACHE_INDEX":"13","D_CACHE_INDEX":"13"},
+	{"PLL_FREQ":"clk_pll_70","I_CACHE_INDEX":"12","D_CACHE_INDEX":"12"},
+	{"PLL_FREQ":"clk_pll_75","I_CACHE_INDEX":"12","D_CACHE_INDEX":"12"},
+	{"PLL_FREQ":"clk_pll_80","I_CACHE_INDEX":"11","D_CACHE_INDEX":"11"},
+]
+"""
+"""
+TO_GEN = [
+	{"PLL_FREQ":"clk_pll_80","I_CACHE_INDEX":"12","D_CACHE_INDEX":"12"},
+	{"PLL_FREQ":"clk_pll_80","I_CACHE_INDEX":"12","D_CACHE_INDEX":"11"},
+	{"PLL_FREQ":"clk_pll_80","I_CACHE_INDEX":"11","D_CACHE_INDEX":"12"},
+]
+"""
+"""
+TO_GEN = [
+	{"PLL_FREQ":"clk_pll_85","I_CACHE_INDEX":"12","D_CACHE_INDEX":"12"},
+	{"PLL_FREQ":"clk_pll_85","I_CACHE_INDEX":"12","D_CACHE_INDEX":"11"},
+	{"PLL_FREQ":"clk_pll_85","I_CACHE_INDEX":"11","D_CACHE_INDEX":"12"},
+]
+"""
+"""
+TO_GEN = [
+	{"PLL_FREQ":"clk_pll_85","I_CACHE_INDEX":"12","D_CACHE_INDEX":"12"},
+	{"PLL_FREQ":"clk_pll_90","I_CACHE_INDEX":"12","D_CACHE_INDEX":"12"},
+	{"PLL_FREQ":"clk_pll_90","I_CACHE_INDEX":"12","D_CACHE_INDEX":"11"},
+	{"PLL_FREQ":"clk_pll_90","I_CACHE_INDEX":"11","D_CACHE_INDEX":"12"},
+	{"PLL_FREQ":"clk_pll_95","I_CACHE_INDEX":"12","D_CACHE_INDEX":"12"},
+	{"PLL_FREQ":"clk_pll_95","I_CACHE_INDEX":"12","D_CACHE_INDEX":"11"},
+	{"PLL_FREQ":"clk_pll_95","I_CACHE_INDEX":"11","D_CACHE_INDEX":"12"},
+]
+"""
+TO_GEN = [
+	{"PLL_FREQ":"clk_pll_95","I_CACHE_INDEX":"12","D_CACHE_INDEX":"11"},
+	{"PLL_FREQ":"clk_pll_100","I_CACHE_INDEX":"12","D_CACHE_INDEX":"11"},
+	{"PLL_FREQ":"clk_pll_105","I_CACHE_INDEX":"12","D_CACHE_INDEX":"11"},
+	{"PLL_FREQ":"clk_pll_110","I_CACHE_INDEX":"12","D_CACHE_INDEX":"11"},
+	{"PLL_FREQ":"clk_pll_100","I_CACHE_INDEX":"12","D_CACHE_INDEX":"12"},
+	{"PLL_FREQ":"clk_pll_105","I_CACHE_INDEX":"12","D_CACHE_INDEX":"12"}
+]
 VIVADO = "/tools/Xilinx/Vivado/2019.2/bin/vivado"
 BUILD_PREFIX = "build/" + git.Repo(search_parent_directories=True).head.object.hexsha[0:7]
-MAX_TASKS = 4
+MAX_TASKS = 6
 # CONFIG END
 
 executor = ThreadPoolExecutor(max_workers=MAX_TASKS)

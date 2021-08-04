@@ -60,14 +60,14 @@
 `define SLTI_DECODE     {11'b1_0_1_0_0_0_0_0_0_0_0, `SLT_CONTROL,   3'b000}
 `define SLTIU_DECODE    {11'b1_0_1_0_0_0_0_0_0_0_0, `SLTU_CONTROL,  3'b000}
 
-`define LW_DECODE       {11'b1_0_1_0_0_1_0_0_0_0_0, `ADD_CONTROL,   3'b100}
-`define SW_DECODE       {11'b0_0_1_0_1_0_0_0_0_0_0, `ADD_CONTROL,   3'b100}
-`define LB_DECODE       {11'b1_0_1_0_0_1_0_0_0_0_0, `ADD_CONTROL,   3'b100}
-`define LBU_DECODE      {11'b1_0_1_0_0_1_0_0_0_0_0, `ADD_CONTROL,   3'b100}
-`define LH_DECODE       {11'b1_0_1_0_0_1_0_0_0_0_0, `ADD_CONTROL,   3'b100}
-`define LHU_DECODE      {11'b1_0_1_0_0_1_0_0_0_0_0, `ADD_CONTROL,   3'b100}
-`define SH_DECODE       {11'b0_0_1_0_1_0_0_0_0_0_0, `ADD_CONTROL,   3'b100}
-`define SB_DECODE       {11'b0_0_1_0_1_0_0_0_0_0_0, `ADD_CONTROL,   3'b100}
+`define LW_DECODE       {11'b1_0_1_0_0_1_0_0_0_0_0, `ADDU_CONTROL,   3'b100}
+`define SW_DECODE       {11'b0_0_1_0_1_0_0_0_0_0_0, `ADDU_CONTROL,   3'b100}
+`define LB_DECODE       {11'b1_0_1_0_0_1_0_0_0_0_0, `ADDU_CONTROL,   3'b100}
+`define LBU_DECODE      {11'b1_0_1_0_0_1_0_0_0_0_0, `ADDU_CONTROL,   3'b100}
+`define LH_DECODE       {11'b1_0_1_0_0_1_0_0_0_0_0, `ADDU_CONTROL,   3'b100}
+`define LHU_DECODE      {11'b1_0_1_0_0_1_0_0_0_0_0, `ADDU_CONTROL,   3'b100}
+`define SH_DECODE       {11'b0_0_1_0_1_0_0_0_0_0_0, `ADDU_CONTROL,   3'b100}
+`define SB_DECODE       {11'b0_0_1_0_1_0_0_0_0_0_0, `ADDU_CONTROL,   3'b100}
 
 `define MTC0_DECODE     {11'b0_0_0_0_0_0_0_0_0_0_0, `MTC0_CONTROL,  3'b000}
 `define MFC0_DECODE     {11'b1_0_0_0_0_0_0_0_0_0_0, `MFC0_CONTROL,  3'b000}
