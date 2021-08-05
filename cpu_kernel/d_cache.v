@@ -103,7 +103,7 @@ module d_cache #(parameter A_WIDTH = 32, parameter C_INDEX = `D_CACHE_INDEX)(
     assign m_rw =uncached ? p_rw : data_wr;
     assign data_data_ok = m_ready;
 
-    assign uncached =  (aluoutM[31:29] == 3'b101) ? 1'b1 : 1'b0;
+    assign uncached =  (aluoutM[31:29] == 3'b101 || aluoutM[31:28] == 4'b1000) ? 1'b1 : 1'b0;
 
     assign memwriteM = p_rw;
     assign sel = p_wen;
