@@ -4,7 +4,6 @@
 
 module exception(
 	input wire 	 rst,
-	input wire [5:0] ext_int,
 	input wire[7:0]  except,
 	input wire 	 adel,
 	input wire	 ades,
@@ -23,7 +22,7 @@ module exception(
 				(cp0_status[1] == 1'b0) && (cp0_status[0] == 1'b1)) begin
 				/* code */
 				excepttype <= 32'h00000001;
-			end else if(except[7] == 1'b1 || adel || (|ext_int)) begin
+			end else if(except[7] == 1'b1 || adel) begin
 				/* code */
 				excepttype <= 32'h00000004;
 			end else if(ades) begin
