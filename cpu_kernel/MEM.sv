@@ -65,6 +65,7 @@ module MEM(
 
 	exception exp(
 		rst,
+		ext_int,
 		mem_except,
 		adelM,
 		adesM,
