@@ -43,7 +43,6 @@ module MEM(
 	logic [31:0] status_o;
 	logic [31:0] cause_o;
 	logic [31:0] config_o;
-	logic [31:0] prid_o;
 	logic [31:0] badvaddr;
 	logic        timer_int_o;
 
@@ -93,7 +92,6 @@ module MEM(
 		.cause_o(cause_o),
 		.epc_o(epc_o),
 		.config_o(config_o),
-		.prid_o(prid_o),
 		.badvaddr(badvaddr),
 		.timer_int_o(timer_int_o) // to define
 	);
