@@ -171,7 +171,7 @@ module mmu (
             (inst_hit_exist & (inst_vaddr[inst_mask_highbit[inst_hit_idx]] ? EntryLo1[inst_hit_idx][`VALID] : EntryLo0[inst_hit_idx][`VALID]) );
         
         assign inst_uncache = 
-            inst_direct |
+            (inst_direct & inst_kseg1) |
             (inst_hit_exist & (inst_vaddr[inst_mask_highbit[inst_hit_idx]] ? (~EntryLo1[inst_hit_idx][`CACHE_FLAG]) : (~EntryLo0[inst_hit_idx][`CACHE_FLAG])) );
 
         //---- data
@@ -271,7 +271,7 @@ module mmu (
             (data_hit_exist & (data_vaddr[data_mask_highbit[data_hit_idx]] ? EntryLo1[data_hit_idx][`DIRTY] : EntryLo0[data_hit_idx][`DIRTY]) );
 
         assign data_uncache = 
-            data_direct |
+            (data_direct & data_kseg1) |
             (data_hit_exist & (data_vaddr[data_mask_highbit[data_hit_idx]] ? (~EntryLo1[data_hit_idx][`CACHE_FLAG]) : (~EntryLo0[data_hit_idx][`CACHE_FLAG])) );
 
         //TLBP
