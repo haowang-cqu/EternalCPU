@@ -258,6 +258,12 @@ reg [3:0] axi_wen;
 reg [31:0] axi_addr;
 reg [31:0] axi_wdata; // only used in uncached access mode
 reg [WRDIDX_BIT-1:0] axi_seq; //seqence number of words to be transferrd with 0 representing the last word
+
+wire [31:0] wb_paddr; // address of first wolrd of the block to be written back
+assign wb_paddr = {cache_tag_r[TAG_BIT*4-1:TAG_BIT*3], miss_v_blkidx, {WRDIDX_BIT+2{1'b0}}}&{32{target_fillWay[3]}}|
+                  {cache_tag_r[TAG_BIT*3-1:TAG_BIT*2], miss_v_blkidx, {WRDIDX_BIT+2{1'b0}}}&{32{target_fillWay[2]}}|
+                  {cache_tag_r[TAG_BIT*2-1:TAG_BIT  ], miss_v_blkidx, {WRDIDX_BIT+2{1'b0}}}&{32{target_fillWay[1]}}|
+                  {cache_tag_r[TAG_BIT-1  :0        ], miss_v_blkidx, {WRDIDX_BIT+2{1'b0}}}&{32{target_fillWay[0]}};  
 // fsm for axi transaction
 always @(posedge clk) begin
     if (rst) begin
@@ -328,7 +334,11 @@ always @(posedge clk) begin
             end   
         end
         `TRANSGEN: begin
-                axi_addr <= miss_paddr;
+                axi_addr <= cache_grant ?
+                                need_wrbk?
+                                    wb_paddr:
+                                    miss_paddr:
+                                axi_addr;
                 axi_seq <= WRD_NUM-1;
                 axi_wdata <= axi_wdata;
             if (need_wrbk) begin
