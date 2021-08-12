@@ -25,7 +25,7 @@ TO_GEN = [
 
 	#{"PLL_FREQ":"clk_pll_90","I_CACHE_INDEX":"6","D_CACHE_INDEX":"6"},
 ]
-VIVADO = "/tools/Xilinx/Vivado/2019.2/bin/vivado"
+VIVADO = "/home/andy/DevelopTools/Xilinx/Vivado/2019.2/bin/vivado"
 BUILD_PREFIX = "build/" + git.Repo(search_parent_directories=True).head.object.hexsha[0:7]
 MAX_TASKS = 8
 # CONFIG END
