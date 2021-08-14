@@ -148,7 +148,6 @@ module mycpu_top(
     wire             stallreq_from_if;
     wire             stallreq_from_mem;
 
-    wire [31:0] ex_wdata;
 
 
     // inst_sram_parameters
@@ -184,7 +183,6 @@ module mycpu_top(
         .id_instr                (instrD),
         .ex_flush                (flushE),
         .ex_stall                (stallE),
-        .ex_wdata               (ex_wdata),
         .mem_wdata            (aluoutM),
         .mem_wdata_last        (writedata2M),
         .mem_size                (data_sram_size),
@@ -230,6 +228,8 @@ module mycpu_top(
     assign m_fetch = cache_sel ? cache1_fetch : cache0_fetch;
     assign inst_sram_rdata = cache_sel ? cache1_rdata : cache0_rdata;
     
+    
+    
 	i_cache #(.C_INDEX(6)) i_cache0(
 		// cpu
 		.p_flush			(|excepttypeM),
@@ -266,9 +266,9 @@ module mycpu_top(
 		
     );
 
-    d_cache_level_1 d_cache0(
+
+    d_cache d_cache0(
         // cpu side
-        .ex_a               (ex_wdata),
         .p_a                (data_sram_addr),
         .p_dout                (data_sram_wdata),
         .p_din                (data_sram_rdata),
@@ -280,10 +280,6 @@ module mycpu_top(
         // memory side
         .clk                (aclk),
         .clrn                (aresetn),
-        .mem_flush          (flushM),
-        .mem_stall          (stallM),
-
-
         .m_a                (d_addr),
         .m_dout                (mem_data),
         .m_din                (mem_st_data),
@@ -293,6 +289,7 @@ module mycpu_top(
         .m_rw                (m_st),
         .m_ready            (m_d_ready)
     );
+
     
     assign sel_i                 = cache_miss;
     assign m_addr                 = sel_i ? i_addr : d_addr;
