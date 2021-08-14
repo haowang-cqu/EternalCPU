@@ -5,43 +5,45 @@
 
 module instr_decode(
 
-	input wire        id_stall_i,
-	input wire [31:0] id_instr_i,
+	input  logic        id_stall_i,
+	input  logic [31:0] id_instr_i,
 
-	output wire       branch_flag_o,
-	output wire       jump_flag_o,
+	output logic       branch_flag_o,
+	output logic       jump_flag_o,
 
-	output wire       jal_flag_o,
-	output wire       jr_flag_o,
-	output wire       bal_flag_o,
-	output wire       jalr_flag_o,
+	output logic       jal_flag_o,
+	output logic       jr_flag_o,
+	output logic       bal_flag_o,
+	output logic       jalr_flag_o,
 
-	output wire[5:0]  alucontrol_o,
-	output wire[1:0]  whilo_o,
-	output reg        invalid_o,
+	output logic [5:0]  alucontrol_o,
+	output logic [1:0]  whilo_o,
+	output logic        invalid_o,
 
-	output wire       use_imm_o,
-	output wire       regdst_o,
-	output wire       wreg_o,
-	output wire       wcp0_o,
+	output logic       use_imm_o,
+	output logic       regdst_o,
+	output logic       wreg_o,
+	output logic       wcp0_o,
 
-	output wire       rmem_o,
-	output wire       wmem_o,
-	output wire       memen_o
-
+	output logic       rmem_o,
+	output logic       wmem_o,
+	output logic       memen_o,
+	output logic [3:0] tlbop_o,
+	output logic [2:0]  cp0_sel_o
     );
 
-    wire[3:0] aluop;
+    logic  [3:0] aluop;
 
-	wire [4:0]  rt,rs,rd;
-	wire [5:0]  op,func;
-	reg  [19:0] controls;
+	logic  [4:0]  rt,rs,rd;
+	logic  [5:0]  op,func;
+	logic  [19:0] controls;
 
 	assign op   =   id_instr_i[31:26];
 	assign rs   =   id_instr_i[25:21];
 	assign rt   =   id_instr_i[20:16];
 	assign rd   =   id_instr_i[15:11];
 	assign func =   id_instr_i[5:0];
+	assign cp0_sel_o = id_instr_i[2:0];
 
 	assign wcp0_o=((op==`SPECIAL3_INST)&(rs==`MTC0))?1:0;
 
@@ -50,6 +52,7 @@ module instr_decode(
 	always_comb begin
 		invalid_o = 0;
 		controls <= {11'b0_0_0_0_0_0_0_0_0_0_0,6'b00_0000, 3'b000};
+		tlbop_o <= 4'd0;
 		if (~id_stall_i) begin
 			case (op)
 			`R_TYPE:case (func)
@@ -152,10 +155,10 @@ module instr_decode(
 				`MFC0:controls <= `MFC0_DECODE;
 				`ERET_AND_TLB: case(func)
 					`ERET:controls = `ERET_DECODE;
-					`TLBP:  controls <= `NOP_DECODE;
-					`TLBR:  controls <= `NOP_DECODE;
-					`TLBWI: controls <= `NOP_DECODE;
-					`TLBWI: controls <= `NOP_DECODE;
+                    `TLBP:  tlbop_o = 4'b1000;
+                    `TLBR:  tlbop_o = 4'b0100;
+                    `TLBWI: tlbop_o = 4'b0010;
+                    `TLBWI: tlbop_o = 4'b0001;
 					default: invalid_o = 1; // TODO: should be co-processor unuseable?
 				endcase
 				default: invalid_o=1;//illegal instrs

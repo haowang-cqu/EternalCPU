@@ -1,5 +1,6 @@
 `timescale 1ns / 1ps
 
+`include "cp0_defines.vh"
 
 module MEM(
     input logic          clk,
@@ -29,8 +30,14 @@ module MEM(
     output logic [31:0]  epc_o,
     output logic [31:0]  ex_cp0data,
     output logic [31:0]  mem_result,
-	input  logic [5:0]   ext_int
+    input  logic [5:0]   ext_int,
+    output logic         kseg0_uncached,
+    output logic         bev,
+    output logic         ebase
 );
+
+	assign kseg0_uncached = ~config_o[0];
+	assign bev = status_o[`CP0_STATUS_BEV];
 
 	// // logic
 
@@ -43,8 +50,6 @@ module MEM(
 	logic [31:0] status_o;
 	logic [31:0] cause_o;
 	logic [31:0] config_o;
-	logic [31:0] badvaddr;
-	logic        timer_int_o;
 
 	memsel mems(
 		mem_pc,
@@ -87,13 +92,11 @@ module MEM(
 
 		.data_o(data_o),
 		.count_o(count_o),
-		.compare_o(compare_o),
 		.status_o(status_o),
 		.cause_o(cause_o),
 		.epc_o(epc_o),
 		.config_o(config_o),
-		.badvaddr(badvaddr),
-		.timer_int_o(timer_int_o) // to define
+		.ebase_o(ebase)
 	);
 	assign ex_cp0data = data_o;
 	assign mem_result = mem_rmem==1'b1 ? mem_finaldata : mem_aluout;

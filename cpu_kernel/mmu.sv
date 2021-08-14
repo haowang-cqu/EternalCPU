@@ -20,6 +20,7 @@ module mmu (
     input  logic [31:0] Index_in,
     input  logic [31:0] Random_in,
     // cp0 out
+    output logic [31:0] PageMask_out,
     output logic [31:0] EntryLo0_out,
     output logic [31:0] EntryLo1_out,
     output logic [31:0] EntryHi_out,
@@ -36,11 +37,12 @@ module mmu (
     output logic data_found,
     output logic data_valid,
     output logic data_uncache,
-    output logic data_writeable
+    output logic data_writeable,
+    input  logic kseg0_uncached
 );
-    wire inst_kseg1 = inst_vaddr[31:29] == 3'b101;
-    wire data_kseg1 = data_vaddr[31:29] == 3'b101;
-    generate if (ENABLE_TLB)
+    wire inst_kseg1 = (inst_vaddr[31:29] == 3'b101) | kseg0_uncached;
+    wire data_kseg1 = (data_vaddr[31:29] == 3'b101) | kseg0_uncached;
+    generate if (`ENABLE_TLB)
     begin
         //TLB regs
         reg [31:0] PageMask [`TLB_LINE-1:0];//[31:29]:0,[28:13]:Mask,[12:0]:0
@@ -60,7 +62,7 @@ module mmu (
         assign EntryG = EntryLo0_in[`GLOBAL] & EntryLo1_in[`GLOBAL];//根据MIPS文档，Lo0和Lo1的G位都为1才是Global
 
         integer idx;
-        always @(posedge clk) begin
+        always_ff @(posedge clk) begin
             if (rst) begin
                 for (idx=0;idx<`TLB_LINE;idx=idx+1) begin
                     PageMask[idx] <= 0;
@@ -90,7 +92,7 @@ module mmu (
         //匹配采用===，这样在TLB没有初始化的情况下依然可以正常输出信号
         //---- inst
         wire [4:0] inst_mask_highbit [`TLB_LINE-1:0];
-        wire inst_hit [`TLB_LINE-1:0];
+        wire [`TLB_LINE-1:0] inst_hit;
         wire inst_hit_exist;
         wire [`TLB_WIDTH-1:0] inst_hit_idx;
         genvar i;
@@ -177,7 +179,7 @@ module mmu (
         //---- data
         //对于TLBP指令的查找，交由data部分进行处理。
         wire [4:0] data_mask_highbit [`TLB_LINE-1:0];
-        wire data_hit [`TLB_LINE-1:0];
+        wire [`TLB_LINE-1:0] data_hit;
         wire data_hit_exist;
         wire [`TLB_WIDTH-1:0] data_hit_idx;
         wire [31:0] data_vaddr_tofind;
@@ -296,18 +298,19 @@ module mmu (
         assign EntryLo1_out = TLBR? EntryLo1[TLB_WritePos] : 32'd0;
     end
     else begin
-        assign inst_paddr = {3'b000,inst_vaddr};
-        assign data_paddr = {3'b000,data_vaddr};
-        assign EntryLo0_o = 32'd0;
-        assign EntryLo1_o = 32'd0;
-        assign EntryHi_o = 32'd0;
-        assign Index_o = 32'd0;
+        assign inst_paddr = {3'b000,inst_vaddr[28:0]};
+        assign data_paddr = {3'b000,data_vaddr[28:0]};
+        assign PageMask_out = 32'd0;
+        assign EntryLo0_out = 32'd0;
+        assign EntryLo1_out = 32'd0;
+        assign EntryHi_out = 32'd0;
+        assign Index_out = 32'd0;
         assign inst_found = 1'b1;
         assign inst_valid = 1'b1;
-        assign inst_uncache = 1'b0;
+        assign inst_uncache = inst_kseg1;
         assign data_found = 1'b1;
         assign data_valid = 1'b1;
-        assign data_uncache = 1'b0;
+        assign data_uncache = data_kseg1;
         assign data_writeable = 1'b1;
     end
     endgenerate

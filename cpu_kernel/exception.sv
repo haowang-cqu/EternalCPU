@@ -12,12 +12,16 @@ module exception(
     output logic [31:0]  exception_type
 );
     assign exception_type = 
+        except[7] ? `EXC_INST_ADD_ERR :
+        // TODO: add tlb error for if
+        except[2] ? `EXC_OVF :
+        except[6] ? `EXC_SYSCALL : 
+        except[5] ? `EXC_BREAK :
+        except[4] ? `EXC_ERET : 
+        except[3] ? `EXC_RI : 
+        adel      ? `EXC_DATA_ADD_ERR_L :
+        ades      ? `EXC_DATA_ADD_ERR_S :
+        // TODO: add tlb error for data
         ( (CP0_cause[`CP0_CAUSE_IPS] & CP0_status[`CP0_CAUSE_IPS]) && CP0_status[`CP0_STATUS_EXL] == 1'b0 && CP0_status[`CP0_STATUS_IE] == 1'b1) ? `EXC_INT : 
-        (except[7] || adel) ? `EXC_ADEL : 
-        (ades)              ? `EXC_ADES :
-        (except[6])         ? `EXC_SYSCALL : 
-        (except[5])         ? `EXC_BREAK :
-        (except[4])         ? `EXC_ERET : 
-        (except[3])         ? `EXC_RI : 
-        (except[2])         ? `EXC_OVF : 32'd0;
+        `EXC_NONE;
 endmodule

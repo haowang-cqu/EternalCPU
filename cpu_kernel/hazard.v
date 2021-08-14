@@ -2,6 +2,7 @@
 
 `include "defines.vh"
 `include "alu_defines.vh"
+`include "cp0_defines.vh"
 
 module hazard(
 	//fetch stage
@@ -40,7 +41,9 @@ module hazard(
 	input  wire         stallreq_from_if,
 	input  wire         stallreq_from_mem,
 	output wire         wb_stall,
-	input  wire         id_j_b_stall
+	input  wire         id_j_b_stall,
+	input  wire         bev,
+	input  wire [31:0]  ebase
     );
 
 	wire id_lwstall;
@@ -69,43 +72,12 @@ module hazard(
 
   	always @(*) begin
 		if(mem_excepttype != 32'b0) begin
-			/* code */
 			case (mem_excepttype)
-				32'h00000001:begin 
-					mem_newpc <= 32'hBFC00380;
-				end
-				32'h00000004:begin 
-					mem_newpc <= 32'hBFC00380;
-
-				end
-				32'h00000005:begin 
-					mem_newpc <= 32'hBFC00380;
-
-				end
-				32'h00000008:begin 
-					mem_newpc <= 32'hBFC00380;
-					// new_pc <= 32'h00000040;
-				end
-				32'h00000009:begin 
-					mem_newpc <= 32'hBFC00380;
-
-				end
-				32'h0000000a:begin 
-					mem_newpc <= 32'hBFC00380;
-
-				end
-				32'h0000000c:begin 
-					mem_newpc <= 32'hBFC00380;
-
-				end
-				32'h0000000d:begin 
-					mem_newpc <= 32'hBFC00380;
-
-				end
-				32'h0000000e:begin 
+				`EXC_ERET:begin 
 					mem_newpc <= mem_cp0_epc;
 				end
-				default : /* default */;
+				default :
+					mem_newpc <= bev ? 32'hbfc00380 : {ebase[31:12],12'h180};
 			endcase
 		end
 		// 避免锁存器
