@@ -7,6 +7,7 @@ module exception(
     input  logic [7:0]   except,
     input  logic         adel,
     input  logic         ades,
+    input  logic         trap,
     input  logic [31:0]  CP0_status,
     input  logic [31:0]  CP0_cause,
     output logic [31:0]  exception_type
@@ -19,5 +20,6 @@ module exception(
         (except[5])         ? `EXC_BREAK :
         (except[4])         ? `EXC_ERET : 
         (except[3])         ? `EXC_RI : 
-        (except[2])         ? `EXC_OVF : 32'd0;
+        (except[2])         ? `EXC_OVF : 
+        (trap)              ? `EXC_TRAP : 32'd0;
 endmodule

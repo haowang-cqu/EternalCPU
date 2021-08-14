@@ -87,6 +87,7 @@ module datapath(
 	wire            ex_is_in_delayslot;	
 	wire [7:0]      ex_except;
 	wire [31:0]     ex_cp0data;
+	wire 			ex_trap;
 
 	//mem stage
 	wire [4:0]      mem_rdst;
@@ -99,6 +100,7 @@ module datapath(
 	wire            mem_is_in_delayslot;
 	wire [7:0]      mem_except;
 	wire [31:0]		mem_newpc;
+	wire            mem_trap;
 
 	//CP0 varibles
 	wire[`RegBus]   data_o,epc_o;
@@ -443,6 +445,7 @@ module datapath(
         .ex_ready_o(ex_ready),
         .ex_hi_data_o(ex_hi_data),
         .ex_lo_data_o(ex_lo_data),
+		.ex_trap_o(ex_trap),
 	.ex_mult_stall(ex_mult_stall)
     );
 
@@ -466,6 +469,7 @@ module datapath(
     	.rd_i(ex_rd),
     	.is_in_delayslot_i(ex_is_in_delayslot),
     	.except_i({ex_except[7:3],ov,ex_except[1:0]}),
+		.trap_i(ex_trap),
 
 	    // controller的触发器
 		.rmem_i(ex_rmem),
@@ -499,7 +503,8 @@ module datapath(
 		
     	.rd_o(mem_rd),
     	.is_in_delayslot_o(mem_is_in_delayslot),
-    	.except_o(mem_except)
+    	.except_o(mem_except),
+		.trap_o(mem_trap)
     );
 
     // MEM STAGE
@@ -515,6 +520,7 @@ module datapath(
         .mem_rdata(mem_rdata),
 
         .mem_except(mem_except),
+		.mem_trap(mem_trap),
         .mem_cp0we(mem_cp0we),
         .mem_rd(mem_rd),
         .ex_rd(ex_rd),

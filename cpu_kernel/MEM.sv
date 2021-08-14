@@ -14,6 +14,7 @@ module MEM(
     input logic [31:0]   mem_rdata,
 
     input logic [7:0]    mem_except,
+	input logic		     mem_trap,
     input logic          mem_cp0we,
     input logic [4:0]    mem_rd,
     input logic [4:0]    ex_rd,
@@ -67,6 +68,7 @@ module MEM(
 		mem_except,
 		adelM,
 		adesM,
+		mem_trap,
 		status_o,
 		cause_o,
 		mem_excepttype

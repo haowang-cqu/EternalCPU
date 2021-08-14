@@ -377,3 +377,19 @@
 
 `define CACHE         6'b101111
 `define SYNC          6'b001111
+
+// trap instructions
+// R-type
+`define TEQ           6'b110100
+`define TGE           6'b110000
+`define TGEU          6'b110001
+`define TLT           6'b110010
+`define TLTU          6'b110011
+`define TNE           6'b110110
+// I-type: op = `REGIMM_INST
+`define TEQI          5'b01100
+`define TGEI          5'b01000
+`define TGEIU         5'b01001
+`define TLTI          5'b01010
+`define TLTIU         5'b01011
+`define TNEI          5'b01110

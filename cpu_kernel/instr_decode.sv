@@ -92,6 +92,15 @@ module instr_decode(
 				`BREAK:controls <=`BREAK_DECODE;
 				`SYSCALL:controls <=`SYSCALL_DECODE;
 				`SYNC:	controls <= `NOP_DECODE; // SYNC as NOP
+
+				// R-type trap instructions
+				`TEQ:  controls <= `TEQ_DECODE;
+				`TGE:  controls <= `TGE_DECODE;
+				`TGEU: controls <= `TGEU_DECODE;
+				`TLT:  controls <= `TLT_DECODE;
+				`TLTU: controls <= `TLTU_DECODE;
+				`TNE:  controls <= `TNE_DECODE;
+
 				default:invalid_o = 1;
 			endcase
 
@@ -107,6 +116,14 @@ module instr_decode(
 				`BLTZAL:controls<=`BLTZAL_DECODE;
 				`BGEZ:controls<=  `BGEZ_DECODE;
 				`BGEZAL:controls<=`BGEZAL_DECODE;
+
+				// I-type trap instructions
+				`TEQI:  controls <= `TEQI_DECODE;
+				`TGEI:  controls <= `TGEI_DECODE;
+				`TGEIU: controls <= `TGEIU_DECODE;
+				`TLTI:  controls <= `TLTI_DECODE;
+				`TLTIU: controls <= `TLTIU_DECODE;
+				`TNEI:  controls <= `TNEI_DECODE;
 				default:invalid_o = 1;//illegal op
 				endcase
 

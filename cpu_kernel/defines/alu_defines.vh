@@ -44,6 +44,8 @@
 `define MSUB_CONTROL    6'b10_0100
 `define MSUBU_CONTROL   6'b10_0101
 `define SC_CONTROL      6'b10_0110
+
+// trap instructions
 `define TEQ_CONTROL     6'b10_0111
 `define TGE_CONTROL     6'b10_1000
 `define TGEU_CONTROL    6'b10_1001

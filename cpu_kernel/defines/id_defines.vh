@@ -90,9 +90,20 @@
 `define NOP_DECODE      {11'b0_0_0_0_0_0_0_0_0_0_0, `ZERO_CONTROL,  3'b000}
 
 `define SC_DECODE       {}
-`define TEQ_DECODE      {}
-`define TGE_DECODE      {}
-`define TGEU_DECODE     {}
-`define TLT_DECODE      {}
-`define TLTU_DECODE     {}
-`define TNE_DECODE      {}
+`define LL_DECODE       {}
+
+// trap instructions
+`define TEQ_DECODE      {11'b0_0_0_0_0_0_0_0_0_0_0, `TEQ_CONTROL,   3'b000}
+`define TGE_DECODE      {11'b0_0_0_0_0_0_0_0_0_0_0, `TGE_CONTROL,   3'b000}
+`define TGEU_DECODE     {11'b0_0_0_0_0_0_0_0_0_0_0, `TGEU_CONTROL,  3'b000}
+`define TLT_DECODE      {11'b0_0_0_0_0_0_0_0_0_0_0, `TLT_CONTROL,   3'b000}
+`define TLTU_DECODE     {11'b0_0_0_0_0_0_0_0_0_0_0, `TLTU_CONTROL,  3'b000}
+`define TNE_DECODE      {11'b0_0_0_0_0_0_0_0_0_0_0, `TNE_CONTROL,   3'b000}
+
+// use_imm_o = 1
+`define TEQI_DECODE     {11'b0_0_1_0_0_0_0_0_0_0_0, `TEQ_CONTROL,   3'b000}
+`define TGEI_DECODE     {11'b0_0_1_0_0_0_0_0_0_0_0, `TGE_CONTROL,   3'b000}
+`define TGEIU_DECODE    {11'b0_0_1_0_0_0_0_0_0_0_0, `TGEU_CONTROL,  3'b000}
+`define TLTI_DECODE     {11'b0_0_1_0_0_0_0_0_0_0_0, `TLT_CONTROL,   3'b000}
+`define TLTIU_DECODE    {11'b0_0_1_0_0_0_0_0_0_0_0, `TLTU_CONTROL,  3'b000}
+`define TNEI_DECODE     {11'b0_0_1_0_0_0_0_0_0_0_0, `TNE_CONTROL,   3'b000}
