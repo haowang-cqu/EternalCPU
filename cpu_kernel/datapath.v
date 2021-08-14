@@ -99,6 +99,8 @@ module datapath(
 	wire            mem_is_in_delayslot;
 	wire [7:0]      mem_except;
 	wire [31:0]		mem_newpc;
+	wire [5:0]		mem_ext_int;
+	wire            mem_en_m;
 
 	//CP0 varibles
 	wire[`RegBus]   data_o,epc_o;
@@ -477,12 +479,14 @@ module datapath(
 
 		.ex_rt_i(ex_rt),
 
+		.ext_int_i(ext_int),
+
 	    // controller的触发器
 		.rmem_o(mem_rmem),
 		.wmem_o(mem_we),
 		.wreg_o(mem_memwe),
 		.wcp0_o(mem_cp0we),
-		.memen_o(mem_en),
+		.memen_o(mem_en_m),
 
 		.ex_rt_o(mem_rt),
 
@@ -499,10 +503,13 @@ module datapath(
 		
     	.rd_o(mem_rd),
     	.is_in_delayslot_o(mem_is_in_delayslot),
-    	.except_o(mem_except)
+    	.except_o(mem_except),
+		.ext_int_o(mem_ext_int)
     );
 
     // MEM STAGE
+
+	assign mem_en = mem_en_m & (~mem_flush);
 	MEM datapath_MEM(
         .clk(clk),
 	    .rst(rst),
@@ -529,7 +536,7 @@ module datapath(
         .epc_o(epc_o),
         .ex_cp0data(ex_cp0data),
         .mem_result(mem_result),
-		.ext_int(ext_int)
+		.ext_int(mem_ext_int)
 	);
 
 

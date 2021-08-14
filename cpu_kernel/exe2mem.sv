@@ -25,6 +25,8 @@ module exe2mem(
 
     input   logic [4:0]    ex_rt_i,
 
+    input   logic [5:0]    ext_int_i,
+
     output  logic          rmem_o,
     output  logic          wmem_o,
     output  logic          wreg_o,
@@ -45,11 +47,13 @@ module exe2mem(
 
     output  logic [4:0]    rd_o,
     output  logic          is_in_delayslot_o,
-    output  logic [7:0]    except_o
+    output  logic [7:0]    except_o,
+
+    output  logic [5:0]    ext_int_o
 
 );
 
-    always @(posedge clk_i) begin
+    always_ff @(posedge clk_i) begin
         if (rst_i == 1'b1) begin
             rdata2_o<=0;
             aluout_o<=0;
@@ -70,6 +74,7 @@ module exe2mem(
             memen_o<=0;
 
             ex_rt_o<=0;
+            ext_int_o <= 0;
 
         end
         else if (flush_i == 1'b1) begin
@@ -92,6 +97,7 @@ module exe2mem(
             memen_o<=0;
 
             ex_rt_o<=0;
+            ext_int_o <= 0;
         end
         else if (stall_i == 1'b1) begin
             rdata2_o<=rdata2_o;
@@ -112,6 +118,7 @@ module exe2mem(
             wcp0_o<=wcp0_o;
             memen_o<=memen_o;
             ex_rt_o<=ex_rt_o;
+            ext_int_o <= ext_int_o;
         end
         else begin
             rdata2_o<=rdata2_i;
@@ -132,6 +139,7 @@ module exe2mem(
             wcp0_o<=wcp0_i;
             memen_o<=memen_i;
             ex_rt_o<=ex_rt_i;
+            ext_int_o <= memen_i ? 6'd0 : ext_int_i;
         end
     end
 
