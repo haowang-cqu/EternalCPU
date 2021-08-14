@@ -16,6 +16,7 @@ module datapath(
 
 	output wire        ex_flush,
 	output wire        ex_stall,
+	output wire [31:0] ex_wdata,
 
 	output wire[31:0]  mem_wdata,
 	output wire[31:0]  mem_wdata_last,
@@ -438,7 +439,7 @@ module datapath(
 
 	    .rdata2_o(ex_regdata2_last),
         .ov_o(ov),
-        .exe_aluout_o(ex_wdata),
+        .exe_aluout_o(ex_wdata),    // dcache   p_a
         .ex_waddr_o(ex_waddr),
         .ex_ready_o(ex_ready),
         .ex_hi_data_o(ex_hi_data),
