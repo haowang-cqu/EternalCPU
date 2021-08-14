@@ -87,6 +87,8 @@
 `define SWL_DECODE      {11'b0_0_1_0_1_0_0_0_0_0_0, `ADD_CONTROL,   3'b100}
 `define SWR_DECODE      {11'b0_0_1_0_1_0_0_0_0_0_0, `ADD_CONTROL,   3'b100}
 
+`define NOP_DECODE      {11'b0_0_0_0_0_0_0_0_0_0_0, `ZERO_CONTROL,  3'b000}
+
 `define SC_DECODE       {}
 `define TEQ_DECODE      {}
 `define TGE_DECODE      {}

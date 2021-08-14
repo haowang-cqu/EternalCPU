@@ -94,7 +94,7 @@ module mmu (
         wire inst_hit_exist;
         wire [`TLB_WIDTH-1:0] inst_hit_idx;
         genvar i;
-        generate
+        //generate
             for(i=0;i<`TLB_LINE;i=i+1)
             begin
                 assign inst_mask_highbit[i] = 
@@ -120,7 +120,7 @@ module mmu (
                     )
                     ;
             end
-        endgenerate
+        //endgenerate
         assign inst_hit_exist = |inst_hit;
 
         assign inst_hit_idx = 
@@ -183,7 +183,7 @@ module mmu (
         wire [31:0] data_vaddr_tofind;
         assign data_vaddr_tofind = TLBP ? EntryHi_in : data_vaddr;
         genvar j;
-        generate
+        //generate
             for(j=0;j<`TLB_LINE;j=j+1)
             begin
                 assign data_mask_highbit[j] = 
@@ -209,7 +209,7 @@ module mmu (
                     )
                     ;
             end
-        endgenerate
+        //endgenerate
         assign data_hit_exist = |data_hit;
 
         assign data_hit_idx = 
@@ -294,16 +294,14 @@ module mmu (
         assign EntryHi_out = TLBR ? EntryHi0[TLB_WritePos] : 32'd0;
         assign EntryLo0_out = TLBR? EntryLo0[TLB_WritePos] : 32'd0;
         assign EntryLo1_out = TLBR? EntryLo1[TLB_WritePos] : 32'd0;
-
-    end
     end
     else begin
         assign inst_paddr = {3'b000,inst_vaddr};
         assign data_paddr = {3'b000,data_vaddr};
-        assign EntryLo0_o = 32'0;
-        assign EntryLo1_o = 32'0;
-        assign EntryHi_o = 32'0;
-        assign Index_o = 32'0;
+        assign EntryLo0_o = 32'd0;
+        assign EntryLo1_o = 32'd0;
+        assign EntryHi_o = 32'd0;
+        assign Index_o = 32'd0;
         assign inst_found = 1'b1;
         assign inst_valid = 1'b1;
         assign inst_uncache = 1'b0;

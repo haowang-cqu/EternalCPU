@@ -132,6 +132,8 @@ module instr_decode(
 			`LWR: controls <= `LWR_DECODE;
 			`SWL: controls <= `SWL_DECODE;
 			`SWR: controls <= `SWR_DECODE;
+			// Cache指令
+			`CACHE: controls <= `NOP_DECODE; // Cache as NOP
 			// 添加指令[整形运算指令]
 			`SPECIAL2_INST: case(func)
 				`CLO:controls <= `CLO_DECODE;
@@ -148,7 +150,14 @@ module instr_decode(
 			`SPECIAL3_INST:case(rs)
 				`MTC0:controls <= `MTC0_DECODE;
 				`MFC0:controls <= `MFC0_DECODE;
-				`ERET:controls <= `ERET_DECODE;
+				`ERET_AND_TLB: case(func)
+					`ERET:controls = `ERET_DECODE;
+					`TLBP:  controls <= `NOP_DECODE;
+					`TLBR:  controls <= `NOP_DECODE;
+					`TLBWI: controls <= `NOP_DECODE;
+					`TLBWI: controls <= `NOP_DECODE;
+					default: invalid_o = 1; // TODO: should be co-processor unuseable?
+				endcase
 				default: invalid_o=1;//illegal instrs
 				endcase
 			default: invalid_o=1;
