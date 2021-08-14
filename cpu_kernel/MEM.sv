@@ -33,7 +33,9 @@ module MEM(
     input  logic [5:0]   ext_int,
     output logic         kseg0_uncached,
     output logic         bev,
-    output logic         ebase
+    output logic         ebase,
+	input  logic [2:0]   cp0_sel,
+	input  logic [3:0]   tlbcmd
 );
 
 	assign kseg0_uncached = ~config_o[0];
@@ -96,7 +98,9 @@ module MEM(
 		.cause_o(cause_o),
 		.epc_o(epc_o),
 		.config_o(config_o),
-		.ebase_o(ebase)
+		.ebase_o(ebase),
+		.cp0_sel(cp0_sel),
+		.tlbcmd(tlbcmd)
 	);
 	assign ex_cp0data = data_o;
 	assign mem_result = mem_rmem==1'b1 ? mem_finaldata : mem_aluout;

@@ -583,7 +583,9 @@ module datapath(
 		.ext_int(mem_ext_int),
 		.kseg0_uncached(kseg0_uncached),
 		.bev(mem_bev),
-		.ebase(mem_ebase)
+		.ebase(mem_ebase),
+		.cp0_sel(mem_cp0_sel),
+		.tlbcmd(TLBcmd)
 	);
 
 

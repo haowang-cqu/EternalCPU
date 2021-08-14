@@ -1,28 +1,35 @@
-`define EXC_NONE            5'd0
-`define EXC_NMI             5'd1
-`define EXC_INST_ADD_ERR    5'd2
-`define EXC_INST_REFILL     5'd3
-`define EXC_INST_INVALID    5'd4
-`define EXC_INST_BUS_ERR    5'd5
-`define EXC_OVF             5'd6
-`define EXC_TRAP            5'd7
-`define EXC_SYSCALL         5'd8
-`define EXC_BREAK           5'd9
-`define EXC_ERET            5'd10
-`define EXC_RI              5'd11
-`define EXC_COP_UNUSABLE    5'd12
-`define EXC_FLOAT_EXC       5'd13
-`define EXC_DATA_ADD_ERR_L  5'd14
-`define EXC_DATA_ADD_ERR_S  5'd15
-`define EXC_DATA_REFILL     5'd16
-`define EXC_DATA_INVALID    5'd17
-`define EXC_DATA_MODIFY     5'd18
-`define EXC_DATA_BUS_ERR    5'd19
-`define EXC_INT             5'd20
+`define EXC_NONE            32'd0
+`define EXC_NMI             32'd1
+`define EXC_INST_ADD_ERR    32'd2
+`define EXC_INST_REFILL     32'd3
+`define EXC_INST_INVALID    32'd4
+`define EXC_INST_BUS_ERR    32'd5
+`define EXC_OVF             32'd6
+`define EXC_TRAP            32'd7
+`define EXC_SYSCALL         32'd8
+`define EXC_BREAK           32'd9
+`define EXC_ERET            32'd10
+`define EXC_RI              32'd11
+`define EXC_COP_UNUSABLE    32'd12
+`define EXC_FLOAT_EXC       32'd13
+`define EXC_DATA_ADD_ERR_L  32'd14
+`define EXC_DATA_ADD_ERR_S  32'd15
+`define EXC_DATA_REFILL     32'd16
+`define EXC_DATA_INVALID    32'd17
+`define EXC_DATA_MODIFY     32'd18
+`define EXC_DATA_BUS_ERR    32'd19
+`define EXC_INT             32'd20
 
+
+
+`define CP0_STATUS_RE   25
+`define CP0_STATUS_BEV  22
+`define CP0_STATUS_IM   15:8
+`define CP0_STATUS_KSU  4:3
+`define CP0_STATUS_ERL  2
 `define CP0_STATUS_EXL  1
 `define CP0_STATUS_IE   0
-`define CP0_STATUS_BEV 22
+
 
 `define CP0_CAUSE_BD        31
 `define CP0_CAUSE_DC        27

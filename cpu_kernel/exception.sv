@@ -22,6 +22,6 @@ module exception(
         adel      ? `EXC_DATA_ADD_ERR_L :
         ades      ? `EXC_DATA_ADD_ERR_S :
         // TODO: add tlb error for data
-        ( (CP0_cause[`CP0_CAUSE_IPS] & CP0_status[`CP0_CAUSE_IPS]) && CP0_status[`CP0_STATUS_EXL] == 1'b0 && CP0_status[`CP0_STATUS_IE] == 1'b1) ? `EXC_INT : 
+        ( (CP0_cause[`CP0_CAUSE_IPS] & CP0_status[`CP0_STATUS_IM]) && CP0_status[`CP0_STATUS_EXL] == 1'b0 && CP0_status[`CP0_STATUS_IE] == 1'b1) ? `EXC_INT : 
         `EXC_NONE;
 endmodule

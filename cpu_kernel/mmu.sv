@@ -45,21 +45,17 @@ module mmu (
     generate if (`ENABLE_TLB)
     begin
         //TLB regs
-        reg [31:0] PageMask [`TLB_LINE-1:0];//[31:29]:0,[28:13]:Mask,[12:0]:0
-        reg [31:0] EntryHi0 [`TLB_LINE-1:0];//[31:13]VPN2，虚拟地址的高位,[12:8]:0,[7:0]:ASID
-        reg [31:0] EntryLo0 [`TLB_LINE-1:0];//[31]:0,[30]:NE,[29:6]:PFN物理地址高位,[5:3]:Cache一致性,[2]:Dirty/Writeable,[1]:Valid,[0]Global
-        reg [31:0] EntryLo1 [`TLB_LINE-1:0];//[31]:0,[30]:NE,[29:6]:PFN物理地址高位,[5:3]:Cache一致性,[2]:Dirty/Writeable,[1]:Valid,[0]Global
+        logic [31:0] PageMask [`TLB_LINE-1:0];//[31:29]:0,[28:13]:Mask,[12:0]:0
+        logic [31:0] EntryHi0 [`TLB_LINE-1:0];//[31:13]VPN2，虚拟地址的高位,[12:8]:0,[7:0]:ASID
+        logic [31:0] EntryLo0 [`TLB_LINE-1:0];//[31]:0,[30]:NE,[29:6]:PFN物理地址高位,[5:3]:Cache一致性,[2]:Dirty/Writeable,[1]:Valid,[0]Global
+        logic [31:0] EntryLo1 [`TLB_LINE-1:0];//[31]:0,[30]:NE,[29:6]:PFN物理地址高位,[5:3]:Cache一致性,[2]:Dirty/Writeable,[1]:Valid,[0]Global
 
         //TLB Write
-        wire [`TLB_WIDTH-1:0] TLB_WritePos;
-        wire TLB_Write_en;
-        assign TLB_Write_en = (TLBWI | TLBWR);
-        assign TLB_WritePos = TLBWR ? Random_in[`TLB_WIDTH-1:0] : Index_in[`TLB_WIDTH-1:0];
+        wire [`TLB_WIDTH-1:0] TLB_WritePos = TLBWR ? Random_in[`TLB_WIDTH-1:0] : Index_in[`TLB_WIDTH-1:0];
+        wire TLB_Write_en = (TLBWI | TLBWR);
 
-        wire [31:0] PageMaskTrimed;
-        assign PageMaskTrimed = PageMask_in & {3'd0,16'hffff,13'd0};
-        wire EntryG;
-        assign EntryG = EntryLo0_in[`GLOBAL] & EntryLo1_in[`GLOBAL];//根据MIPS文档，Lo0和Lo1的G位都为1才是Global
+        wire [31:0] PageMaskTrimed = PageMask_in & {3'd0,16'hffff,13'd0};
+        wire EntryG = EntryLo0_in[`GLOBAL] & EntryLo1_in[`GLOBAL];//根据MIPS文档，Lo0和Lo1的G位都为1才是Global
 
         integer idx;
         always_ff @(posedge clk) begin
