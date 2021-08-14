@@ -89,8 +89,10 @@
 
 `define NOP_DECODE      {11'b0_0_0_0_0_0_0_0_0_0_0, `ZERO_CONTROL,  3'b000}
 
-`define SC_DECODE       {}
-`define LL_DECODE       {}
+// 这里把ll和sc当作普通的lw和sw指令进行解释，然后在MEM阶段做特殊处理
+// 当然这里的sc和sw的区别在于sc会将结果写回rt寄存器中，所以wreg_o=1
+`define SC_DECODE       {11'b1_0_1_0_1_0_0_0_0_0_0, `ADDU_CONTROL,  3'b100}
+`define LL_DECODE       {11'b1_0_1_0_0_1_0_0_0_0_0, `ADDU_CONTROL,  3'b100}
 
 // trap instructions
 `define TEQ_DECODE      {11'b0_0_0_0_0_0_0_0_0_0_0, `TEQ_CONTROL,   3'b000}

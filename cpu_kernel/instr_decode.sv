@@ -149,6 +149,9 @@ module instr_decode(
 			`LWR: controls <= `LWR_DECODE;
 			`SWL: controls <= `SWL_DECODE;
 			`SWR: controls <= `SWR_DECODE;
+			// LL and SC
+			`LL: controls <= `LL_DECODE;
+			`SC: controls <= `SC_DECODE;
 			// Cache指令
 			`CACHE: controls <= `NOP_DECODE; // Cache as NOP temporarily
 			// 添加指令[整形运算指令]

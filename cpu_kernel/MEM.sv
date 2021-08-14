@@ -1,9 +1,11 @@
 `timescale 1ns / 1ps
 
+`include "defines.vh"
 
 module MEM(
     input logic          clk,
-	input logic      rst,
+	input logic      	 rst,
+	input logic          flush,
 
     // // input
     input logic [31:0]   mem_pc,
@@ -30,6 +32,7 @@ module MEM(
     output logic [31:0]  epc_o,
     output logic [31:0]  ex_cp0data,
     output logic [31:0]  mem_result,
+	output logic 	     sc_failed,
 	input  logic [5:0]   ext_int
 );
 
@@ -46,6 +49,9 @@ module MEM(
 	logic [31:0] config_o;
 	logic [31:0] badvaddr;
 	logic        timer_int_o;
+	logic		 LLbit;
+	logic		 ll;
+	logic        sc;
 
 	memsel mems(
 		mem_pc,
@@ -97,7 +103,24 @@ module MEM(
 		.badvaddr(badvaddr),
 		.timer_int_o(timer_int_o) // to define
 	);
+
+	LLbit LLbit0 (
+		clk(clk),
+    	rst(rst),
+    	flush(flush),
+    	LLbit_i(ll),  // ll write 1, sc write 0
+    	we(ll | sc),
+    	LLbit_o(LLbit)
+	);
+
+	assign ll  = ~(|(mem_op ^ `LL ));
+	assign sc  = ~(|(mem_op ^ `SC ));
+
+	assign sc_failed = sc & ~LLbit;
 	assign ex_cp0data = data_o;
-	assign mem_result = mem_rmem==1'b1 ? mem_finaldata : mem_aluout;
+	// sc指令执行时LLbit != 1则不写入内存，且rt=0
+	// sc指令执行时LLbit == 1则要写入内存，且rt=1
+	assign mem_result = mem_rmem==1'b1 ? mem_finaldata : 
+						sc==1'b1 ? {31'b0, LLbit} : mem_aluout;
 
 endmodule

@@ -101,6 +101,7 @@ module datapath(
 	wire [7:0]      mem_except;
 	wire [31:0]		mem_newpc;
 	wire            mem_trap;
+	wire            mem_sc_failed;
 
 	//CP0 varibles
 	wire[`RegBus]   data_o,epc_o;
@@ -128,6 +129,8 @@ module datapath(
     wire ex_regdst;
     wire ex_wreg;
 
+	wire mem_memen;
+	wire mem_wmem;
 	wire mem_rmem;
 	wire mem_memwe;
 	wire mem_cp0we;
@@ -150,6 +153,10 @@ module datapath(
 	wire		   id_memen;
 
     wire wb_stall;
+
+	// there is no memory access when sc failed (sc inst but LLbit != 1).
+	assign mem_we = mem_wmem & ~mem_sc_failed;
+	assign mem_en = mem_memen & ~mem_sc_failed;
 
 	//hazard detection
 	hazard h(
@@ -483,10 +490,10 @@ module datapath(
 
 	    // controller的触发器
 		.rmem_o(mem_rmem),
-		.wmem_o(mem_we),
+		.wmem_o(mem_wmem),
 		.wreg_o(mem_memwe),
 		.wcp0_o(mem_cp0we),
-		.memen_o(mem_en),
+		.memen_o(mem_memen),
 
 		.ex_rt_o(mem_rt),
 
@@ -511,6 +518,7 @@ module datapath(
 	MEM datapath_MEM(
         .clk(clk),
 	    .rst(rst),
+		.flush(mem_flush),
     
         .mem_pc(mem_pc),
         .mem_op(mem_op),
@@ -535,6 +543,7 @@ module datapath(
         .epc_o(epc_o),
         .ex_cp0data(ex_cp0data),
         .mem_result(mem_result),
+		.sc_failed(mem_sc_failed),
 		.ext_int(ext_int)
 	);
 
