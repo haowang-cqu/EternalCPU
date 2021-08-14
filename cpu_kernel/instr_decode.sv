@@ -158,7 +158,7 @@ module instr_decode(
                     `TLBP:  tlbop_o = 4'b1000;
                     `TLBR:  tlbop_o = 4'b0100;
                     `TLBWI: tlbop_o = 4'b0010;
-                    `TLBWI: tlbop_o = 4'b0001;
+                    `TLBWR: tlbop_o = 4'b0001;
 					default: invalid_o = 1; // TODO: should be co-processor unuseable?
 				endcase
 				default: invalid_o=1;//illegal instrs

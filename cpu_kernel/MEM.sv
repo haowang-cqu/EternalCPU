@@ -35,7 +35,17 @@ module MEM(
     output logic         bev,
     output logic         ebase,
 	input  logic [2:0]   cp0_sel,
-	input  logic [3:0]   tlbcmd
+	input  logic [3:0]   tlbcmd,
+	input  logic [31:0] EntryLo0_in,
+	input  logic [31:0] EntryLo1_in,
+	input  logic [31:0] EntryHi_in,
+	input  logic [31:0] Index_in,
+	output logic [31:0] PageMask_out,
+	output logic [31:0] EntryLo0_out,
+	output logic [31:0] EntryLo1_out,
+	output logic [31:0] EntryHi_out,
+	output logic [31:0] Index_out,
+	output logic [31:0] Random_out
 );
 
 	assign kseg0_uncached = ~config_o[0];
@@ -100,8 +110,20 @@ module MEM(
 		.config_o(config_o),
 		.ebase_o(ebase),
 		.cp0_sel(cp0_sel),
-		.tlbcmd(tlbcmd)
+		.tlbcmd(tlbcmd),
+		.index_o(Index_out),
+		.random_o(Random_out),
+		.pagemask_o(PageMask_out),
+		.entrylo0_o(EntryLo0_out),
+		.entrylo1_o(EntryLo1_out),
+		.entryhi_o(EntryHi_out),
+		.index_i(Index_in),
+		.pagemask_i(PageMask_in),
+		.entrylo0_i(EntryLo0_in),
+		.entrylo1_i(EntryLo1_in),
+		.entryhi_i(EntryHi_in)
 	);
+	
 	assign ex_cp0data = data_o;
 	assign mem_result = mem_rmem==1'b1 ? mem_finaldata : mem_aluout;
 

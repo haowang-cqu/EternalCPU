@@ -143,7 +143,6 @@ module cp0(
                     end
                 endcase
             end
-            // TODO: TLB CMD
             if (excepttype_i != 0) begin
                 status_o[`CP0_STATUS_EXL] <= (excepttype_i != `EXC_ERET); // eret的时候需要清空exl
                 if (excepttype_i != `EXC_ERET) begin
@@ -183,6 +182,17 @@ module cp0(
                         cause_o[`CP0_CAUSE_EXCCODE] <= `EXCCODE_TR;
                     end
                 endcase
+            end
+            else begin
+                if (tlbcmd[3]) begin // TLBP
+                    index_o <= index_i;
+                end
+                if (tlbcmd[2]) begin // TLBR
+                    pagemask_o <= pagemask_i;
+                    entryhi_o <= entryhi_i;
+                    entrylo0_o <= entrylo0_i;
+                    entrylo1_o <= entrylo1_i;
+                end
             end
         end
     end

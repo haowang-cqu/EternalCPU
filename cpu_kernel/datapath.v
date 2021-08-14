@@ -585,7 +585,18 @@ module datapath(
 		.bev(mem_bev),
 		.ebase(mem_ebase),
 		.cp0_sel(mem_cp0_sel),
-		.tlbcmd(TLBcmd)
+		.tlbcmd(TLBcmd),
+		.PageMask_in(PageMask_in),
+		.EntryLo0_in(EntryLo0_in),
+		.EntryLo1_in(EntryLo1_in),
+		.EntryHi_in(EntryHi_in),
+		.Index_in(Index_in),
+		.PageMask_out(PageMask_out),
+		.EntryLo0_out(EntryLo0_out),
+		.EntryLo1_out(EntryLo1_out),
+		.EntryHi_out(EntryHi_out),
+		.Index_out(Index_out),
+		.Random_out(Random_out)
 	);
 
 

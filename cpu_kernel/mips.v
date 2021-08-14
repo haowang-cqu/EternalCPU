@@ -268,10 +268,10 @@ module mycpu_top(
         .EntryHi_out(EntryHi_in),
         .Index_out(Index_in),
         // tlb instr enable
-        .TLBP(TLBcmd[0]),
-        .TLBR(TLBcmd[1]),
-        .TLBWI(TLBcmd[2]),
-        .TLBWR(TLBcmd[3]),
+        .TLBP(TLBcmd[3]),
+        .TLBR(TLBcmd[2]),
+        .TLBWI(TLBcmd[1]),
+        .TLBWR(TLBcmd[0]),
         // control signal
         .inst_found(inst_found),
         .inst_valid(inst_valid),
