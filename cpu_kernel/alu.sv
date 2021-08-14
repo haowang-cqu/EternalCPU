@@ -28,6 +28,7 @@ module alu(
 	output wire [31:0]  hi_alu_out,
 	output wire [31:0]  lo_alu_out,
 	output wire			trap_result,
+	output wire         not_move,
 
 	output wire         mult_stallE  //qf
     );
@@ -91,7 +92,14 @@ module alu(
 			alucontrol== `MTC0_CONTROL  ? (reg2_i)         :   
 			alucontrol== `CLO_CONTROL   ? (clo_result)     :
 			alucontrol== `CLZ_CONTROL   ? (clz_result) 	   : 
-			alucontrol== `MUL_CONTROL   ? (alu_out_signed_mult[31:0]): 32'b0 ;
+			alucontrol== `MUL_CONTROL   ? (alu_out_signed_mult[31:0]): 
+			alucontrol== `MOVN_DECODE   ? reg1_i :
+			alucontrol== `MOVZ_DECODE   ? reg1_i : 32'b0 ;
+
+	wire rt_eqz;
+	assign rt_eqz = (reg2_i == 32'b0) ? 1 : 0;
+	assign not_move = ((alucontrol == `MOVN_CONTROL) && rt_eqz) ||
+				      ((alucontrol == `MOVZ_CONTROL) && !rt_eqz);
 
 //////////////////////////////////////////trap/////////////////////////////////////////
 	wire trap_eq, trap_ge, trap_geu;
@@ -99,12 +107,12 @@ module alu(
 	assign trap_ge  = ($signed(reg1_i) < $signed(reg2_i)) ? 0 : 1;
 	assign trap_geu = (reg1_i < reg2_i) ? 0 : 1;
 
-	assign trap_result = (alucontrol == `TEQ_CONTROL)  && trap_eq   || 
-						 (alucontrol == `TGE_CONTROL)  && trap_ge   ||
-						 (alucontrol == `TGEU_CONTROL) && trap_geu  ||
-						 (alucontrol == `TLT_CONTROL)  && !trap_ge  ||
-						 (alucontrol == `TLTU_CONTROL) && !trap_geu ||
-						 (alucontrol == `TNE_CONTROL)  && !trap_eq;
+	assign trap_result = ((alucontrol == `TEQ_CONTROL)  && trap_eq  ) || 
+						 ((alucontrol == `TGE_CONTROL)  && trap_ge  ) ||
+						 ((alucontrol == `TGEU_CONTROL) && trap_geu ) ||
+						 ((alucontrol == `TLT_CONTROL)  && !trap_ge ) ||
+						 ((alucontrol == `TLTU_CONTROL) && !trap_geu) ||
+						 ((alucontrol == `TNE_CONTROL)  && !trap_eq );
 
 ///////////////////////////////////////////multiply////////////////////////////////////
 	reg [3:0] cnt;

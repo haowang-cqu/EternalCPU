@@ -393,3 +393,7 @@
 `define TLTI          5'b01010
 `define TLTIU         5'b01011
 `define TNEI          5'b01110
+
+// move conditional: R-type
+`define MOVN          6'b001011
+`define MOVZ          6'b001010

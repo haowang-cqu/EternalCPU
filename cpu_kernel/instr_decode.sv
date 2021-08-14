@@ -101,6 +101,10 @@ module instr_decode(
 				`TLTU: controls <= `TLTU_DECODE;
 				`TNE:  controls <= `TNE_DECODE;
 
+				// move conditional
+				`MOVN: controls <= `MOVN_DECODE;
+				`MOVZ: controls <= `MOVZ_DECODE;
+
 				default:invalid_o = 1;
 			endcase
 

@@ -52,3 +52,7 @@
 `define TLT_CONTROL     6'b10_1010
 `define TLTU_CONTROL    6'b10_1011
 `define TNE_CONTROL     6'b10_1100
+
+// move conditional
+`define MOVN_CONTROL    6'b11_0000
+`define MOVZ_CONTROL    6'b11_0001

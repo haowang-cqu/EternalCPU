@@ -128,6 +128,7 @@ module datapath(
     wire ex_use_imm;
     wire ex_regdst;
     wire ex_wreg;
+	wire ex_not_move;
 
 	wire mem_memen;
 	wire mem_wmem;
@@ -271,7 +272,7 @@ module datapath(
 		.mem_waddr_i(mem_rdst),
        	.wb_waddr_i(wb_regdst),
 
-		.ex_we_i(ex_wreg),
+		.ex_we_i(ex_wreg & ~ex_not_move),
 		.mem_we_i(mem_memwe),
 		.wb_we_i(wb_wreg),
 
@@ -453,6 +454,7 @@ module datapath(
         .ex_hi_data_o(ex_hi_data),
         .ex_lo_data_o(ex_lo_data),
 		.ex_trap_o(ex_trap),
+		.ex_not_move_o(ex_not_move),
 	.ex_mult_stall(ex_mult_stall)
     );
 
@@ -481,7 +483,7 @@ module datapath(
 	    // controller的触发器
 		.rmem_i(ex_rmem),
 		.wmem_i(ex_wmem),
-		.wreg_i(ex_wreg),
+		.wreg_i(ex_wreg & ~ex_not_move),
 		.wcp0_i(ex_cp0we),
 		.memen_i(ex_memen),
 

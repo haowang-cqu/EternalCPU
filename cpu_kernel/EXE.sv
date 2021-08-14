@@ -67,6 +67,7 @@ module EXE(
     output logic [31 : 0] ex_lo_data_o,
 
     output logic          ex_trap_o,
+    output logic          ex_not_move_o;
     output logic          ex_mult_stall//qf
     );
 
@@ -146,6 +147,7 @@ module EXE(
         .hi_alu_out     (ex_hi_alu_out),
         .lo_alu_out     (ex_lo_alu_out),
         .trap_result    (ex_trap_o),
+        .not_move       (ex_not_move_o),
         .mult_stallE    (ex_mult_stall)
     );
 

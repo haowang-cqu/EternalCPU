@@ -109,3 +109,7 @@
 `define TLTI_DECODE     {11'b0_0_1_0_0_0_0_0_0_0_0, `TLT_CONTROL,   3'b000}
 `define TLTIU_DECODE    {11'b0_0_1_0_0_0_0_0_0_0_0, `TLTU_CONTROL,  3'b000}
 `define TNEI_DECODE     {11'b0_0_1_0_0_0_0_0_0_0_0, `TNE_CONTROL,   3'b000}
+
+// move conditional
+`define MOVN_DECODE     {11'b1_1_0_0_0_0_0_0_0_0_0, `MOVN_CONTROL,  3'b000}
+`define MOVZ_DECODE     {11'b1_1_0_0_0_0_0_0_0_0_0, `MOVZ_CONTROL,   3'b000}
