@@ -39,7 +39,8 @@ module cp0(
     input  logic [`RegBus]  pagemask_i,
     input  logic [`RegBus]  entrylo0_i,
     input  logic [`RegBus]  entrylo1_i,
-    input  logic [`RegBus]  entryhi_i
+    input  logic [`RegBus]  entryhi_i,
+    input  logic            mem_we
     );
 
     logic one_bit_counter;
@@ -146,17 +147,28 @@ module cp0(
             if (excepttype_i != 0) begin
                 status_o[`CP0_STATUS_EXL] <= (excepttype_i != `EXC_ERET); // eret的时候需要清空exl
                 if (excepttype_i != `EXC_ERET) begin
-                    if(is_in_delayslot_i == `InDelaySlot) begin
-                        epc_o <= current_inst_addr_i - 4;
-                        cause_o[`CP0_CAUSE_BD] <= 1'b1;
-                    end else begin
-                        epc_o <= current_inst_addr_i;
-                        cause_o[`CP0_CAUSE_BD] <= 1'b0;
-                    end
+                    epc_o <= is_in_delayslot_i ? current_inst_addr_i - 4 : current_inst_addr_i;
+                    cause_o[`CP0_CAUSE_BD] <= is_in_delayslot_i;
                 end
                 case (excepttype_i)
-                    `EXC_INT:begin
-                        cause_o[`CP0_CAUSE_EXCCODE] <= `EXCCODE_IRQ;
+                    `EXC_INT:       cause_o[`CP0_CAUSE_EXCCODE] <= `EXCCODE_IRQ;
+                    `EXC_DATA_MODIFY: begin
+                        cause_o[`CP0_CAUSE_EXCCODE] <= `EXCCODE_MOD;
+                        badvaddr <= data_i;
+                        entryhi_o <= {data_i[31:13],entryhi_o[12:0]};
+                        context_o <= {context_o[31:23],data_i[31:13],4'd0};
+                    end
+                    `EXC_INST_REFILL, `EXC_INST_INVALID: begin
+                        cause_o[`CP0_CAUSE_EXCCODE] <= `EXCCODE_TLBL;
+                        badvaddr <= current_inst_addr_i;
+                        entryhi_o <= {current_inst_addr_i[31:13],entryhi_o[12:0]};
+                        context_o <= {context_o[31:23],current_inst_addr_i[31:13],4'd0};
+                    end
+                    `EXC_DATA_REFILL, `EXC_DATA_INVALID: begin
+                        cause_o[`CP0_CAUSE_EXCCODE] <= `EXCCODE_TLBL + mem_we;
+                        badvaddr <= data_i;
+                        entryhi_o <= {data_i[31:13],entryhi_o[12:0]};
+                        context_o <= {context_o[31:23],data_i[31:13],4'd0};
                     end
                     `EXC_INST_ADD_ERR, `EXC_DATA_ADD_ERR_L :begin
                         cause_o[`CP0_CAUSE_EXCCODE] <= `EXCCODE_ADEL;
@@ -166,21 +178,11 @@ module cp0(
                         cause_o[`CP0_CAUSE_EXCCODE] <= `EXCCODE_ADES;
                         badvaddr <= bad_addr_i;
                     end
-                    `EXC_SYSCALL:begin
-                        cause_o[`CP0_CAUSE_EXCCODE] <= `EXCCODE_SYS;
-                    end
-                    `EXC_BREAK:begin
-                        cause_o[`CP0_CAUSE_EXCCODE] <= `EXCCODE_BP;
-                    end
-                    `EXC_RI:begin
-                        cause_o[`CP0_CAUSE_EXCCODE] <= `EXCCODE_RI;
-                    end
-                    `EXC_OVF:begin
-                        cause_o[`CP0_CAUSE_EXCCODE] <= `EXCCODE_OVF;
-                    end
-                    `EXC_TRAP: begin
-                        cause_o[`CP0_CAUSE_EXCCODE] <= `EXCCODE_TR;
-                    end
+                    `EXC_SYSCALL:   cause_o[`CP0_CAUSE_EXCCODE] <= `EXCCODE_SYS;
+                    `EXC_BREAK:     cause_o[`CP0_CAUSE_EXCCODE] <= `EXCCODE_BP;
+                    `EXC_RI:        cause_o[`CP0_CAUSE_EXCCODE] <= `EXCCODE_RI;
+                    `EXC_OVF:       cause_o[`CP0_CAUSE_EXCCODE] <= `EXCCODE_OVF;
+                    `EXC_TRAP:      cause_o[`CP0_CAUSE_EXCCODE] <= `EXCCODE_TR;
                 endcase
             end
             else begin
@@ -231,6 +233,5 @@ module cp0(
                 default:            data_o = 32'd0;
             endcase
         end
-
     end
 endmodule

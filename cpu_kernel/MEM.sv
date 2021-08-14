@@ -36,6 +36,7 @@ module MEM(
     output logic         ebase,
 	input  logic [2:0]   cp0_sel,
 	input  logic [3:0]   tlbcmd,
+	input  logic [31:0] PageMask_in,
 	input  logic [31:0] EntryLo0_in,
 	input  logic [31:0] EntryLo1_in,
 	input  logic [31:0] EntryHi_in,
@@ -45,7 +46,9 @@ module MEM(
 	output logic [31:0] EntryLo1_out,
 	output logic [31:0] EntryHi_out,
 	output logic [31:0] Index_out,
-	output logic [31:0] Random_out
+	output logic [31:0] Random_out,
+	input  logic [4:0]  tlb_exc,
+	input  logic        mem_we
 );
 
 	assign kseg0_uncached = ~config_o[0];
@@ -64,29 +67,29 @@ module MEM(
 	logic [31:0] config_o;
 
 	memsel mems(
-		mem_pc,
-		mem_op,
-		mem_aluout,
-		mem_wdata,
-		mem_rdata,
+		.pc(mem_pc),
+		.op(mem_op),
+		.addr(mem_aluout),
+		.writedata(mem_wdata),
+		.readdata(mem_rdata),
 
-		sel,
-		mem_wdata_last,
-		mem_finaldata,
-		bad_addrM,
-		adelM,
-		adesM,
-		mem_size
+		.sel(sel),
+		.writedata2(mem_wdata_last),
+		.finaldata(mem_finaldata),
+		.bad_addr(bad_addrM),
+		.adelM(adelM),
+		.adesM(adesM),
+		.size(mem_size)
 	);
 
 	exception exp(
-		rst,
-		mem_except,
-		adelM,
-		adesM,
-		status_o,
-		cause_o,
-		mem_excepttype
+		.except(mem_except),
+		.tlb_exc(tlb_exc),
+		.adel(adelM),
+		.ades(adesM),
+		.CP0_status(status_o),
+		.CP0_cause(cause_o),
+		.exception_type(mem_excepttype)
 	);
 
 	cp0 CP0(
@@ -121,9 +124,10 @@ module MEM(
 		.pagemask_i(PageMask_in),
 		.entrylo0_i(EntryLo0_in),
 		.entrylo1_i(EntryLo1_in),
-		.entryhi_i(EntryHi_in)
+		.entryhi_i(EntryHi_in),
+		.mem_we(mem_we)
 	);
-	
+
 	assign ex_cp0data = data_o;
 	assign mem_result = mem_rmem==1'b1 ? mem_finaldata : mem_aluout;
 

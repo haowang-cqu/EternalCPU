@@ -68,6 +68,7 @@ module datapath(
 	wire       		if_flush;
 	wire [7:0] 		if_except;
 	wire       		if_is_in_delayslot;
+	wire [4:3]		if_tlb_exc = {~inst_found,~inst_valid}; // 注意：tlb_exc在memory阶段前为2位，后续为3位
 
 	//decode stage
 	wire [31:0] 	id_branch_addr;
@@ -88,6 +89,8 @@ module datapath(
 	wire [3:0]		id_tlbop;
 	wire [2:0]		id_cp0_sel;
 
+	wire [4:3]		id_tlb_exc;
+
 	//execute stage
 	wire [4:0] 		ex_rs,ex_rt,ex_rd,ex_sa;
 	wire [4:0]		ex_waddr;
@@ -102,6 +105,8 @@ module datapath(
 	wire [31:0] 	ex_hi_data,ex_lo_data;
 	wire [3:0]		ex_tlbop;
 	wire [2:0]		ex_cp0_sel;
+
+	wire [4:3]		ex_tlb_exc;
 
 	//hi-lo reg value propagate
 	wire [31:0]		ex_hi,ex_lo;
@@ -125,6 +130,10 @@ module datapath(
 	wire [5:0]		mem_ext_int;
 	wire            mem_en_m;
 	wire [2:0]		mem_cp0_sel;
+	wire            mem_we_from_dec;
+
+	wire [4:3]		mem_tlb_exc_msb;
+	wire [4:0]		mem_tlb_exc = {mem_tlb_exc_msb,mem_en & (~data_found),mem_en & (~data_valid),mem_en & (~data_writeable) & mem_we_from_dec};
 
 	//CP0 varibles
 	wire[`RegBus]   data_o,epc_o;
@@ -206,7 +215,7 @@ module datapath(
 		.mem_rt			(mem_rt),
 
 		.wb_flush			(wb_flush),
-		.stallreq_from_if	(stallreq_from_if),
+		.stallreq_from_if	(stallreq_from_if & inst_valid & (~if_except[7])),
 		.stallreq_from_mem		(stallreq_from_mem),
 		.wb_stall			(wb_stall),
 
@@ -262,16 +271,17 @@ module datapath(
         .stall_i(id_stall),
 
         .pcplus4_i(if_pc4),
-        .instr_i(if_instr),
+        .instr_i((inst_valid & (~if_except[7])) ? if_instr : 32'd0),
         .pc_i(if_pc),
         .except_i(if_except),
         .is_in_delayslot_i(if_is_in_delayslot),
-
+        .tlb_exc_i(if_tlb_exc),
         .pcplus4_o(id_pc4),
         .instr_o(id_instr),
         .pc_o(id_pc),
         .except_o(id_except),
-        .is_in_delayslot_o(id_is_in_delayslot)
+        .is_in_delayslot_o(id_is_in_delayslot),
+        .tlb_exc_o(id_tlb_exc)
     );
 
 	// ID stage
@@ -385,7 +395,7 @@ module datapath(
 
 		.tlbop_i(id_tlbop),
 		.cp0_sel_i(id_cp0_sel),
-
+		.tlb_exc_i(id_tlb_exc),
 	    // controller的触发器
 		.rmem_o(ex_rmem),
 		.wmem_o(ex_wmem),
@@ -417,7 +427,8 @@ module datapath(
     	.except_o(ex_except),
 
 		.tlbop_o(ex_tlbop),
-		.cp0_sel_o(ex_cp0_sel)
+		.cp0_sel_o(ex_cp0_sel),
+		.tlb_exc_o(ex_tlb_exc)
     );
 
 
@@ -521,10 +532,10 @@ module datapath(
 
 		.tlbop_i(ex_tlbop),
 		.cp0_sel_i(ex_cp0_sel),
-
+		.tlb_exc_i(ex_tlb_exc),
 	    // controller的触发器
 		.rmem_o(mem_rmem),
-		.wmem_o(mem_we),
+		.wmem_o(mem_we_from_dec),
 		.wreg_o(mem_memwe),
 		.wcp0_o(mem_cp0we),
 		.memen_o(mem_en_m),
@@ -548,12 +559,13 @@ module datapath(
 		.ext_int_o(mem_ext_int),
 
 		.tlbop_o(TLBcmd),
-		.cp0_sel_o(mem_cp0_sel)
+		.cp0_sel_o(mem_cp0_sel),
+		.tlb_exc_o(mem_tlb_exc_msb)
     );
 
     // MEM STAGE
-
-	assign mem_en = mem_en_m & (~mem_flush);
+	assign mem_en = mem_en_m & (~mem_flush) & data_valid;
+	assign mem_we = mem_en_m & mem_we_from_dec & data_writeable;
 	MEM datapath_MEM(
         .clk(clk),
 	    .rst(rst),
@@ -596,7 +608,9 @@ module datapath(
 		.EntryLo1_out(EntryLo1_out),
 		.EntryHi_out(EntryHi_out),
 		.Index_out(Index_out),
-		.Random_out(Random_out)
+		.Random_out(Random_out),
+		.tlb_exc(mem_tlb_exc),
+		.mem_we(mem_we)
 	);
 
 

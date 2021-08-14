@@ -29,6 +29,7 @@ module exe2mem(
 
     input   logic [3:0]    tlbop_i,
     input   logic [2:0]    cp0_sel_i,
+    input   logic [4:3]    tlb_exc_i,
 
     output  logic          rmem_o,
     output  logic          wmem_o,
@@ -55,7 +56,8 @@ module exe2mem(
     output  logic [5:0]    ext_int_o,
 
     output  logic [3:0]    tlbop_o,
-    output  logic [2:0]    cp0_sel_o
+    output  logic [2:0]    cp0_sel_o,
+    output  logic [4:3]    tlb_exc_o
 );
 
     always_ff @(posedge clk_i) begin
@@ -82,6 +84,7 @@ module exe2mem(
             ext_int_o <= 0;
             tlbop_o<=0;
             cp0_sel_o<=0;
+            tlb_exc_o<=2'd0;
         end
         else if (flush_i == 1'b1) begin
             rdata2_o<=0;
@@ -107,6 +110,7 @@ module exe2mem(
 
             tlbop_o<=0;
             cp0_sel_o<=0;
+            tlb_exc_o<=2'd0;
         end
         else if (stall_i == 1'b1) begin
             rdata2_o<=rdata2_o;
@@ -131,6 +135,7 @@ module exe2mem(
 
             tlbop_o<=tlbop_o;
             cp0_sel_o<=cp0_sel_o;
+            tlb_exc_o<=tlb_exc_o;
         end
         else begin
             rdata2_o<=rdata2_i;
@@ -155,6 +160,7 @@ module exe2mem(
 
             tlbop_o<=tlbop_i;
             cp0_sel_o<=cp0_sel_i;
+            tlb_exc_o<=tlb_exc_i;
         end
     end
 
