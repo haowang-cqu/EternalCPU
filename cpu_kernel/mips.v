@@ -204,7 +204,7 @@ module mycpu_top(
         .ext_int            (ext_int)
     );
     
-    wire cache_sel = inst_sram_addr[28];
+    wire cache_sel = 1'b1;
     
     wire cache0_en = inst_sram_en & (~cache_sel);
     wire cache1_en = inst_sram_en & cache_sel;

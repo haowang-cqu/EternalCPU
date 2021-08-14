@@ -97,7 +97,7 @@ module d_cache #(parameter A_WIDTH = 32, parameter C_INDEX = `D_CACHE_INDEX)(
     assign m_rw             =   uncached ? p_rw : data_wr;
     assign data_data_ok     =   m_ready;
 
-    assign uncached         =  (mem_aluout[31:29] == 3'b101 || (mem_aluout[31:28] == 4'b1000 && mem_aluout[31:16] != 16'h800d)) ? 1'b1 : 1'b0; // patch for supervisor-mips32
+    assign uncached         =  (mem_aluout[31:29] == 3'b101) ? 1'b1 : 1'b0; // patch for supervisor-mips32
 
     assign mem_memwrite     =   p_rw;
     assign sel              =   p_wen;

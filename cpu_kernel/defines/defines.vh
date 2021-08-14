@@ -376,3 +376,4 @@
 `define SC            6'b111000
 
 `define CACHE         6'b101111
+`define SYNC          6'b001111

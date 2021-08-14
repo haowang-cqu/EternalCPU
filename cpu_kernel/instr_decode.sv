@@ -47,7 +47,7 @@ module instr_decode(
 
 	assign {wreg_o,regdst_o,use_imm_o,branch_flag_o,wmem_o,rmem_o,jump_flag_o,jal_flag_o,jr_flag_o,bal_flag_o,jalr_flag_o,alucontrol_o,memen_o,whilo_o} = controls;
 
-	always @(*) begin
+	always_comb begin
 		invalid_o = 0;
 		controls <= {11'b0_0_0_0_0_0_0_0_0_0_0,6'b00_0000, 3'b000};
 		if (~id_stall_i) begin
@@ -91,7 +91,7 @@ module instr_decode(
 				// Privileged instrs
 				`BREAK:controls <=`BREAK_DECODE;
 				`SYSCALL:controls <=`SYSCALL_DECODE;
-
+				`SYNC:	controls <= `NOP_DECODE; // SYNC as NOP
 				default:invalid_o = 1;
 			endcase
 
@@ -133,7 +133,7 @@ module instr_decode(
 			`SWL: controls <= `SWL_DECODE;
 			`SWR: controls <= `SWR_DECODE;
 			// Cache指令
-			`CACHE: controls <= `NOP_DECODE; // Cache as NOP
+			`CACHE: controls <= `NOP_DECODE; // Cache as NOP temporarily
 			// 添加指令[整形运算指令]
 			`SPECIAL2_INST: case(func)
 				`CLO:controls <= `CLO_DECODE;
