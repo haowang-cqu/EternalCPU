@@ -33,7 +33,7 @@ module MEM(
     input  logic [5:0]   ext_int,
     output logic         kseg0_uncached,
     output logic         bev,
-    output logic         ebase,
+    output logic [31:0]  ebase,
 	input  logic [2:0]   cp0_sel,
 	input  logic [3:0]   tlbcmd,
 	input  logic [31:0] PageMask_in,
@@ -50,9 +50,6 @@ module MEM(
 	input  logic [4:0]  tlb_exc,
 	input  logic        mem_we
 );
-
-	assign kseg0_uncached = ~config_o[0];
-	assign bev = status_o[`CP0_STATUS_BEV];
 
 	// // logic
 
@@ -130,5 +127,7 @@ module MEM(
 
 	assign ex_cp0data = data_o;
 	assign mem_result = mem_rmem==1'b1 ? mem_finaldata : mem_aluout;
+	assign kseg0_uncached = ~config_o[0];
+	assign bev = status_o[`CP0_STATUS_BEV];
 
 endmodule

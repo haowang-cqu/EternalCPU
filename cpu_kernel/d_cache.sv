@@ -94,7 +94,6 @@ module d_cache #(parameter A_WIDTH = 32, parameter C_INDEX = `D_CACHE_INDEX)(
     assign m_wen            =   uncached ? p_wen : data_wen;
     assign m_size           =   uncached ? p_size: data_size;
     assign m_rw             =   uncached ? p_rw : data_wr;
-    assign data_data_ok     =   m_ready;
 
     assign mem_memwrite     =   p_rw;
     assign sel              =   p_wen;

@@ -147,6 +147,32 @@ module mycpu_top(
     wire    [3:0]     m_sel,d_wen;
     wire             stallreq_from_if;
     wire             stallreq_from_mem;
+    
+    //TLB
+    // 相对于CP0方向的in和out
+    wire [31:0] PageMask_in;
+    wire [31:0] EntryLo0_in;
+    wire [31:0] EntryLo1_in;
+    wire [31:0] EntryHi_in;
+    wire [31:0] Index_in;
+    wire [31:0] PageMask_out;
+    wire [31:0] EntryLo0_out;
+    wire [31:0] EntryLo1_out;
+    wire [31:0] EntryHi_out;
+    wire [31:0] Index_out;
+    wire [31:0] Random_out;
+
+    wire [3:0]  TLBcmd;
+    wire [31:0] inst_pa;
+    wire [31:0] data_pa;
+    wire        inst_found;
+    wire        inst_valid;
+    wire        inst_uncache;
+    wire        data_found;
+    wire        data_valid;
+    wire        data_uncache;
+    wire        data_writeable;
+    wire        kseg0_uncached;
 
 
 
@@ -221,30 +247,7 @@ module mycpu_top(
         .TLBcmd(TLBcmd),
         .kseg0_uncached(kseg0_uncached)
     );
-    // 相对于CP0方向的in和out
-    wire [31:0] PageMask_in;
-    wire [31:0] EntryLo0_in;
-    wire [31:0] EntryLo1_in;
-    wire [31:0] EntryHi_in;
-    wire [31:0] Index_in;
-    wire [31:0] PageMask_out;
-    wire [31:0] EntryLo0_out;
-    wire [31:0] EntryLo1_out;
-    wire [31:0] EntryHi_out;
-    wire [31:0] Index_out;
-    wire [31:0] Random_out;
-
-    wire [3:0]  TLBcmd;
-    wire [31:0] inst_pa;
-    wire [31:0] data_pa;
-    wire        inst_found;
-    wire        inst_valid;
-    wire        inst_uncache;
-    wire        data_found;
-    wire        data_valid;
-    wire        data_uncache;
-    wire        data_writeable;
-    wire        kseg0_uncached;
+    
     mmu mmu (
         .clk(aclk),
         .rst(~rst),

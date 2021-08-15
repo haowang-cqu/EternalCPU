@@ -133,7 +133,7 @@ module datapath(
 	wire            mem_we_from_dec;
 
 	wire [4:3]		mem_tlb_exc_msb;
-	wire [4:0]		mem_tlb_exc = {mem_tlb_exc_msb,mem_en & (~data_found),mem_en & (~data_valid),mem_en & (~data_writeable) & mem_we_from_dec};
+	wire [4:0]		mem_tlb_exc = {mem_tlb_exc_msb,mem_en_m & (~data_found),mem_en_m & (~data_valid),mem_en_m & (~data_writeable) & mem_we_from_dec};
 
 	//CP0 varibles
 	wire[`RegBus]   data_o,epc_o;

@@ -154,11 +154,11 @@ module instr_decode(
 				`MTC0:controls <= `MTC0_DECODE;
 				`MFC0:controls <= `MFC0_DECODE;
 				`ERET_AND_TLB: case(func)
-					`ERET:controls = `ERET_DECODE;
-                    `TLBP:  tlbop_o = 4'b1000;
-                    `TLBR:  tlbop_o = 4'b0100;
-                    `TLBWI: tlbop_o = 4'b0010;
-                    `TLBWR: tlbop_o = 4'b0001;
+					`ERET:controls <= `ERET_DECODE;
+                    `TLBP:  tlbop_o <= 4'b1000;
+                    `TLBR:  tlbop_o <= 4'b0100;
+                    `TLBWI: tlbop_o <= 4'b0010;
+                    `TLBWR: tlbop_o <= 4'b0001;
 					default: invalid_o = 1; // TODO: should be co-processor unuseable?
 				endcase
 				default: invalid_o=1;//illegal instrs
