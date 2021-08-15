@@ -66,8 +66,8 @@ module ID(
 	output logic		id_wcp0_o,
 	output logic		id_memen_o,
 	
-	output logic            j_b_stall_o
-
+	output logic        j_b_stall_o,
+	output logic        flush_delay_slot
 );
 	logic  [31:0]    reg_data1;
 	logic  [31:0]    reg_data2;
@@ -75,6 +75,7 @@ module ID(
 	logic            branch_flag_o_hazard;
 	logic            jr_flag_o_hazard;
 	logic            jalr_flag_o_hazard;
+	logic            branch_likely;
 
 	assign sign_imm_o = (id_instr_i[29:28] == 2'b11) ? ({{16{1'b0}},id_instr_i[15:0]}) : ({{16{id_instr_i[15]}},id_instr_i[15:0]});
 	
@@ -102,6 +103,16 @@ module ID(
 
 	assign do_branch_o = branch_flag_o & id_equal_o;
 	
+	assign branch_likely =  (id_op_o == `BEQL )  ||
+					 	    (id_op_o == `BGTZL)  ||
+							(id_op_o == `BLEZL)	 ||
+							(id_op_o == `BNEL )  ||
+							(id_op_o == `REGIMM_INST && id_rt_o == `BGEZALL) ||
+							(id_op_o == `REGIMM_INST && id_rt_o == `BGEZL  ) ||
+							(id_op_o == `REGIMM_INST && id_rt_o == `BLTZALL) ||
+							(id_op_o == `REGIMM_INST && id_rt_o == `BLTZL  ) ;
+	// branch likely 指令如果不跳转则清空延迟槽指令
+	assign flush_delay_slot = branch_likely & ~do_branch_o;
 
 	instr_decode id_instr_decode_nostall(
 

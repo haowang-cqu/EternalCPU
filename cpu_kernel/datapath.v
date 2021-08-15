@@ -155,6 +155,8 @@ module datapath(
 
     wire wb_stall;
 
+	wire flush_delay_slot;
+
 	// there is no memory access when sc failed (sc inst but LLbit != 1).
 	assign mem_we = mem_wmem & ~mem_sc_failed;
 	assign mem_en = mem_memen & ~mem_sc_failed;
@@ -238,7 +240,7 @@ module datapath(
 	if2id datapath_if2id(
         .clk_i(clk),
         .rst_i(rst),
-        .flush_i(id_flush),
+        .flush_i(id_flush | flush_delay_slot),
         .stall_i(id_stall),
 
         .pcplus4_i(if_pc4),
@@ -317,7 +319,8 @@ module datapath(
 		.id_wcp0_o(id_cp0we),
 		.id_memen_o(id_memen),
 
-		.j_b_stall_o(id_j_b_stall)
+		.j_b_stall_o(id_j_b_stall),
+		.flush_delay_slot(flush_delay_slot)
     );
 	
     // ID stage to EXE stage triger

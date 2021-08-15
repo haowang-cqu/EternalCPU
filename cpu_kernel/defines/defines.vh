@@ -397,3 +397,14 @@
 // move conditional: R-type
 `define MOVN          6'b001011
 `define MOVZ          6'b001010
+
+// branch likely: I-type
+`define BEQL          6'b010100
+`define BGTZL         6'b010111
+`define BLEZL         6'b010110
+`define BNEL          6'b010101
+// branch likely: op = `REGIMM_INST
+`define BGEZALL       5'b10011
+`define BGEZL         5'b00011
+`define BLTZALL       5'b10010
+`define BLTZL         5'b00010

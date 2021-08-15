@@ -111,15 +111,16 @@ module instr_decode(
 			`J:controls <= `J_DECODE;
 			`JAL:controls<=`JAL_DECODE;
 
-			`BEQ:controls<= `BEQ_DECODE;
-			`BNE:controls<= `BNE_DECODE;
-			`BGTZ:controls<=`BGTZ_DECODE;
-			`BLEZ:controls<=`BLEZ_DECODE;			
+			`BEQ,  `BEQL: controls<= `BEQ_DECODE;
+			`BNE,  `BNEL: controls<= `BNE_DECODE;
+			`BGTZ, `BGTZL:controls<=`BGTZ_DECODE;
+			`BLEZ, `BLEZL:controls<=`BLEZ_DECODE;	
+
 			`REGIMM_INST:case(rt)
-				`BLTZ:controls<=  `BLTZ_DECODE;
-				`BLTZAL:controls<=`BLTZAL_DECODE;
-				`BGEZ:controls<=  `BGEZ_DECODE;
-				`BGEZAL:controls<=`BGEZAL_DECODE;
+				`BLTZ,   `BLTZL:  controls<=  `BLTZ_DECODE;
+				`BLTZAL, `BLTZALL:controls<=`BLTZAL_DECODE;
+				`BGEZ,   `BGEZL:  controls<=  `BGEZ_DECODE;
+				`BGEZAL, `BGEZALL:controls<=`BGEZAL_DECODE;
 
 				// I-type trap instructions
 				`TEQI:  controls <= `TEQI_DECODE;
