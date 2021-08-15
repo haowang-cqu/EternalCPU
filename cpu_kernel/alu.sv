@@ -93,8 +93,8 @@ module alu(
 			alucontrol== `CLO_CONTROL   ? (clo_result)     :
 			alucontrol== `CLZ_CONTROL   ? (clz_result) 	   : 
 			alucontrol== `MUL_CONTROL   ? (alu_out_signed_mult[31:0]): 
-			alucontrol== `MOVN_DECODE   ? reg1_i :
-			alucontrol== `MOVZ_DECODE   ? reg1_i : 32'b0 ;
+			alucontrol== `MOVN_CONTROL  ? reg1_i :
+			alucontrol== `MOVZ_CONTROL  ? reg1_i : 32'b0 ;
 
 	wire rt_eqz;
 	assign rt_eqz = (reg2_i == 32'b0) ? 1 : 0;

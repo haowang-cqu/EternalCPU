@@ -67,7 +67,7 @@ module EXE(
     output logic [31 : 0] ex_lo_data_o,
 
     output logic          ex_trap_o,
-    output logic          ex_not_move_o;
+    output logic          ex_not_move_o,
     output logic          ex_mult_stall//qf
     );
 
