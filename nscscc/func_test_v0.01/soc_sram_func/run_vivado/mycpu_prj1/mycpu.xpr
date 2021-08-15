@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="44" Path="d:/nscscc2020/团队赛/nscscc2019-info/func_test_v0.01/soc_axi_func/run_vivado/mycpu_prj1/mycpu.xpr">
+<Project Version="7" Minor="44" Path="d:/nscscc2020/团队赛/nscscc2019-info/func_test_v0.01/soc_sram_func/run_vivado/mycpu_prj1/mycpu.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="8de8692e6f7648c084645fde77f29b66"/>
@@ -27,21 +27,22 @@
     <Option Name="IPUserFilesDir" Val="$PIPUSERFILESDIR"/>
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
+    <Option Name="SimIpAutoExportScripts" Val="FALSE"/>
     <Option Name="DSANumComputeUnits" Val="16"/>
-    <Option Name="WTXSimLaunchSim" Val="119"/>
+    <Option Name="WTXSimLaunchSim" Val="70"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
     <Option Name="WTVcsLaunchSim" Val="0"/>
     <Option Name="WTRivieraLaunchSim" Val="0"/>
     <Option Name="WTActivehdlLaunchSim" Val="0"/>
-    <Option Name="WTXSimExportSim" Val="62"/>
-    <Option Name="WTModelSimExportSim" Val="62"/>
-    <Option Name="WTQuestaExportSim" Val="62"/>
-    <Option Name="WTIesExportSim" Val="62"/>
-    <Option Name="WTVcsExportSim" Val="62"/>
-    <Option Name="WTRivieraExportSim" Val="62"/>
-    <Option Name="WTActivehdlExportSim" Val="62"/>
+    <Option Name="WTXSimExportSim" Val="17"/>
+    <Option Name="WTModelSimExportSim" Val="17"/>
+    <Option Name="WTQuestaExportSim" Val="17"/>
+    <Option Name="WTIesExportSim" Val="17"/>
+    <Option Name="WTVcsExportSim" Val="17"/>
+    <Option Name="WTRivieraExportSim" Val="17"/>
+    <Option Name="WTActivehdlExportSim" Val="17"/>
     <Option Name="GenerateIPUpgradeLog" Val="TRUE"/>
     <Option Name="XSimRadix" Val="hex"/>
     <Option Name="XSimTimeUnit" Val="ns"/>
@@ -54,21 +55,7 @@
   <FileSets Version="1" Minor="31">
     <FileSet Name="sources_1" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
       <Filter Type="Srcs"/>
-      <File Path="$PPRDIR/../../rtl/xilinx_ip/axi_clock_converter/axi_clock_converter.xci">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../../rtl/axi_wrap/axi_wrap.v">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../../rtl/ram_wrap/axi_wrap_ram.v">
+      <File Path="$PPRDIR/../../rtl/BRIDGE/bridge_1x2.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -82,7 +69,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../rtl/soc_axi_lite_top.v">
+      <File Path="$PPRDIR/../../rtl/soc_lite_top.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -95,21 +82,21 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../rtl/xilinx_ip/axi_crossbar_1x2/axi_crossbar_1x2.xci">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PPRDIR/../../rtl/xilinx_ip/axi_ram/axi_ram.xci">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../../rtl/xilinx_ip/clk_pll/clk_pll.xci">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../../rtl/xilinx_ip/data_ram/data_ram.xci">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../../rtl/xilinx_ip/inst_ram/inst_ram.xci">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -118,7 +105,7 @@
       </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
-        <Option Name="TopModule" Val="soc_axi_lite_top"/>
+        <Option Name="TopModule" Val="soc_lite_top"/>
         <Option Name="TopAutoSet" Val="TRUE"/>
       </Config>
     </FileSet>
@@ -152,6 +139,7 @@
         <Option Name="TransportIntDelay" Val="0"/>
         <Option Name="SelectedSimModel" Val="rtl"/>
         <Option Name="SrcSet" Val="sources_1"/>
+        <Option Name="xsim.simulate.runtime" Val="0"/>
         <Option Name="xsim.simulate.log_all_signals" Val="true"/>
       </Config>
     </FileSet>
