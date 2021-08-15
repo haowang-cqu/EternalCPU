@@ -336,7 +336,7 @@ module mycpu_top(
 
 		.sraml_en		(data_sram_en),
 		.sraml_paddr		(data_paddr),
-		.sraml_v_blkidx		(data_sram_addr[11:6]), 
+		.sraml_v_blkidx		(data_sram_addr[`D_CACHE_INDEX+`D_CACHE_WRD_INDEX+2-1:`D_CACHE_WRD_INDEX+2]), 
 		.sraml_wen		(data_sram_wen),
 		.sraml_cached		(~no_dcache), 
 		.sraml_rdata		(data_sram_rdata), 
@@ -392,7 +392,7 @@ module mycpu_top(
 
 		.sraml_en		(inst_sram_en),
 		.sraml_paddr		(inst_paddr),
-		.sraml_v_blkidx		(inst_sram_addr[11:6]), 
+		.sraml_v_blkidx		(inst_sram_addr[`I_CACHE_INDEX+`I_CACHE_WRD_INDEX+2-1:`I_CACHE_WRD_INDEX+2]), 
 		.sraml_wen		(4'b0),
 		.sraml_cached		(1'b1), 
 		.sraml_rdata		(inst_sram_rdata), 
