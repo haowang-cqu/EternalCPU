@@ -215,7 +215,7 @@ module datapath(
 		.mem_rt			(mem_rt),
 
 		.wb_flush			(wb_flush),
-		.stallreq_from_if	(stallreq_from_if & inst_valid & (~if_except[7])),
+		.stallreq_from_if	(stallreq_from_if),
 		.stallreq_from_mem		(stallreq_from_mem),
 		.wb_stall			(wb_stall),
 
