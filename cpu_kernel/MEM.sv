@@ -105,12 +105,12 @@ module MEM(
 	);
 
 	LLbit LLbit0 (
-		clk(clk),
-    	rst(rst),
-    	flush(flush),
-    	LLbit_i(ll),  // ll write 1, sc write 0
-    	we(ll | sc),
-    	LLbit_o(LLbit)
+		.clk(clk),
+    	.rst(rst),
+    	.flush(flush),
+    	.LLbit_i(ll),  // ll write 1, sc write 0
+    	.we(ll | sc),
+    	.LLbit_o(LLbit)
 	);
 
 	assign ll  = ~(|(mem_op ^ `LL ));
