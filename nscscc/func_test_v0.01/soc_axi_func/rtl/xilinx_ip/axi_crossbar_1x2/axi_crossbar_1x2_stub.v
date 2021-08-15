@@ -1,10 +1,10 @@
 // Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
-// Date        : Sun Aug  1 14:33:34 2021
+// Date        : Sun Aug 15 15:18:36 2021
 // Host        : cyy-pc running 64-bit Debian GNU/Linux 11 (bullseye)
 // Command     : write_verilog -force -mode synth_stub
-//               /home/cyy/EternalCPU/nscscc/func_test_v0.01/soc_axi_func/rtl/xilinx_ip/axi_crossbar_1x2/axi_crossbar_1x2_stub.v
+//               /home/cyy/EternalCPU-chusai/nscscc/func_test_v0.01/soc_axi_func/rtl/xilinx_ip/axi_crossbar_1x2/axi_crossbar_1x2_stub.v
 // Design      : axi_crossbar_1x2
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7a200tfbg676-2

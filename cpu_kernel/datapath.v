@@ -9,6 +9,7 @@ module datapath(
 
 	output wire[31:0]  if_pc,
 	input wire[31:0]   if_instr,
+	output wire        if_stall,
 
 	output wire        id_equal,
 	output wire        id_stall,
@@ -63,7 +64,6 @@ module datapath(
 );
 
 	// IF
-	wire       		if_stall;
 	wire [31:0] 	if_pc4;
 	wire       		if_flush;
 	wire [7:0] 		if_except;

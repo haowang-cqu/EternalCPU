@@ -1,8 +1,10 @@
 // Cache Config
-`define I_CACHE_INDEX   12
-`define D_CACHE_INDEX   11
+`define I_CACHE_INDEX   4
+`define D_CACHE_INDEX   4
+`define I_CACHE_WRD_INDEX 4 
+`define D_CACHE_WRD_INDEX 4
 // PLL Config
-`define PLL_FREQ        clk_pll
+`define PLL_FREQ        clk_pll_85
 // TLB Config
 `define ENABLE_TLB      1
 `define TLB_WIDTH       5

@@ -1,10 +1,10 @@
 -- Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
--- Date        : Sun Aug  1 14:30:32 2021
+-- Date        : Sun Aug 15 15:15:38 2021
 -- Host        : cyy-pc running 64-bit Debian GNU/Linux 11 (bullseye)
 -- Command     : write_vhdl -force -mode funcsim
---               /home/cyy/EternalCPU/nscscc/func_test_v0.01/soc_axi_func/rtl/xilinx_ip/clk_pll/clk_pll_sim_netlist.vhdl
+--               /home/cyy/EternalCPU-chusai/nscscc/func_test_v0.01/soc_axi_func/rtl/xilinx_ip/clk_pll/clk_pll_sim_netlist.vhdl
 -- Design      : clk_pll
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.

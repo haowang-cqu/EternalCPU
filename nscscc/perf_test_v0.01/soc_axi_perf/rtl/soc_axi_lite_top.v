@@ -1,4 +1,3 @@
-`include "compile_options.vh"
 /*------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 Copyright (c) 2016, Loongson Technology Corporation Limited.
@@ -114,7 +113,7 @@ begin: speedup_simulation
 end
 else
 begin: pll
-    `PLL_FREQ clk_pll
+    clk_pll clk_pll
     (
         .clk_in1 (clk    ),
         .cpu_clk (cpu_clk),
