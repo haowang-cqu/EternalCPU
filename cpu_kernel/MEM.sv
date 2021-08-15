@@ -58,7 +58,6 @@ module MEM(
 	logic        adesM;
 	logic [31:0] data_o;
 	logic [31:0] count_o;
-	logic [31:0] compare_o;
 	logic [31:0] status_o;
 	logic [31:0] cause_o;
 	logic [31:0] config_o;
