@@ -91,7 +91,7 @@ module instr_decode(
 				// Privileged instrs
 				`BREAK:controls <=`BREAK_DECODE;
 				`SYSCALL:controls <=`SYSCALL_DECODE;
-
+				`SYNC:	controls <= `NOP_DECODE; // SYNC as NOP
 				default:invalid_o = 1;
 			endcase
 
@@ -143,12 +143,20 @@ module instr_decode(
 				`MSUBU:controls <= `MSUB_DECODE;
 				default:invalid_o = 1;
 				endcase
-
+			// Cache指令
+			`CACHE: controls <= `NOP_DECODE; // Cache as NOP
 			//mfc0 and mtc0
 			`SPECIAL3_INST:case(rs)
 				`MTC0:controls <= `MTC0_DECODE;
 				`MFC0:controls <= `MFC0_DECODE;
-				`ERET:controls <= `ERET_DECODE;
+				`ERET_AND_TLB: case(func)
+					`ERET:controls = `ERET_DECODE;
+					`TLBP:  controls <= `NOP_DECODE;
+					`TLBR:  controls <= `NOP_DECODE;
+					`TLBWI: controls <= `NOP_DECODE;
+					`TLBWI: controls <= `NOP_DECODE;
+					default: invalid_o = 1; // TODO: should be co-processor unuseable?
+				endcase
 				default: invalid_o=1;//illegal instrs
 				endcase
 			default: invalid_o=1;
