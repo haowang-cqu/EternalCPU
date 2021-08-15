@@ -390,7 +390,7 @@ module mycpu_top(
         .data_vaddr(data_sram_addr),
         .data_paddr(data_pa),
         // cp0 in
-        .PageMask_in(PageMask_out),
+        .PageMask_in(PageMask_in),
         .EntryLo0_in(EntryLo0_out),
         .EntryLo1_in(EntryLo1_out),
         .EntryHi_in(EntryHi_out),
