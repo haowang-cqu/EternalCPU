@@ -294,7 +294,14 @@
 `define SYSCALL 6'b001100
 `define BREAK 6'b001101
    
-`define ERET 5'b10000
+`define ERET_AND_TLB 5'b10000
+
+`define ERET 6'b011000
+`define TLBP 6'b001000
+`define TLBR 6'b000001
+`define TLBWI 6'b000010
+`define TLBWR 6'b000110
+
 
 `define R_TYPE 6'b000000
 `define REGIMM_INST 6'b000001
@@ -367,3 +374,6 @@
 `define SWR           6'b101110
 `define LL            6'b110000
 `define SC            6'b111000
+
+`define CACHE         6'b101111
+`define SYNC          6'b001111

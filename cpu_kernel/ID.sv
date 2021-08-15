@@ -66,8 +66,10 @@ module ID(
 	output logic		id_wcp0_o,
 	output logic		id_memen_o,
 	
-	output logic            j_b_stall_o
+	output logic            j_b_stall_o,
 
+    output logic [3:0]  tlbop_o,
+    output logic [2:0]  cp0_sel_o
 );
 	logic  [31:0]    reg_data1;
 	logic  [31:0]    reg_data2;
@@ -169,7 +171,9 @@ module ID(
 
 		.rmem_o(id_rmem_o),
 		.wmem_o(id_wmem_o),
-		.memen_o(id_memen_o)
+		.memen_o(id_memen_o),
+		.tlbop_o(tlbop_o),
+		.cp0_sel_o(cp0_sel_o)
 	);
 
 		// wb stage

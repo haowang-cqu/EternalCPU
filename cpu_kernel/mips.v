@@ -147,6 +147,32 @@ module mycpu_top(
     wire    [3:0]     m_sel,d_wen;
     wire             stallreq_from_if;
     wire             stallreq_from_mem;
+    
+    //TLB
+    // 相对于CP0方向的in和out
+    wire [31:0] PageMask_in;
+    wire [31:0] EntryLo0_in;
+    wire [31:0] EntryLo1_in;
+    wire [31:0] EntryHi_in;
+    wire [31:0] Index_in;
+    wire [31:0] PageMask_out;
+    wire [31:0] EntryLo0_out;
+    wire [31:0] EntryLo1_out;
+    wire [31:0] EntryHi_out;
+    wire [31:0] Index_out;
+    wire [31:0] Random_out;
+
+    wire [3:0]  TLBcmd;
+    wire [31:0] inst_pa;
+    wire [31:0] data_pa;
+    wire        inst_found;
+    wire        inst_valid;
+    wire        inst_uncache;
+    wire        data_found;
+    wire        data_valid;
+    wire        data_uncache;
+    wire        data_writeable;
+    wire        kseg0_uncached;
 
 
 
@@ -201,10 +227,66 @@ module mycpu_top(
         .mem_we            (memwriteM),// mips使用
         .mem_en                (memenM),// mips使用
         .wb_wreg(regwriteW),
-        .ext_int            (ext_int)
+        .ext_int            (ext_int),
+        .PageMask_in(PageMask_in),
+        .EntryLo0_in(EntryLo0_in),
+        .EntryLo1_in(EntryLo1_in),
+        .EntryHi_in(EntryHi_in),
+        .Index_in(Index_in),
+        .PageMask_out(PageMask_out),
+        .EntryLo0_out(EntryLo0_out),
+        .EntryLo1_out(EntryLo1_out),
+        .EntryHi_out(EntryHi_out),
+        .Index_out(Index_out),
+        .Random_out(Random_out),
+        .inst_found(inst_found),
+        .inst_valid(inst_valid),
+        .data_found(data_found),
+        .data_valid(data_valid),
+        .data_writeable(data_writeable),
+        .TLBcmd(TLBcmd),
+        .kseg0_uncached(kseg0_uncached)
     );
     
-    wire cache_sel = inst_sram_addr[28];
+    mmu mmu (
+        .clk(aclk),
+        .rst(~rst),
+        // instruction address translation
+        .inst_vaddr(inst_sram_addr),
+        .inst_paddr(inst_pa),
+        // data address translation
+        .data_vaddr(data_sram_addr),
+        .data_paddr(data_pa),
+        // cp0 in
+        .PageMask_in(PageMask_out),
+        .EntryLo0_in(EntryLo0_out),
+        .EntryLo1_in(EntryLo1_out),
+        .EntryHi_in(EntryHi_out),
+        .Index_in(Index_out),
+        .Random_in(Random_out),
+        // cp0 out
+        .PageMask_out(PageMask_out),
+        .EntryLo0_out(EntryLo0_in),
+        .EntryLo1_out(EntryLo1_in),
+        .EntryHi_out(EntryHi_in),
+        .Index_out(Index_in),
+        // tlb instr enable
+        .TLBP(TLBcmd[3]),
+        .TLBR(TLBcmd[2]),
+        .TLBWI(TLBcmd[1]),
+        .TLBWR(TLBcmd[0]),
+        // control signal
+        .inst_found(inst_found),
+        .inst_valid(inst_valid),
+        .inst_uncache(inst_uncache),
+        .data_found(data_found),
+        .data_valid(data_valid),
+        .data_uncache(data_uncache),
+        .data_writeable(data_writeable),
+        .kseg0_uncached(kseg0_uncached)
+    );
+    
+    wire cache_sel = 1'b1;
     
     wire cache0_en = inst_sram_en & (~cache_sel);
     wire cache1_en = inst_sram_en & cache_sel;
@@ -233,7 +315,7 @@ module mycpu_top(
 	i_cache #(.C_INDEX(6)) i_cache0(
 		// cpu
 		.p_flush			(|excepttypeM),
-        .p_a				(inst_sram_addr),
+        .p_a				(inst_pa),
         .p_din				(cache0_rdata),
         .p_strobe			(cache0_en),
         .p_ready			(cache0_ready),
@@ -251,7 +333,7 @@ module mycpu_top(
 	i_cache i_cache1(
 		// cpu 
 		.p_flush			(|excepttypeM),
-        .p_a				(inst_sram_addr),
+        .p_a				(inst_pa),
         .p_din				(cache1_rdata),
         .p_strobe			(cache1_en),
         .p_ready			(cache1_ready),
@@ -269,7 +351,7 @@ module mycpu_top(
 
     d_cache d_cache0(
         // cpu side
-        .p_a                (data_sram_addr),
+        .p_a                (data_pa),
         .p_dout                (data_sram_wdata),
         .p_din                (data_sram_rdata),
         .p_strobe            (data_sram_en),
@@ -287,7 +369,8 @@ module mycpu_top(
         .m_wen                (d_wen),
         .m_size                (d_size),
         .m_rw                (m_st),
-        .m_ready            (m_d_ready)
+        .m_ready            (m_d_ready),
+        .uncached           (data_uncache)
     );
 
     

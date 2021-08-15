@@ -1,0 +1,10 @@
+`define kseg0       3'b100
+`define kseg1       3'b101
+`define ASID        7:0
+`define VPN2        31:13
+`define ASID        7:0
+`define GLOBAL      0
+`define VALID       1
+`define DIRTY       2
+`define CACHE_CO    5:3
+`define CACHE_FLAG  3

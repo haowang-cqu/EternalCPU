@@ -25,6 +25,12 @@ module exe2mem(
 
     input   logic [4:0]    ex_rt_i,
 
+    input   logic [5:0]    ext_int_i,
+
+    input   logic [3:0]    tlbop_i,
+    input   logic [2:0]    cp0_sel_i,
+    input   logic [4:3]    tlb_exc_i,
+
     output  logic          rmem_o,
     output  logic          wmem_o,
     output  logic          wreg_o,
@@ -45,11 +51,16 @@ module exe2mem(
 
     output  logic [4:0]    rd_o,
     output  logic          is_in_delayslot_o,
-    output  logic [7:0]    except_o
+    output  logic [7:0]    except_o,
 
+    output  logic [5:0]    ext_int_o,
+
+    output  logic [3:0]    tlbop_o,
+    output  logic [2:0]    cp0_sel_o,
+    output  logic [4:3]    tlb_exc_o
 );
 
-    always @(posedge clk_i) begin
+    always_ff @(posedge clk_i) begin
         if (rst_i == 1'b1) begin
             rdata2_o<=0;
             aluout_o<=0;
@@ -70,7 +81,10 @@ module exe2mem(
             memen_o<=0;
 
             ex_rt_o<=0;
-
+            ext_int_o <= 0;
+            tlbop_o<=0;
+            cp0_sel_o<=0;
+            tlb_exc_o<=2'd0;
         end
         else if (flush_i == 1'b1) begin
             rdata2_o<=0;
@@ -92,6 +106,11 @@ module exe2mem(
             memen_o<=0;
 
             ex_rt_o<=0;
+            ext_int_o <= 0;
+
+            tlbop_o<=0;
+            cp0_sel_o<=0;
+            tlb_exc_o<=2'd0;
         end
         else if (stall_i == 1'b1) begin
             rdata2_o<=rdata2_o;
@@ -112,6 +131,11 @@ module exe2mem(
             wcp0_o<=wcp0_o;
             memen_o<=memen_o;
             ex_rt_o<=ex_rt_o;
+            ext_int_o <= ext_int_o;
+
+            tlbop_o<=tlbop_o;
+            cp0_sel_o<=cp0_sel_o;
+            tlb_exc_o<=tlb_exc_o;
         end
         else begin
             rdata2_o<=rdata2_i;
@@ -132,6 +156,11 @@ module exe2mem(
             wcp0_o<=wcp0_i;
             memen_o<=memen_i;
             ex_rt_o<=ex_rt_i;
+            ext_int_o <= memen_i ? 6'd0 : ext_int_i;
+
+            tlbop_o<=tlbop_i;
+            cp0_sel_o<=cp0_sel_i;
+            tlb_exc_o<=tlb_exc_i;
         end
     end
 

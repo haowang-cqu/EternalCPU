@@ -13,12 +13,14 @@ module if2id(
     input  logic [31:0] pc_i,
     input  logic [7:0]  except_i,
     input               is_in_delayslot_i,
+    input  logic [4:3]  tlb_exc_i,
 
     output logic [31:0] pcplus4_o,
     output logic [31:0] instr_o,
     output logic [31:0] pc_o,
     output logic [7:0]  except_o,
-    output logic        is_in_delayslot_o
+    output logic        is_in_delayslot_o,
+    output logic [4:3]  tlb_exc_o
 );
 
     always @(posedge clk_i) begin
@@ -28,6 +30,7 @@ module if2id(
             pc_o              <= 32'b0;
             except_o          <= 8'b0;
             is_in_delayslot_o <= 1'b0;
+            tlb_exc_o         <= 2'd0;
         end
         else if (flush_i == 1'b1) begin
             pcplus4_o         <= 32'b0;
@@ -35,6 +38,7 @@ module if2id(
             pc_o              <= 32'b0;
             except_o          <= 8'b0;
             is_in_delayslot_o <= 1'b0;
+            tlb_exc_o         <= 2'd0;
         end
         else if (stall_i == 1'b1) begin
             pcplus4_o         <= pcplus4_o;
@@ -42,6 +46,7 @@ module if2id(
             pc_o              <= pc_o;
             except_o          <= except_o;
             is_in_delayslot_o <= is_in_delayslot_o;
+            tlb_exc_o         <= tlb_exc_o;
         end
         else begin
             pcplus4_o         <= pcplus4_i;
@@ -49,6 +54,7 @@ module if2id(
             pc_o              <= pc_i;
             except_o          <= except_i;
             is_in_delayslot_o <= is_in_delayslot_i;
+            tlb_exc_o         <= tlb_exc_i;
         end
     end
 

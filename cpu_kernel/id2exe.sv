@@ -34,6 +34,9 @@ module id2exe(
     input   logic          wreg_i,
     input   logic          wcp0_i,
     input   logic          memen_i,
+    input   logic [3:0]    tlbop_i,
+    input   logic [2:0]    cp0_sel_i,
+    input   logic [4:3]    tlb_exc_i,
 
     output  logic          rmem_o,
     output  logic          wmem_o,
@@ -62,10 +65,13 @@ module id2exe(
     output  logic  [1:0]   whilo_o,
     output  logic  [31:0]  hi_o,
     output  logic  [31:0]  lo_o,
-    output  logic  [7:0]   except_o
+    output  logic  [7:0]   except_o,
+    output  logic [3:0]    tlbop_o,
+    output  logic [2:0]    cp0_sel_o,
+    output  logic [4:3]    tlb_exc_o
 );
 
-    always @(posedge clk_i) begin
+    always_ff @(posedge clk_i) begin
         if (rst_i == 1'b1) begin
             rdata1_o<=0;
             rdata2_o<=0;
@@ -92,7 +98,9 @@ module id2exe(
             wreg_o<=0;
             wcp0_o<=0;
             memen_o<=0;
-
+            tlbop_o <= 0;
+            cp0_sel_o <= 0;
+            tlb_exc_o <= 2'd0;
         end
         else if (flush_i == 1'b1) begin
             rdata1_o<=0;
@@ -120,6 +128,9 @@ module id2exe(
             wreg_o<=0;
             wcp0_o<=0;
             memen_o<=0;
+            tlbop_o <= 0;
+            cp0_sel_o <= 0;
+            tlb_exc_o <= 2'd0;
         end
         else if (stall_i == 1'b1) begin
             rdata1_o<=rdata1_o;
@@ -147,6 +158,9 @@ module id2exe(
             wreg_o<=wreg_o;
             wcp0_o<=wcp0_o;
             memen_o<=memen_o;
+            tlbop_o <= tlbop_o;
+            cp0_sel_o <= cp0_sel_o;
+            tlb_exc_o <= tlb_exc_o;
         end
         else begin
             rdata1_o<=rdata1_i;
@@ -174,6 +188,9 @@ module id2exe(
             wreg_o<=wreg_i;
             wcp0_o<=wcp0_i;
             memen_o<=memen_i;
+            tlbop_o <= tlbop_i;
+            cp0_sel_o <= cp0_sel_i;
+            tlb_exc_o <= tlb_exc_i;
         end
     end
 

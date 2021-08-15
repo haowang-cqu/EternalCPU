@@ -3,3 +3,5 @@
 system_test_v0.01/
 !*/*/run_vivado/mycpu_prj1/*.xpr
 !*/*/run_vivado/mycpu_prj1/*.tcl
+soc_up/
+
