@@ -21,6 +21,7 @@ module cache4way_miss_handler#(
 ) 
 (
     input clk, rst, // rst is high active
+    input flush, 
     // sram interact channel
     input  req, // request valid signal
     input  cached, // specifying whether to bypass cache
@@ -133,7 +134,10 @@ always @(posedge clk) begin
             end
         end
         `TRANSGEN: begin
-            if (cache_grant) begin
+            if(flush)begin
+                state <=`IDLE;
+            end
+            else if (cache_grant) begin
                 if (need_wrbk) begin
                     state <= `WRBK;
                 end
@@ -165,7 +169,10 @@ always @(posedge clk) begin
             
         // end
         `UNCACHE: begin
-            if(axi_finished) begin
+            if(flush)begin
+                state <= `IDLE;
+            end
+            else if(axi_finished) begin
                 state <= `IDLE;
             end
             else begin
@@ -227,6 +234,11 @@ always @(posedge clk) begin
         miss_v_blkidx <= 0;
         miss_way      <= 0;
     end
+    else if(flush) begin
+        miss_paddr    <= 0;
+        miss_v_blkidx <= 0;
+        miss_way      <= 0;
+    end
     else begin
         if(state==`IDLE&&req&&cached)begin
             miss_paddr    <= {req_paddr[31:WRDIDX_BIT+2], {(WRDIDX_BIT+2){1'b0}}};
@@ -272,7 +284,10 @@ always @(posedge clk) begin
     else begin
         case (axi_state)
         `IDLE: begin
-            if (state==`TRANSGEN||state==`IDLE&&req&&!cached) begin
+            if(flush)begin
+                axi_state <= axi_state;
+            end
+            else if (state==`TRANSGEN||state==`IDLE&&req&&!cached) begin
                 axi_state <= `PEND;
             end
             else begin
@@ -280,7 +295,10 @@ always @(posedge clk) begin
             end
         end
         `PEND: begin
-            if ((arvalid&&arready||awvalid&&awready)) begin
+            if(flush)begin
+                axi_state <= `IDLE;
+            end
+            else if ((arvalid&&arready||awvalid&&awready)) begin
                 axi_state <= `TRANSFER;
             end
             else begin
@@ -288,7 +306,10 @@ always @(posedge clk) begin
             end
         end
         `TRANSFER: begin
-            if((rvalid&&rready&&rlast||bvalid&&bready&&bresp==`OKAY))begin
+            if(flush)begin
+                axi_state <= `IDLE;
+            end
+            else if((rvalid&&rready&&rlast||bvalid&&bready&&bresp==`OKAY))begin
                 if(axi_seq!=0||state==`WRBK)begin
                     axi_state <= `PEND;
                 end
@@ -309,6 +330,13 @@ end
 // logic for axi transaction generation and maintaining
 always @(posedge clk) begin
     if (rst) begin
+        axi_wr   <= 0;
+        axi_wen  <= 0;
+        axi_addr <= 0;
+        axi_seq  <= 0;
+        axi_wdata <=0;
+    end
+    else if(flush)begin
         axi_wr   <= 0;
         axi_wen  <= 0;
         axi_addr <= 0;
@@ -405,6 +433,9 @@ always @(posedge clk) begin
     if(rst) begin
         axi_waitresp <= 0;
     end
+    else if(flush)begin
+        axi_waitresp <= 0;
+    end
     else if (axi_state==`TRANSFER&&axi_wr&&wvalid&&wready&&wlast) begin
         axi_waitresp <= 1;
     end
@@ -427,7 +458,7 @@ assign axi_finished = (rvalid&&rready&&rlast||bvalid&&bready&&bresp==`OKAY)
 assign fin = axi_finished&&(state==`UNCACHE||state==`FILL);
 assign req_rdata = rdata;
 //cache access request
-assign cache_req =  state==`TRANSGEN||
+assign cache_req =  state==`TRANSGEN&&!flush||
                     state==`WRBK||
                     state==`FILL;
 //cache line and word select channel
@@ -470,7 +501,7 @@ assign arburst = 2'b01;
 assign arlock = 2'b0;
 assign arcache = 4'b0;
 assign arprot = 3'b0;
-assign arvalid = axi_state==`PEND&&!axi_wr;
+assign arvalid = !flush&&axi_state==`PEND&&!axi_wr;
 
 // read date channel
 assign rready = axi_state==`TRANSFER&&!axi_wr;
@@ -484,7 +515,7 @@ assign awburst = 2'b01;
 assign awlock = 2'b0;
 assign awcache = 4'b0;
 assign awprot = 3'b0;
-assign awvalid = axi_state==`PEND&&axi_wr;
+assign awvalid = !flush&&axi_state==`PEND&&axi_wr;
 
 // write data channel
 assign wid = 4'b0;

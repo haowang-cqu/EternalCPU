@@ -10,6 +10,7 @@ module datapath(
 	output wire[31:0]  if_pc,
 	input wire[31:0]   if_instr,
 	output wire        if_stall,
+	output wire        if_flush,
 
 	output wire        id_equal,
 	output wire        id_stall,
@@ -65,7 +66,7 @@ module datapath(
 
 	// IF
 	wire [31:0] 	if_pc4;
-	wire       		if_flush;
+	// wire       		if_flush;
 	wire [7:0] 		if_except;
 	wire       		if_is_in_delayslot;
 	wire [4:3]		if_tlb_exc = {~inst_found,~inst_valid}; // 注意：tlb_exc在memory阶段前为2位，后续为3位

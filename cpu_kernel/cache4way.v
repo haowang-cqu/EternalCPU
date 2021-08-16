@@ -17,6 +17,7 @@ module cache4way #(
     input  [31:0] sraml_wdata, 
     output sraml_stall, 
     input sraml_longest_stall, 
+    input sraml_flush,
     // axi interface
     // axi master interface
     // read address channel
@@ -132,6 +133,7 @@ cache4way_sramlike_interface#(
     .rdata                        ( sraml_rdata                  ),
     .wdata                        ( sraml_wdata                  ),
     .stall                        ( sraml_stall                  ),
+    .flush                        ( sraml_flush                  ),
     .longest_stall                ( sraml_longest_stall          ),
     .handler_req                  ( handler_req                  ),
     .handler_cached               ( handler_cached               ),
@@ -216,6 +218,7 @@ cache4way_miss_handler#(
 (
     .rst                          ( rst                          ),
     .clk                          ( clk                          ), 
+    .flush                        ( sraml_flush                  ),
     .req                          ( handler_req                  ),
     .cached                       ( handler_cached               ),
     .req_w                        ( handler_w                    ),

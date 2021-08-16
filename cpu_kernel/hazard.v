@@ -64,11 +64,11 @@ module hazard(
 	assign mem_stall    =                                    div_start | stallreq_from_if | stallreq_from_mem | ex_mult_stall;
    	assign wb_stall     =                                    div_start | stallreq_from_if | stallreq_from_mem | ex_mult_stall;
 
-	assign if_flush     =              	             (except_flush&&!stallreq_from_if&&!stallreq_from_mem);	
-	assign id_flush     =                            (except_flush&&!stallreq_from_if&&!stallreq_from_mem);
-	assign ex_flush     = (id_lwstall&&!mem_stall) | (except_flush&&!stallreq_from_if&&!stallreq_from_mem) | (id_j_b_stall&&!mem_stall);
-	assign mem_flush    =                            (except_flush&&!stallreq_from_if&&!stallreq_from_mem);
-	assign wb_flush     =                            (except_flush&&!stallreq_from_if&&!stallreq_from_mem);
+	assign if_flush     =              	             except_flush;	
+	assign id_flush     =                            except_flush;
+	assign ex_flush     = (id_lwstall&&!mem_stall) | except_flush | (id_j_b_stall&&!mem_stall);
+	assign mem_flush    =                            except_flush;
+	assign wb_flush     =                            except_flush;
 
   	always @(*) begin
 		if(mem_excepttype != 32'b0) begin

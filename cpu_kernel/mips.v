@@ -202,6 +202,7 @@ module mycpu_top(
 
 
 	wire 			i_stall;
+	wire    		if_flush;
 
 	wire 	[31:0]		d_araddr;		
 	wire 	[7:0]		d_arlen;		
@@ -290,7 +291,7 @@ module mycpu_top(
 	// inst_sram_parameters
 	assign 	rst 			= aresetn;
 	assign 	clk 			= aclk;
-	assign 	inst_sram_en 		= 1'b1;
+	assign 	inst_sram_en 		= ~if_flush;
 	assign 	inst_sram_wen 		= 4'b0;
 	assign 	inst_sram_addr 		= pcF;
 	assign 	inst_sram_wdata 	= 32'b0;
@@ -326,9 +327,9 @@ module mycpu_top(
 	assign stallreq_from_if 	= ~i_ready;
 	assign stallreq_from_mem	= data_sram_en & ~d_ready;
 
-	assign i_ready 			= inst_sram_en & ~i_stall;
+	assign i_ready 			= ~i_stall;
 
-	assign d_ready 			= data_sram_en & ~d_stall;
+	assign d_ready 			= ~d_stall;
 
 	datapath dp(
 		.clk				(clk),
@@ -336,6 +337,7 @@ module mycpu_top(
 		.if_pc				(pcF),
 		.if_instr				(instrF),
 		.if_stall			(if_stall),
+		.if_flush			(if_flush),
 		.id_equal				(equalD),
 		.id_stall				(stallD),
 		.id_instr				(instrD),
@@ -435,6 +437,7 @@ module mycpu_top(
 		.sraml_wdata		(data_sram_wdata), 
 		.sraml_stall		(d_stall), 
 		.sraml_longest_stall	(stallM), 
+		.sraml_flush    (1'b0),
 
 		.arid			()   ,
 		.araddr			(d_araddr		) ,
@@ -491,6 +494,7 @@ module mycpu_top(
 		.sraml_wdata		(32'b0), 
 		.sraml_stall		(i_stall), 
 		.sraml_longest_stall	(if_stall), 
+		.sraml_flush	(if_flush),
 
 		.arid			()   ,
 		.araddr			(i_araddr		) ,

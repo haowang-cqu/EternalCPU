@@ -21,6 +21,7 @@ module cache4way_sramlike_interface#(
     output [31:0] rdata, 
     input  [31:0] wdata, 
     output stall, 
+    input  flush,
     input longest_stall, 
     //miss handler interact channel
     output handler_req, // specifies whether a req is sent to miss handler
@@ -86,13 +87,13 @@ always @(posedge clk) begin
     else begin
         case (state)
         `IDLE: begin
-            if(en&&cached&&cache_grant&&!(|hit_way))begin
+            if(en&&!flush&&cached&&cache_grant&&!(|hit_way))begin
                 state <= `FETCH;
             end
-            else if(en&&cached&&cache_grant&&|hit_way&&longest_stall) begin
+            else if(en&&cached&&!flush&&cache_grant&&|hit_way&&longest_stall) begin
                 state <= `FIN;
             end
-            else if(en&&!cached)begin
+            else if(en&&!flush&&!cached)begin
                 state <= `UNCACHE;
             end
             else begin
@@ -100,7 +101,10 @@ always @(posedge clk) begin
             end
         end
         `FETCH: begin
-            if (handler_fin) begin
+            if(flush)begin
+                state <= `IDLE;
+            end
+            else if (handler_fin) begin
                 state <= `VALID;
             end
             else begin
@@ -124,7 +128,10 @@ always @(posedge clk) begin
             end
         end
         `UNCACHE: begin
-            if(handler_fin)begin
+            if(flush)begin
+                state <= `IDLE;
+            end
+            else if(handler_fin)begin
                 if(longest_stall)begin
                     state <= `FIN;
                 end
@@ -181,7 +188,7 @@ always @(posedge clk) begin
         sraml_rdata <= 0;
     end
     else begin
-        if(en)begin
+        if(en&&!flush)begin
             if(state==`IDLE&&cached&&|hit_way&&longest_stall)begin
                 sraml_rdata <= sraml_cache_rdata; 
             end
@@ -222,13 +229,13 @@ assign rdata =  state == `FIN ?     sraml_rdata  :
                 {32{hit_way[1]}} & cache_rdata[ 63:32] |
                 {32{hit_way[0]}} & cache_rdata[ 31: 0];
 
-assign stall =  state==`IDLE&&en&&(!cached||!cache_grant||!(|hit_way)) ||
-                state==`FETCH ||
-                state==`UNCACHE && !handler_fin;
+assign stall =  state==`IDLE&&en&&!flush&&(!cached||!cache_grant||!(|hit_way)) ||
+                state==`FETCH&&!flush ||
+                state==`UNCACHE && !handler_fin&&!flush;
 // miss handler interact channel
-assign handler_req= state==`IDLE&&en&&(!cached||cache_grant&&!(|hit_way)) ||
-                    state==`FETCH ||
-                    state==`UNCACHE;
+assign handler_req= state==`IDLE&&en&&!flush&&(!cached||cache_grant&&!(|hit_way)) ||
+                    state==`FETCH&&!flush||
+                    state==`UNCACHE&&!flush;
 
 assign handler_cached = cached;
 assign handler_w = |wen;
@@ -240,15 +247,15 @@ assign handler_wen = wen;
 // channel mux control
 assign cache_mux_control = state==`FETCH;
 // cache access request
-assign cache_req =  state==`IDLE&&en&&!cached ||
-                    state==`FETCH || // may be optional
-                    state==`VALID;
+assign cache_req =  state==`IDLE&&en&&!flush&&!cached ||
+                    state==`FETCH&&!flush || // may be optional
+                    state==`VALID&&!flush;
 // cache line select channel
 assign cache_blkidx = v_blkidx;
 assign cache_wrdidx = paddr[WRDIDX_BIT+2-1:2];
 // cache data interact channel
 assign cache_wdata = {4{wdata}};
-assign cache_wen =  state==`VALID||state==`IDLE&&en&&cached&&cache_grant?
+assign cache_wen =  state==`VALID||state==`IDLE&&en&&!flush&&cached&&cache_grant?
                         {wen&{4{hit_way[3]}},
                          wen&{4{hit_way[2]}}, 
                          wen&{4{hit_way[1]}}, 
@@ -262,7 +269,7 @@ assign cache_tag_w = 0;
 assign wen_cache_valid = 0;
 assign cache_valid_w = 0;
 // dirty bit
-assign wen_cache_dirty = state==`VALID||state==`IDLE&&en&&cached&&cache_grant ?
+assign wen_cache_dirty = state==`VALID||state==`IDLE&&en&&!flush&&cached&&cache_grant ?
                             {|wen&hit_way[3], 
                              |wen&hit_way[2], 
                              |wen&hit_way[1], 
@@ -271,7 +278,7 @@ assign wen_cache_dirty = state==`VALID||state==`IDLE&&en&&cached&&cache_grant ?
 assign cache_dirty_w = 4'b1111;
 //history info
 assign cache_wen_history =  state==`VALID||
-                                state==`IDLE&&en&&cached&&
+                                state==`IDLE&&en&&!flush&&cached&&
                                 cache_grant&&|hit_way;
 
 assign cache_history_w = hit_way[3] ? cache_history_r|3'b101 :
